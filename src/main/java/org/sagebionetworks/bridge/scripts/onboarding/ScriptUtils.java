@@ -6,7 +6,6 @@ import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
-import org.sagebionetworks.bridge.sdk.models.schedules.ActivityType;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.surveys.DataType;
 import org.sagebionetworks.bridge.sdk.models.surveys.MultiValueConstraints;
@@ -36,20 +35,18 @@ public class ScriptUtils {
         
         Config config = ClientProvider.getConfig();
         String url = config.getHost() + config.getRecentlyPublishedSurveyUserApi(guid);
-        schedule.addActivity(new Activity("Take survey", ActivityType.survey, url));
+        schedule.addActivity(new Activity("Take survey", url));
     }
     
     public static void setSurveyActivity(Schedule schedule, GuidCreatedOnVersionHolder keys) {
         checkNotNull(schedule);
-        checkNotNull(keys);
+        checkNotNull(keys);        
         
-        Config config = ClientProvider.getConfig();
-        String url = config.getHost() + config.getSurveyUserApi(keys.getGuid(), keys.getCreatedOn());
-        schedule.addActivity(new Activity("Take survey", ActivityType.survey, url));
+        schedule.addActivity(new Activity("Take survey", keys));
     }
     public static void setTaskActivity(Schedule schedule, String taskIdentifier) {
         checkNotNull(taskIdentifier);
-        schedule.addActivity(new Activity("Do task", ActivityType.task, taskIdentifier));
+        schedule.addActivity(new Activity("Do task", taskIdentifier));
     }
     public static GuidCreatedOnVersionHolder getSurveyActivityKeys(Schedule schedule) {
         return schedule.getActivities().get(0).getSurvey();
