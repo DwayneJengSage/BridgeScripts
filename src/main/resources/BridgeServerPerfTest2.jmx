@@ -19,7 +19,7 @@
           </elementProp>
           <elementProp name="session" elementType="Argument">
             <stringProp name="Argument.name">session</stringProp>
-            <stringProp name="Argument.value">2f345fb2-0e5d-4e3c-a251-374025a2667f</stringProp>
+            <stringProp name="Argument.value">enter-a-valid-session-token-here</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
