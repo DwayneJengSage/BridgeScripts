@@ -1,36 +1,27 @@
 package org.sagebionetworks.bridge.scripts.perf;
 
-import org.sagebionetworks.bridge.sdk.ClientProvider;
-import org.sagebionetworks.bridge.sdk.Config;
+import java.util.concurrent.Callable;
+
+import org.sagebionetworks.bridge.sdk.ResearcherClient;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.UserClient;
-import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
-public abstract class PerfTask implements Runnable {
+public abstract class PerfTask implements Callable<Boolean> {
     
     protected Session session;
     protected UserClient client;
+    protected ResearcherClient researcherClient;
     
-    public PerfTask(String host, String username, String password) {
-        Config config = ClientProvider.getConfig();
-        config.set(Config.Props.HOST, host);
-
-        SignInCredentials credentials = new SignInCredentials(username, password);
-        this.session = ClientProvider.signIn(credentials);
+    public PerfTask(Session session) {
+        this.session = session;
         client = this.session.getUserClient();
+        researcherClient = this.session.getResearcherClient();
     }
     
     @Override
-    public void run() {
-        while(true) {
-            try {
-                command();
-                System.out.println("Thread " + Thread.currentThread().getId() + " sleeping");
-                Thread.sleep(500);
-            } catch(InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
+    public Boolean call() {
+        command();
+        return Boolean.TRUE;
     }
     
     public abstract void command();

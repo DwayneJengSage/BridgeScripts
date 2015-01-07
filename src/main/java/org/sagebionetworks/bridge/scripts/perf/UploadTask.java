@@ -7,12 +7,14 @@ import java.nio.file.Paths;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.exceptions.BridgeSDKException;
 import org.sagebionetworks.bridge.sdk.models.UploadRequest;
 import org.sagebionetworks.bridge.sdk.models.UploadSession;
 
 public class UploadTask extends PerfTask {
     
+    // TODO: This is a tiny file, what about something bigger?
     String filePath = "src/main/resources/test.json";
     UploadRequest request = new UploadRequest()
         .setContentLength((int) new File(filePath).length())
@@ -20,8 +22,8 @@ public class UploadTask extends PerfTask {
         .setContentType("text/plain")
         .setName(filePath);
 
-    public UploadTask(String host, String username, String password) {
-        super(host, username, password);
+    public UploadTask(Session session) {
+        super(session);
     }
     
     public void command() {
@@ -37,5 +39,5 @@ public class UploadTask extends PerfTask {
             throw new BridgeSDKException(e);
         }
     }
-    
+
 }
