@@ -9,6 +9,7 @@ import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.models.ResourceList;
 import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;
 import org.sagebionetworks.bridge.sdk.models.holders.IdentifierHolder;
+import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
@@ -33,8 +34,8 @@ public class SurveyTask extends PerfTask {
         if (schedules.getTotal() == 0) {
             throw new RuntimeException("Um no, should have a schedule at this point");
         }
-        GuidCreatedOnVersionHolder keys = schedules.get(0).getActivities().get(0).getSurvey();
-        Survey survey = client.getSurvey(keys);
+        Activity activity = schedules.get(0).getActivities().get(0);
+        Survey survey = client.getSurvey(activity.getGuidCreatedOnVersionHolder());
         
         // Create some answers to submit
         List<SurveyAnswer> list = Lists.newArrayList();
@@ -45,8 +46,7 @@ public class SurveyTask extends PerfTask {
         list.add(createAnswer(survey.getQuestions().get(4)));
         list.add(createAnswer(survey.getQuestions().get(5)));
         
-        IdentifierHolder holder = client.submitAnswersToSurvey(keys, list);
-        System.out.println("The identifier: " + holder.getIdentifier());
+        IdentifierHolder holder = client.submitAnswersToSurvey(survey, list);
     }
     
     private void createASurveySchedulePlan() {
@@ -77,7 +77,7 @@ public class SurveyTask extends PerfTask {
             }
             break;
         case INTEGER:
-            answerString = "10"; break;
+            answerString = "asdf"; break;
         case DECIMAL:
             answerString = ""; break;
         case BOOLEAN:
@@ -89,11 +89,7 @@ public class SurveyTask extends PerfTask {
         case DATETIME:
             answerString = DateTime.now().toString(); break;
         }
-        if (question.getConstraints().getAllowMultiple()) {
-            answer.setAnswers(Lists.newArrayList(answerString));  
-        } else {
-            answer.setAnswer(answerString);    
-        }
+        answer.setAnswers(Lists.newArrayList(answerString));
         answer.setClient("mobile");
         answer.setQuestionGuid(question.getGuid());
         return answer;

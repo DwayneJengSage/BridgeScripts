@@ -1,60 +1,76 @@
 package org.sagebionetworks.bridge.scripts.onboarding;
 
-import org.joda.time.LocalDate;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.ResearcherClient;
 import org.sagebionetworks.bridge.sdk.Session;
-import org.sagebionetworks.bridge.sdk.UserClient;
-import org.sagebionetworks.bridge.sdk.exceptions.ConsentRequiredException;
 import org.sagebionetworks.bridge.sdk.models.ResourceList;
-import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;
-import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
-import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
-import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
-import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
 public class CreateSurveys {
+    
     public static void main(String[] args) throws Exception {
+        /*
         Config config = ClientProvider.getConfig();
         config.set(Config.Props.HOST, "https://parkinson-develop.sagebridge.org");
-        
-        SignInCredentials signIn = new SignInCredentials("alxdark", "P4ssword");
-        
         Session session = null;
         try {
-            session = ClientProvider.signIn(signIn);
+            session = ClientProvider.signIn(config.getAccountCredentials());    
         } catch(ConsentRequiredException e) {
             session = e.getSession();
-            ConsentSignature sig = new ConsentSignature("Alx Dark", LocalDate.parse("1970-12-12"), null, null);
-            session.getUserClient().consentToResearch(sig);
-            e.getSession().signOut();
-            
-            session = ClientProvider.signIn(signIn);
+            session.getUserClient().consentToResearch(new ConsentSignature("Alx Dark", LocalDate.parse("1968-12-05"), null, null));
         }
-        
-        UserClient client = session.getUserClient();
-        ResourceList<Schedule> schedules = client.getSchedules();
-        
+        ResourceList<Schedule> schedules = session.getUserClient().getSchedules();
         for (Schedule schedule : schedules) {
             System.out.println(schedule);
         }
+        */
         
-        session.signOut();
-        //createSurveyAndPlan(client, new ParkinsonEnrollmentSurvey());
+        Config config = ClientProvider.getConfig();
+        config.set(Config.Props.HOST, "https://parkinson-develop.sagebridge.org");
+        Session session = ClientProvider.signIn(config.getAdminCredentials());
+        ResearcherClient client = session.getResearcherClient();
+        
+        ResourceList<SchedulePlan> plans = client.getSchedulePlans();
+        System.out.println(plans);
+        /*
+        Survey survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("parkinson-enrollment");
+        SchedulePlan plan = getRelatedPlan(client, survey, "Enrollment Survey");
+        updateSurvey(client, plan, survey, new ParkinsonEnrollmentSurvey(), "Enrollment Survey");
+        
+        survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("parkinson-weekly");
+        plan = getRelatedPlan(client, survey, "Weekly Survey");
+        updateSurvey(client, plan, survey, new ParkinsonWeeklySurvey(), "Weekly Survey");
+        */
+    }
+    
+    /*
+    private static SchedulePlan getRelatedPlan(ResearcherClient client, Survey survey, String label) {
+        ResourceList<SchedulePlan> plans = client.getSchedulePlans();
+        for (SchedulePlan plan : plans) {
+            SimpleScheduleStrategy strategy = (SimpleScheduleStrategy)plan.getStrategy();
+            
+            if(label.equals(strategy.getSchedule().getLabel())) {
+                return plan;
+            }
+        }
+        return null;
     }
 
-    /*
     private static void updatePlan(ResearcherClient client, SchedulePlan plan, Survey survey) {
         SimpleScheduleStrategy strategy = (SimpleScheduleStrategy)plan.getStrategy();
         ScriptUtils.setMostRecentlyPublishedSurveyActivity(strategy.getSchedule(), survey.getGuid());
 
         client.updateSchedulePlan(plan);
-    }*/
+    }
     
-    /*
-    private static void updateSurvey(ResearcherClient client, SchedulePlan plan, Survey survey, Survey update) {
+    private static void updateSurvey(ResearcherClient client, SchedulePlan plan, Survey survey, Survey update, String scheduleLabel) {
+        Preconditions.checkNotNull(client);
+        Preconditions.checkNotNull(plan);
+        Preconditions.checkNotNull(survey);
+        Preconditions.checkNotNull(update);
+        Preconditions.checkNotNull(scheduleLabel);
+        
         GuidCreatedOnVersionHolder keys = client.versionSurvey(survey);
         
         update.setGuidCreatedOnVersionHolder(keys);
@@ -62,11 +78,12 @@ public class CreateSurveys {
         client.publishSurvey(keys);
         
         SimpleScheduleStrategy strategy = (SimpleScheduleStrategy)plan.getStrategy();
-        ScriptUtils.setSurveyActivity(strategy.getSchedule(), keys);
+        
+        strategy.getSchedule().getActivities().clear();
+        strategy.getSchedule().addActivity(new Activity(scheduleLabel, keys));
         
         client.updateSchedulePlan(plan);
     }
-    */
 
     private static void createSurveyAndPlan(ResearcherClient client, Survey survey) {
         GuidCreatedOnVersionHolder keys = client.createSurvey(survey);
@@ -77,5 +94,5 @@ public class CreateSurveys {
         SchedulePlan sp = new SchedulePlan();
         sp.setSchedule(holder.getSchedule(survey));
         client.createSchedulePlan(sp);
-    }
+    }*/
 }

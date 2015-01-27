@@ -71,7 +71,7 @@ public class BreastcancerEnrollmentSurvey extends BaseSurvey implements Schedule
         
         addMulti("q10", "In which breast(s) was your cancer diagnosed?", false, "Right", "Left", "Both");
 
-        addMulti("q11a", "Did you have a lupectomy?", false, "Left Breast", "Right Breast", "No");
+        addMulti("q11a", "Did you have a lumpectomy?", false, "Left Breast", "Right Breast", "No");
         addMulti("q11b", "Did you have a sentinel node biopsy?", false, "Left Breast", "Right Breast", "No");
         addMulti("q11c", "Did you have an axillary node dissection?", false, "Left Breast", "Right Breast", "No");
         addMulti("q11d", "Did you have a mastectomy?", false, "Left Breast", "Right Breast", "No");
@@ -224,7 +224,7 @@ public class BreastcancerEnrollmentSurvey extends BaseSurvey implements Schedule
         addMulti("q58r", "Have you experienced low sexual enjoyment in the last week?", false, options);
         // We cannot branch here based on question #8
         addMulti("q58s", "Have you had arm swelling (lymphedema) in the last week?", false, options);
-        addMulti("q58t", "Have you had decreased range of motion in arm on surgey side in the last week?", false, options);
+        addMulti("q58t", "Have you had decreased range of motion in the arm on surgery side in the last week?", false, options);
     }
 
 	@Override

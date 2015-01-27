@@ -9,7 +9,6 @@ import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
 import org.sagebionetworks.bridge.sdk.models.surveys.Constraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.DataType;
 import org.sagebionetworks.bridge.sdk.models.surveys.DateConstraints;
-import org.sagebionetworks.bridge.sdk.models.surveys.DurationConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.IntegerConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.MultiValueConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestion;
@@ -323,19 +322,35 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
         setPrompt("Have you ever smoked?");
         setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = ScriptUtils.booleanish();
-        c.getRules().add(new SurveyRule(Operator.eq, "true", "when-smoked"));
+        c.getRules().add(new SurveyRule(Operator.eq, "true", "years-smoking"));
         c.getRules().add(new SurveyRule(Operator.ne, "true", "health-history"));
         c.getRules().add(new SurveyRule(Operator.de, null, "health-history"));
         setConstraints(c);
     }};
     
-    // There are several issues with this, I've filed a JIRA for improvements to the surveys
-    // to handle this kind of a range
-    SurveyQuestion whenSmoked = new SurveyQuestion() {{
-        setIdentifier("when-smoked");
-        setPrompt("What year did you start and end smoking (leave blank if you are still smoking)?");
+    SurveyQuestion yearsSmoking = new SurveyQuestion() {{
+        setIdentifier("years-smoking");
+        setPrompt("How many years have you smoked?");
+        setUiHint(UiHint.SELECT);
+        IntegerConstraints c = new IntegerConstraints();
+        c.setEnumeration(new NumberList(0,70));
+        setConstraints(c);
+    }};
+    
+    SurveyQuestion packsPerDay = new SurveyQuestion() {{
+        setIdentifier("packs-per-day");
+        setPrompt("On average, how many packs did you smoke each day?");
+        setUiHint(UiHint.SELECT);
+        IntegerConstraints c = new IntegerConstraints();
+        c.setEnumeration(new NumberList(1,5));
+        setConstraints(c);
+    }};
+    
+    SurveyQuestion lastSmoked = new SurveyQuestion() {{
+        setIdentifier("last-smoked");
+        setPrompt("When is the last time you smoked (leave blank if you are still smoking)?");
         setUiHint(UiHint.DATEPICKER);
-        setConstraints(new DurationConstraints());
+        setConstraints(new DateConstraints());
     }};
     
     SurveyQuestion healthHistory = new SurveyQuestion() {{
@@ -358,7 +373,6 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
             new SurveyQuestionOption("Hip/Pelvic Fracture"),
             new SurveyQuestionOption("Ischemic Heart Disease"),
             new SurveyQuestionOption("Depression"),
-            new SurveyQuestionOption("Anxiety"),
             new SurveyQuestionOption("Osteoporosis"),
             new SurveyQuestionOption("Rheumatoid Arthritis"),
             new SurveyQuestionOption("Dementia"),
@@ -370,8 +384,8 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
             new SurveyQuestionOption("Endometrial/Uterine Cancer"),
             new SurveyQuestionOption("Head Injury with Loss of Consciousness/Concussion"),
             new SurveyQuestionOption("Any other kind of cancer OR tumor"),
-            new SurveyQuestionOption("Urinay Tract infections"),
-            new SurveyQuestionOption("Obstructive Sleeop Apnea"),
+            new SurveyQuestionOption("Urinary Tract infections"),
+            new SurveyQuestionOption("Obstructive Sleep Apnea"),
             new SurveyQuestionOption("Schizophrenia or Bipolar Disorder"),
             new SurveyQuestionOption("Peripheral Vascular Disease"),
             new SurveyQuestionOption("High Blood Pressure/Hypertension"),
@@ -392,7 +406,7 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
     }};
     
     public ParkinsonEnrollmentSurvey() {
-        setName("Parkinson Enrollment Survey");
+        setName("Enrollment Survey");
         setIdentifier("parkinson-enrollment");
         getQuestions().add(age);
         getQuestions().add(gender);
@@ -420,7 +434,9 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
         getQuestions().add(whenDBS);
         getQuestions().add(surgery);
         getQuestions().add(smoked);
-        getQuestions().add(whenSmoked);
+        getQuestions().add(yearsSmoking);
+        getQuestions().add(packsPerDay);
+        getQuestions().add(lastSmoked);
         getQuestions().add(healthHistory);
     }
 

@@ -26,11 +26,11 @@ public class BaseSurvey extends Survey {
     protected SurveyQuestion addSlider(String identifier, String prompt) {
         return addSlider(identifier, prompt, 10L);
     }
-    protected SurveyQuestion addSlider(String identifier, String prompt, long max) {
+    protected SurveyQuestion addSlider(String identifier, String prompt, double max) {
         SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.SLIDER);
         IntegerConstraints c = new IntegerConstraints();
-        c.setMinValue(0L);
+        c.setMinValue(0d);
         c.setMaxValue(max);
         q.setConstraints(c);
         return q;

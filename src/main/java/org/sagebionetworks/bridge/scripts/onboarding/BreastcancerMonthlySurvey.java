@@ -107,9 +107,9 @@ public class BreastcancerMonthlySurvey extends BaseSurvey implements ScheduleHol
         q.setPrompt("How long (in minutes) has it taken you to fall asleep each night?");
         q.setUiHint(UiHint.SLIDER);
         IntegerConstraints c = new IntegerConstraints();
-        c.setMinValue(0L);
-        c.setMaxValue(180L);
-        c.setStep(10L);
+        c.setMinValue(0d);
+        c.setMaxValue(180d);
+        c.setStep(10d);
         q.setConstraints(c);
         getQuestions().add(q);
         
