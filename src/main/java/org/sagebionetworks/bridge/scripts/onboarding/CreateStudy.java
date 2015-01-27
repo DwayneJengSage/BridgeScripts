@@ -14,10 +14,11 @@ public class CreateStudy {
         Session session = ClientProvider.signIn(config.getAdminCredentials());
         
         AdminClient client = session.getAdminClient();
-        Study study = new Study();
-        study.setName("mPower");
-        study.setIdentifier("parkinson");
-        client.createStudy(study);
+        Study study = client.getStudy("api");
+        study.setSupportEmail("alxdark+support@gmail.com");
+        study.setConsentNotificationEmail("alxdark+consent@gmail.com");
+        client.updateStudy(study);
+        
         /*
         Study study = new Study();
         study.setName("Share The Journey");

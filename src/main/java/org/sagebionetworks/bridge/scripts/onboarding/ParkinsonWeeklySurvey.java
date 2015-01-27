@@ -21,8 +21,8 @@ public class ParkinsonWeeklySurvey extends Survey implements ScheduleHolder {
         setPrompt("How good or bad is your health TODAY (0 means the worst health you can imagine, 100 means the best health you can imagine)?");
         setUiHint(UiHint.SLIDER);
         IntegerConstraints c = new IntegerConstraints();
-        c.setMaxValue(100L);
-        c.setMinValue(0L);
+        c.setMaxValue(100d);
+        c.setMinValue(0d);
         setConstraints(c);
     }};
     
@@ -62,28 +62,28 @@ public class ParkinsonWeeklySurvey extends Survey implements ScheduleHolder {
     
     SurveyQuestion memory = listQuestion("memory", "Over the past week have you had problems remembering things, following conversations, paying attention, thinking clearly, or finding your way around the house or in town?",
             "Normal: No cognitive impairment.", 
-            "Slight: Impairment appreciated by patient or caregiver with no concrete interference with the patient’s ability to carry out normal activities and social interactions.", 
-            "Mild: Clinically evident cognitive dysfunction, but only minimal interference with the patient’s ability to carry out normal activities and social interactions.", 
-            "Moderate: Cognitive deficits interfere with but do not preclude the patient’s ability to carry out normal activities and social interactions.", 
-            "Severe: Cognitive dysfunction precludes the patient’s ability to carry out normal activities and social interactions.");
+            "Slight: Impairment appreciated by yourself or your caregiver with no concrete interference with your ability to carry out normal activities and social interactions.", 
+            "Mild: Clinically evident cognitive dysfunction, but only minimal interference with your ability to carry out normal activities and social interactions.", 
+            "Moderate: Cognitive deficits interfere with but do not preclude your ability to carry out normal activities and social interactions.", 
+            "Severe: Cognitive dysfunction precludes your ability to carry out normal activities and social interactions.");
     
     SurveyQuestion emotions = listQuestion("emotions", "Over the past week have you felt low, sad, hopeless or unable to enjoy things?",
             "Normal: No depressed mood.",
-            "Slight: Episodes of depressed mood that are not sustained for more than one day at a time. No interference with patient’s ability to carry out normal activities and social interactions.",
+            "Slight: Episodes of depressed mood that are not sustained for more than one day at a time. No interference with your ability to carry out normal activities and social interactions.",
             "Mild: Depressed mood that is sustained over days, but without interference with normal activities and social interactions.",
-            "Moderate: Depressed mood that interferes with, but does not preclude, the patient’s ability to carry out normal activities and social interactions.",
-            "Severe: Depressed mood precludes patient’s ability to carry out normal activities and social interactions.");
+            "Moderate: Depressed mood that interferes with, but does not preclude, your ability to carry out normal activities and social interactions.",
+            "Severe: Depressed mood precludes your ability to carry out normal activities and social interactions.");
     
     SurveyQuestion anxiety = listQuestion("anxiety", "Over the past week have you felt nervous, worried or tense?",
             "Normal: No anxious feelings.",
-            "Slight: Anxious feelings present but not sustained for more than one day at a time. No interference with patient’s ability to carry out normal activities and social interactions.",
-            "Mild: Anxious feelings are sustained over more than one day at a time, but without interference with patient’s ability to carry out normal activities and social interactions.",
-            "Moderate: Anxious feelings interfere with, but do not preclude, the patient’s ability to carry out normal activities and social interactions.",
-            "Severe: Anxious feelings preclude patient’s ability to carry out normal activities and social interactions.");
+            "Slight: Anxious feelings present but not sustained for more than one day at a time. No interference with your ability to carry out normal activities and social interactions.",
+            "Mild: Anxious feelings are sustained over more than one day at a time, but without interference with your ability to carry out normal activities and social interactions.",
+            "Moderate: Anxious feelings interfere with, but do not preclude, the your ability to carry out normal activities and social interactions.",
+            "Severe: Anxious feelings preclude your ability to carry out normal activities and social interactions.");
     
     SurveyQuestion socialActivities = listQuestion("social-activities", "Over the past week, have you felt indifferent to doing activities or being with people?",
             "Normal: No apathy.",
-            "Slight: Apathy appreciated by patient and/or caregiver, but no interference with daily activities and social interactions.",
+            "Slight: Apathy appreciated by yourself and/or your caregiver, but no interference with daily activities and social interactions.",
             "Mild: Apathy interferes with isolated activities and social interactions.",
             "Moderate: Apathy interferes with most activities and social interactions.",
             "Severe: Passive and withdrawn, complete loss of initiative.");
@@ -189,15 +189,16 @@ public class ParkinsonWeeklySurvey extends Survey implements ScheduleHolder {
         return q;
     }
     
-    private MultiValueConstraints tableConstraints = new MultiValueConstraints(DataType.STRING) {{
-        setEnumeration(Lists.newArrayList(
-            new SurveyQuestionOption("Never"),
-            new SurveyQuestionOption("Rarely"),
-            new SurveyQuestionOption("Sometimes"),
-            new SurveyQuestionOption("Often"),
-            new SurveyQuestionOption("Always")
-        ));
-    }};
+    private MultiValueConstraints tableConstraints = new MultiValueConstraints(DataType.STRING);
+    {
+        tableConstraints.setEnumeration(Lists.newArrayList(
+                new SurveyQuestionOption("Never"),
+                new SurveyQuestionOption("Rarely"),
+                new SurveyQuestionOption("Sometimes"),
+                new SurveyQuestionOption("Often"),
+                new SurveyQuestionOption("Always")
+            ));
+    }
     
     private SurveyQuestion tableQuestion(String identifier, String prompt) {
         SurveyQuestion q = new SurveyQuestion();

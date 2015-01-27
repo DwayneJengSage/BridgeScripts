@@ -18,17 +18,17 @@ import com.google.common.collect.Lists;
 public class PerfRunner {
 
     public static void main(String[] args) throws Exception {
-        int TASK_COUNT = 10;
+        // int TASK_COUNT = 1;
         int NUM_PROCESSORS = Runtime.getRuntime().availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(NUM_PROCESSORS);
         
         System.out.println("------ RECORDING ------");
         Session session = signIn();
-        List<PerfTask> tasks = Lists.newArrayListWithCapacity(TASK_COUNT*2);
+        List<PerfTask> tasks = Lists.newArrayListWithCapacity(1);
         //for (int i=0; i < TASK_COUNT; i++) {
             tasks.add(new SurveyTask(session));
-            tasks.add(new HealthDataTask(session));
-            tasks.add(new UploadTask(session));
+            //tasks.add(new HealthDataTask(session));
+            //tasks.add(new UploadTask(session));
         //}
         executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
         executor.invokeAll(tasks);
@@ -40,7 +40,7 @@ public class PerfRunner {
         Session session = null;
 
         Config config = ClientProvider.getConfig();
-        config.set(Config.Props.HOST, "http://localhost:9000");
+        config.set(Config.Props.HOST, "https://parkinson-develop.sagebridge.org");
 
         SignInCredentials credentials = config.getAdminCredentials();
         try {

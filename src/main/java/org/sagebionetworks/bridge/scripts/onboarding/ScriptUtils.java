@@ -7,6 +7,7 @@ import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
+import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.DataType;
 import org.sagebionetworks.bridge.sdk.models.surveys.MultiValueConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
@@ -22,12 +23,12 @@ public class ScriptUtils {
      * @return
      */
     public static MultiValueConstraints booleanish() {
-        return new MultiValueConstraints(DataType.BOOLEAN) {{
-            setEnumeration(Lists.newArrayList(
-                new SurveyQuestionOption("Yes", "true"),
-                new SurveyQuestionOption("No", "false")
-            ));
-         }};
+        MultiValueConstraints mvc = new MultiValueConstraints(DataType.BOOLEAN);
+        mvc.setEnumeration(Lists.newArrayList(
+            new SurveyQuestionOption("Yes", "true"),
+            new SurveyQuestionOption("No", "false")
+        ));
+        return mvc;
     }
     public static void setMostRecentlyPublishedSurveyActivity(Schedule schedule, String guid) {
         checkNotNull(schedule);
@@ -48,7 +49,7 @@ public class ScriptUtils {
         checkNotNull(taskIdentifier);
         schedule.addActivity(new Activity("Do task", taskIdentifier));
     }
-    public static GuidCreatedOnVersionHolder getSurveyActivityKeys(Schedule schedule) {
+    public static SurveyReference getSurveyActivityKeys(Schedule schedule) {
         return schedule.getActivities().get(0).getSurvey();
     }
 

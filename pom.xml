@@ -13,6 +13,16 @@
             <artifactId>java-sdk</artifactId>
             <version>develop-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.stormpath.sdk</groupId>
+            <artifactId>stormpath-sdk-api</artifactId>
+            <version>1.0.RC2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.stormpath.sdk</groupId>
+            <artifactId>stormpath-sdk-httpclient</artifactId>
+            <version>1.0.RC2.1</version>
+        </dependency>
     </dependencies>
 	<repositories>
 		<repository>
