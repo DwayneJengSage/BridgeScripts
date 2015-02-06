@@ -16,49 +16,54 @@ import com.google.common.collect.Lists;
 
 public class ParkinsonWeeklySurvey extends Survey implements ScheduleHolder {
 
-    SurveyQuestion feeling = new SurveyQuestion() {{
-        setIdentifier("feeling");
-        setPrompt("How good or bad is your health TODAY (0 means the worst health you can imagine, 100 means the best health you can imagine)?");
-        setUiHint(UiHint.SLIDER);
+    SurveyQuestion feeling = new SurveyQuestion(); 
+    {
+        feeling.setIdentifier("feeling");
+        feeling.setPrompt("How good or bad is your health TODAY (0 means the worst health you can imagine, 100 means the best health you can imagine)?");
+        feeling.setUiHint(UiHint.SLIDER);
         IntegerConstraints c = new IntegerConstraints();
         c.setMaxValue(100d);
         c.setMinValue(0d);
-        setConstraints(c);
-    }};
+        feeling.setConstraints(c);
+    };
     
-    SurveyQuestion strenuousExersize = new SurveyQuestion() {{
-        setIdentifier("strenuous-exersize");
-        setPrompt("Over the past week, how many times did you do the following kinds of exercise for more than 15 minutes? Strenuous exersize (heart beats rapidly):");
-        setUiHint(UiHint.NUMBERFIELD);
-        setConstraints(new IntegerConstraints());
-    }};
+    SurveyQuestion strenuousExersize = new SurveyQuestion(); 
+    {
+        strenuousExersize.setIdentifier("strenuous-exersize");
+        strenuousExersize.setPrompt("Over the past week, how many times did you do the following kinds of exercise for more than 15 minutes? Strenuous exersize (heart beats rapidly):");
+        strenuousExersize.setUiHint(UiHint.NUMBERFIELD);
+        strenuousExersize.setConstraints(new IntegerConstraints());
+    };
     
-    SurveyQuestion moderateExersize = new SurveyQuestion() {{
-        setIdentifier("moderate-exersize");
-        setPrompt("Over the past week, how many times did you do the following kinds of exercise for more than 15 minutes? Moderate exersize (not exhausting):");
-        setUiHint(UiHint.NUMBERFIELD);
-        setConstraints(new IntegerConstraints());
-    }};
+    SurveyQuestion moderateExersize = new SurveyQuestion(); 
+    {
+        moderateExersize.setIdentifier("moderate-exersize");
+        moderateExersize.setPrompt("Over the past week, how many times did you do the following kinds of exercise for more than 15 minutes? Moderate exersize (not exhausting):");
+        moderateExersize.setUiHint(UiHint.NUMBERFIELD);
+        moderateExersize.setConstraints(new IntegerConstraints());
+    };
     
-    SurveyQuestion mildExersize = new SurveyQuestion() {{
-        setIdentifier("mild-exersize");
-        setPrompt("Over the past week, how many times did you do the following kinds of exercise for more than 15 minutes? Minimal effort:");
-        setUiHint(UiHint.NUMBERFIELD);
-        setConstraints(new IntegerConstraints());
-    }};
+    SurveyQuestion mildExersize = new SurveyQuestion(); 
+    {
+        mildExersize.setIdentifier("mild-exersize");
+        mildExersize.setPrompt("Over the past week, how many times did you do the following kinds of exercise for more than 15 minutes? Minimal effort:");
+        mildExersize.setUiHint(UiHint.NUMBERFIELD);
+        mildExersize.setConstraints(new IntegerConstraints());
+    };
     
-    SurveyQuestion leisure = new SurveyQuestion() {{
-        setIdentifier("leisure-time");
-        setPrompt("During your leisure time how often do you engage in any regular activity long enough to work up a sweat (heart beats rapidly)?");
+    SurveyQuestion leisure = new SurveyQuestion(); 
+    {
+        leisure.setIdentifier("leisure-time");
+        leisure.setPrompt("During your leisure time how often do you engage in any regular activity long enough to work up a sweat (heart beats rapidly)?");
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setEnumeration(Lists.newArrayList(
             new SurveyQuestionOption("Often"),
             new SurveyQuestionOption("Sometimes"),
             new SurveyQuestionOption("Never/Rarely")
         ));
-        setUiHint(UiHint.RADIOBUTTON);
-        setConstraints(c);
-    }};
+        leisure.setUiHint(UiHint.RADIOBUTTON);
+        leisure.setConstraints(c);
+    };
     
     SurveyQuestion memory = listQuestion("memory", "Over the past week have you had problems remembering things, following conversations, paying attention, thinking clearly, or finding your way around the house or in town?",
             "Normal: No cognitive impairment.", 
@@ -213,35 +218,35 @@ public class ParkinsonWeeklySurvey extends Survey implements ScheduleHolder {
         setName("Parkinson Weekly Survey");
         setIdentifier("parkinson-weekly");
         
-        getQuestions().add(feeling);
-        getQuestions().add(strenuousExersize);
-        getQuestions().add(moderateExersize);
-        getQuestions().add(mildExersize);
-        getQuestions().add(leisure);
-        getQuestions().add(memory);
-        getQuestions().add(emotions);
-        getQuestions().add(tableQuestion("7-day-workthless", "In the past 7 days, I felt worthless"));
-        getQuestions().add(tableQuestion("7-day-helpless", "In the past 7 days, I felt helpless"));
-        getQuestions().add(tableQuestion("7-day-depressed", "In the past 7 days, I felt depressed"));
-        getQuestions().add(tableQuestion("7-day-hopeless", "In the past 7 days, I felt hopeless"));
-        getQuestions().add(tableQuestion("7-day-failure", "In the past 7 days, I felt like a failure"));
-        getQuestions().add(tableQuestion("7-day-unhappy", "In the past 7 days, I felt unhappy"));
-        getQuestions().add(tableQuestion("7-day-nothing-to-look-forward-to", "In the past 7 days, I felt that I had nothing to look forward to"));
-        getQuestions().add(tableQuestion("7-day-nothing-to-cheer-me-up", "In the past 7 days, I felt that nothing could cheer me up"));
-        getQuestions().add(anxiety);
-        getQuestions().add(socialActivities);
-        getQuestions().add(sleeping);
-        getQuestions().add(wakefulness);
-        getQuestions().add(speech);
-        getQuestions().add(eating);
-        getQuestions().add(dressing);
-        getQuestions().add(washing);
-        getQuestions().add(handwriting);
-        getQuestions().add(hobbies);
-        getQuestions().add(turningOverInBed);
-        getQuestions().add(tremors);
-        getQuestions().add(balance);
-        getQuestions().add(walking);
+        getElements().add(feeling);
+        getElements().add(strenuousExersize);
+        getElements().add(moderateExersize);
+        getElements().add(mildExersize);
+        getElements().add(leisure);
+        getElements().add(memory);
+        getElements().add(emotions);
+        getElements().add(tableQuestion("7-day-workthless", "In the past 7 days, I felt worthless"));
+        getElements().add(tableQuestion("7-day-helpless", "In the past 7 days, I felt helpless"));
+        getElements().add(tableQuestion("7-day-depressed", "In the past 7 days, I felt depressed"));
+        getElements().add(tableQuestion("7-day-hopeless", "In the past 7 days, I felt hopeless"));
+        getElements().add(tableQuestion("7-day-failure", "In the past 7 days, I felt like a failure"));
+        getElements().add(tableQuestion("7-day-unhappy", "In the past 7 days, I felt unhappy"));
+        getElements().add(tableQuestion("7-day-nothing-to-look-forward-to", "In the past 7 days, I felt that I had nothing to look forward to"));
+        getElements().add(tableQuestion("7-day-nothing-to-cheer-me-up", "In the past 7 days, I felt that nothing could cheer me up"));
+        getElements().add(anxiety);
+        getElements().add(socialActivities);
+        getElements().add(sleeping);
+        getElements().add(wakefulness);
+        getElements().add(speech);
+        getElements().add(eating);
+        getElements().add(dressing);
+        getElements().add(washing);
+        getElements().add(handwriting);
+        getElements().add(hobbies);
+        getElements().add(turningOverInBed);
+        getElements().add(tremors);
+        getElements().add(balance);
+        getElements().add(walking);
     }
 
 	@Override

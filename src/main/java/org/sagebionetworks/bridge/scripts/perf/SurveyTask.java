@@ -8,7 +8,6 @@ import org.sagebionetworks.bridge.scripts.onboarding.ScheduleHolder;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.models.ResourceList;
 import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;
-import org.sagebionetworks.bridge.sdk.models.holders.IdentifierHolder;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -39,14 +38,12 @@ public class SurveyTask extends PerfTask {
         
         // Create some answers to submit
         List<SurveyAnswer> list = Lists.newArrayList();
-        list.add(createAnswer(survey.getQuestions().get(0)));
-        list.add(createAnswer(survey.getQuestions().get(1)));
-        list.add(createAnswer(survey.getQuestions().get(2)));
-        list.add(createAnswer(survey.getQuestions().get(3)));
-        list.add(createAnswer(survey.getQuestions().get(4)));
-        list.add(createAnswer(survey.getQuestions().get(5)));
-        
-        IdentifierHolder holder = client.submitAnswersToSurvey(survey, list);
+        list.add(createAnswer((SurveyQuestion)survey.getElements().get(0)));
+        list.add(createAnswer((SurveyQuestion)survey.getElements().get(1)));
+        list.add(createAnswer((SurveyQuestion)survey.getElements().get(2)));
+        list.add(createAnswer((SurveyQuestion)survey.getElements().get(3)));
+        list.add(createAnswer((SurveyQuestion)survey.getElements().get(4)));
+        list.add(createAnswer((SurveyQuestion)survey.getElements().get(5)));
     }
     
     private void createASurveySchedulePlan() {

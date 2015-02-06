@@ -1,17 +1,24 @@
 package org.sagebionetworks.bridge.scripts.onboarding;
 
-public class UpdateStudy {
-    public static void main(String[] args) {
-        /*
-        Config config = ClientProvider.getConfig();
-        config.set(Config.Props.HOST, "https://parkinson.sagebridge.org");
-        Session session = ClientProvider.signIn(config.getAdminCredentials());
+import org.sagebionetworks.bridge.sdk.ResearcherClient;
+import org.sagebionetworks.bridge.sdk.Session;
+import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
+import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
+import org.sagebionetworks.bridge.sdk.models.schedules.SimpleScheduleStrategy;
+import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 
-        AdminClient client = session.getAdminClient();
-        ResourceList<Study> studies = client.getAllStudies();
-        for (Study study : studies) {
-            study.setMinAgeOfConsent(18);
-            client.updateStudy(study);
-        }*/
+public class UpdateStudy extends BaseSignIn {
+    public static void main(String[] args) {
+        
+        Session session = signIn("https://parkinson-develop.sagebridge.org");
+        
+        ResearcherClient client = session.getResearcherClient();
+        
+        for (SchedulePlan plan : client.getSchedulePlans()) {
+            Activity activity = ((SimpleScheduleStrategy)plan.getStrategy()).getSchedule().getActivities().get(0);
+            
+            Survey survey = client.getSurveyMostRecentlyPublishedVersion(activity.getSurvey().getGuid());
+            System.out.println(survey);
+        }
     }
 }

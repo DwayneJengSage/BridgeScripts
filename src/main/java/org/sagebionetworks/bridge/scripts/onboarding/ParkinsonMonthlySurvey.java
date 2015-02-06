@@ -30,24 +30,26 @@ public class ParkinsonMonthlySurvey extends Survey implements ScheduleHolder {
             new SurveyQuestionOption("Always")
         ));
         q.setConstraints(c);
-        getQuestions().add(q);
+        getElements().add(q);
     }
     
-    SurveyQuestion medicationsChange = new SurveyQuestion() {{
-        setIdentifier("medications-change");
-        setPrompt("Did your medications for Parkinson disease change in the previous month?");
-        setUiHint(UiHint.RADIOBUTTON);
+    SurveyQuestion medicationsChange = new SurveyQuestion(); 
+    {
+        medicationsChange.setIdentifier("medications-change");
+        medicationsChange.setPrompt("Did your medications for Parkinson disease change in the previous month?");
+        medicationsChange.setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = ScriptUtils.booleanish();
         c.getRules().add(new SurveyRule(Operator.eq, "true", "medications"));
         c.getRules().add(new SurveyRule(Operator.ne, "true", "moving"));
         c.getRules().add(new SurveyRule(Operator.de, null, "moving"));
-        setConstraints(c);
-    }};
+        medicationsChange.setConstraints(c);
+    };
     
-    SurveyQuestion medications = new SurveyQuestion() {{
-        setIdentifier("medications");
-        setPrompt("What medication(s) are you currently using to manage Parkinson disease?");
-        setUiHint(UiHint.LIST);
+    SurveyQuestion medications = new SurveyQuestion(); 
+    {
+        medications.setIdentifier("medications");
+        medications.setPrompt("What medication(s) are you currently using to manage Parkinson disease?");
+        medications.setUiHint(UiHint.LIST);
         MultiValueConstraints c = new MultiValueConstraints();
         c.setAllowMultiple(true);
         c.setAllowOther(true);
@@ -71,14 +73,14 @@ public class ParkinsonMonthlySurvey extends Survey implements ScheduleHolder {
             new SurveyQuestionOption("None"),
             new SurveyQuestionOption("N/A")
         ));
-        setConstraints(c);
-    }};
+        medications.setConstraints(c);
+    };
     
     public ParkinsonMonthlySurvey() {
         setName("Parkinson Monthly Survey");
         setIdentifier("parkinson-monthly");
-        getQuestions().add(medicationsChange);
-        getQuestions().add(medications);
+        getElements().add(medicationsChange);
+        getElements().add(medications);
         addTableQuestion("moving","During the last month have you had difficulty getting around in public?");
         addTableQuestion("dressing","During the last month have you had difficulty dressing yourself?");
         addTableQuestion("depressed","During the last month have you felt depressed?");

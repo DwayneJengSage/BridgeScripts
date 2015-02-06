@@ -20,7 +20,7 @@ public class BaseSurvey extends Survey {
         SurveyQuestion q = new SurveyQuestion();
         q.setIdentifier(identifier);
         q.setPrompt(prompt);
-        getQuestions().add(q);
+        getElements().add(q);
         return q;
     }
     protected SurveyQuestion addSlider(String identifier, String prompt) {
