@@ -24,17 +24,19 @@ import com.google.common.collect.Lists;
  */
 public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHolder {
     
-    SurveyQuestion age = new SurveyQuestion() {{
-        setIdentifier("age");
-        setPrompt("How old are you?");
-        setUiHint(UiHint.NUMBERFIELD);
-        setConstraints(new IntegerConstraints());
-    }};
+    SurveyQuestion age = new SurveyQuestion();
+    {
+        age.setIdentifier("age");
+        age.setPrompt("How old are you?");
+        age.setUiHint(UiHint.NUMBERFIELD);
+        age.setConstraints(new IntegerConstraints());
+    };
     
-    SurveyQuestion gender = new SurveyQuestion() {{
-        setIdentifier("gender");
-        setPrompt("What is your sex?");
-        setUiHint(UiHint.RADIOBUTTON);
+    SurveyQuestion gender = new SurveyQuestion(); 
+    {
+        gender.setIdentifier("gender");
+        gender.setPrompt("What is your sex?");
+        gender.setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         List<SurveyQuestionOption> list = Arrays.asList(
             new SurveyQuestionOption("Male"),
@@ -42,13 +44,14 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
             new SurveyQuestionOption("Prefer not to answer")
         );
         c.setEnumeration(list);
-        setConstraints(c);
-    }};
+        gender.setConstraints(c);
+    };
     
-    SurveyQuestion race = new SurveyQuestion() {{
-        setIdentifier("race");
-        setPrompt("Which race do you identify with?");
-        setUiHint(UiHint.CHECKBOX);
+    SurveyQuestion race = new SurveyQuestion(); 
+    {
+        race.setIdentifier("race");
+        race.setPrompt("Which race do you identify with?");
+        race.setUiHint(UiHint.CHECKBOX);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setAllowMultiple(true);
         c.setAllowOther(true);
@@ -65,13 +68,14 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
             new SurveyQuestionOption("Mixed")
             // and allow other. Hope they catch that...
         ));
-        setConstraints(c);
-    }};
+        race.setConstraints(c);
+    };
     
-    SurveyQuestion countryOfResidence = new SurveyQuestion() {{
-        setIdentifier("residence");
-        setPrompt("What is your country of residence?");
-        setUiHint(UiHint.SELECT);
+    SurveyQuestion countryOfResidence = new SurveyQuestion(); 
+    {
+        countryOfResidence.setIdentifier("residence");
+        countryOfResidence.setPrompt("What is your country of residence?");
+        countryOfResidence.setUiHint(UiHint.SELECT);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setEnumeration(new CountryOfResidenceList());
         c.setRules(Lists.newArrayList(
@@ -79,22 +83,24 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
             new SurveyRule(Operator.ne, "USA", "education"),
             new SurveyRule(Operator.de, null, "education")
         ));
-        setConstraints(c);
-    }};
+        countryOfResidence.setConstraints(c);
+    };
     
-    SurveyQuestion stateOfResidence = new SurveyQuestion() {{
-        setIdentifier("state");
-        setPrompt("In which state do you reside?");
-        setUiHint(UiHint.SELECT);
+    SurveyQuestion stateOfResidence = new SurveyQuestion(); 
+    {
+        stateOfResidence.setIdentifier("state");
+        stateOfResidence.setPrompt("In which state do you reside?");
+        stateOfResidence.setUiHint(UiHint.SELECT);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setEnumeration(new UnitedStatesList());
-        setConstraints(c);
-    }};
+        stateOfResidence.setConstraints(c);
+    };
     
-    SurveyQuestion education = new SurveyQuestion() {{
-        setIdentifier("education");
-        setPrompt("What is the highest level of education that you have completed?");
-        setUiHint(UiHint.SELECT);
+    SurveyQuestion education = new SurveyQuestion(); 
+    {
+        education.setIdentifier("education");
+        education.setPrompt("What is the highest level of education that you have completed?");
+        education.setUiHint(UiHint.SELECT);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setEnumeration(Lists.newArrayList(
             new SurveyQuestionOption("Doctoral Degree"),
@@ -106,13 +112,14 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
             new SurveyQuestionOption("High School Diploma/GED"),
             new SurveyQuestionOption("Some high school")
         ));
-        setConstraints(c);
-    }};
+        education.setConstraints(c);
+    };
     
-    SurveyQuestion employment = new SurveyQuestion() {{
-        setIdentifier("employment");
-        setPrompt("What is your current employment status?");
-        setUiHint(UiHint.SELECT);
+    SurveyQuestion employment = new SurveyQuestion(); 
+    {
+        employment.setIdentifier("employment");
+        employment.setPrompt("What is your current employment status?");
+        employment.setUiHint(UiHint.SELECT);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setEnumeration(Lists.newArrayList(
             new SurveyQuestionOption("Employment for wages"),
@@ -125,13 +132,14 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
             new SurveyQuestionOption("Retired"),
             new SurveyQuestionOption("Unable to work")
         ));
-        setConstraints(c);
-    }};
+        employment.setConstraints(c);
+    };
     
-    SurveyQuestion maritalStatus = new SurveyQuestion() {{
-        setIdentifier("maritalStatus");
-        setPrompt("What is your current marital status?");
-        setUiHint(UiHint.RADIOBUTTON);
+    SurveyQuestion maritalStatus = new SurveyQuestion(); 
+    {
+        maritalStatus.setIdentifier("maritalStatus");
+        maritalStatus.setPrompt("What is your current marital status?");
+        maritalStatus.setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setAllowOther(true);
         c.setEnumeration(Lists.newArrayList(
@@ -142,27 +150,30 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
             new SurveyQuestionOption("Separated")
             // and other
         ));
-        setConstraints(c);
-    }};
+        maritalStatus.setConstraints(c);
+    };
     
-    SurveyQuestion areCaretaker = new SurveyQuestion() {{
-       setIdentifier("are-caretaker");
-       setPrompt("Are you a spouse, partner or carepartner of someone who has Parkinson disease?");
-       setUiHint(UiHint.RADIOBUTTON);
-       setConstraints(ScriptUtils.booleanish());
-    }};
+    SurveyQuestion areCaretaker = new SurveyQuestion(); 
+    {
+       areCaretaker.setIdentifier("are-caretaker");
+       areCaretaker.setPrompt("Are you a spouse, partner or carepartner of someone who has Parkinson disease?");
+       areCaretaker.setUiHint(UiHint.RADIOBUTTON);
+       areCaretaker.setConstraints(ScriptUtils.booleanish());
+    };
     
-    SurveyQuestion pastParticipation = new SurveyQuestion() {{
-        setIdentifier("past-participation");
-        setPrompt("Have you ever participated in a research study or clinical trial on Parkinson disease before?");
-        setUiHint(UiHint.RADIOBUTTON);
-        setConstraints(ScriptUtils.booleanish());
-     }};    
+    SurveyQuestion pastParticipation = new SurveyQuestion(); 
+    {
+        pastParticipation.setIdentifier("past-participation");
+        pastParticipation.setPrompt("Have you ever participated in a research study or clinical trial on Parkinson disease before?");
+        pastParticipation.setUiHint(UiHint.RADIOBUTTON);
+        pastParticipation.setConstraints(ScriptUtils.booleanish());
+     };
     
-     SurveyQuestion smartphone = new SurveyQuestion() {{
-         setIdentifier("smartphone");
-         setPrompt("How easy is it for you to use your smart phone?");
-         setUiHint(UiHint.RADIOBUTTON);
+     SurveyQuestion smartphone = new SurveyQuestion(); 
+     {
+         smartphone.setIdentifier("smartphone");
+         smartphone.setPrompt("How easy is it for you to use your smart phone?");
+         smartphone.setUiHint(UiHint.RADIOBUTTON);
          MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
          c.setEnumeration(Lists.newArrayList(
              new SurveyQuestionOption("Very easy"),
@@ -171,33 +182,36 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
              new SurveyQuestionOption("Difficult"),
              new SurveyQuestionOption("Very Difficult")
          ));
-         setConstraints(c);
-    }};
+         smartphone.setConstraints(c);
+    };
     
-    SurveyQuestion phoneUsage = new SurveyQuestion() {{
-       setIdentifier("phone-usage");
-       setPrompt("Do you ever use your cell phone to look for health or medical information online?");
-       setUiHint(UiHint.RADIOBUTTON);
-       MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
-       c.setEnumeration(Lists.newArrayList(
-           new SurveyQuestionOption("Yes"),
-           new SurveyQuestionOption("No"),
-           new SurveyQuestionOption("Not sure")
-       ));
-       setConstraints(c);
-    }};
+    SurveyQuestion phoneUsage = new SurveyQuestion(); 
+    {
+        phoneUsage.setIdentifier("phone-usage");
+        phoneUsage.setPrompt("Do you ever use your cell phone to look for health or medical information online?");
+        phoneUsage.setUiHint(UiHint.RADIOBUTTON);
+        MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
+        c.setEnumeration(Lists.newArrayList(
+                new SurveyQuestionOption("Yes"),
+                new SurveyQuestionOption("No"),
+                new SurveyQuestionOption("Not sure")
+        ));
+        phoneUsage.setConstraints(c);
+    };
     
-    SurveyQuestion homeUsage = new SurveyQuestion() {{
-        setIdentifier("home-usage");
-        setPrompt("Do you use the internet or email at home?");
-        setUiHint(UiHint.RADIOBUTTON);
-        setConstraints(ScriptUtils.booleanish());
-    }};
+    SurveyQuestion homeUsage = new SurveyQuestion(); 
+    {
+        homeUsage.setIdentifier("home-usage");
+        homeUsage.setPrompt("Do you use the internet or email at home?");
+        homeUsage.setUiHint(UiHint.RADIOBUTTON);
+        homeUsage.setConstraints(ScriptUtils.booleanish());
+    };
      
-    SurveyQuestion medicalUsage  = new SurveyQuestion() {{
-        setIdentifier("medical-usage");
-        setPrompt("Do you ever use the Internet to look for health or medical information online?");
-        setUiHint(UiHint.RADIOBUTTON);
+    SurveyQuestion medicalUsage  = new SurveyQuestion(); 
+    {
+        medicalUsage.setIdentifier("medical-usage");
+        medicalUsage.setPrompt("Do you ever use the Internet to look for health or medical information online?");
+        medicalUsage.setUiHint(UiHint.RADIOBUTTON);
         // Could be a boolean, but many of these have a third option, which is "don't know"
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setEnumeration(Lists.newArrayList(
@@ -207,28 +221,30 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
         c.getRules().add(new SurveyRule(Operator.eq, "yes", "medical-usage-yesterday"));
         c.getRules().add(new SurveyRule(Operator.de, null, "video-usage"));
         c.getRules().add(new SurveyRule(Operator.ne, "yes", "video-usage"));
-        setConstraints(c);
-    }};
+        medicalUsage.setConstraints(c);
+    };
     
-    SurveyQuestion medicalUsageYesterday = new SurveyQuestion() {{
-        setIdentifier("medical-usage-yesterday");
-        setPrompt("Did you happen to do this yesterday, or not?");
-        setUiHint(UiHint.RADIOBUTTON);
+    SurveyQuestion medicalUsageYesterday = new SurveyQuestion(); 
+    {
+        medicalUsageYesterday.setIdentifier("medical-usage-yesterday");
+        medicalUsageYesterday.setPrompt("Did you happen to do this yesterday, or not?");
+        medicalUsageYesterday.setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setEnumeration(Lists.newArrayList(
             new SurveyQuestionOption("Did this yesterday", "yes"),
             new SurveyQuestionOption("Did not do this yesterday", "no"),
             new SurveyQuestionOption("Don't know", "dont-know")
         ));
-        setConstraints(c);
-    }};
+        medicalUsageYesterday.setConstraints(c);
+    };
     
-    SurveyQuestion videoUsage = new SurveyQuestion() {{
-        setIdentifier("video-usage");
-        setPrompt("Do you ever use your smartphone to participate in a video call or video chat?");
-        setUiHint(UiHint.RADIOBUTTON);
-        setConstraints(ScriptUtils.booleanish());
-    }};
+    SurveyQuestion videoUsage = new SurveyQuestion(); 
+    {
+        videoUsage.setIdentifier("video-usage");
+        videoUsage.setPrompt("Do you ever use your smartphone to participate in a video call or video chat?");
+        videoUsage.setUiHint(UiHint.RADIOBUTTON);
+        videoUsage.setConstraints(ScriptUtils.booleanish());
+    };
     
     /*
     SurveyQuestion hasPD = new SurveyQuestion() {{
@@ -243,120 +259,133 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
     }};
     */
     
-    SurveyQuestion professionalDiagnosis = new SurveyQuestion() {{
-        setIdentifier("professional-diagnosis");
-        setPrompt("Have you been diagnosed by a medical professional with Parkinson disease?");
-        setUiHint(UiHint.RADIOBUTTON);
+    SurveyQuestion professionalDiagnosis = new SurveyQuestion(); 
+    {
+        professionalDiagnosis.setIdentifier("professional-diagnosis");
+        professionalDiagnosis.setPrompt("Have you been diagnosed by a medical professional with Parkinson disease?");
+        professionalDiagnosis.setUiHint(UiHint.RADIOBUTTON);
         Constraints c = ScriptUtils.booleanish();
         c.getRules().add(new SurveyRule(Operator.eq, "true", "onset-year"));
         c.getRules().add(new SurveyRule(Operator.de, null, "deep-brain-stimulation"));
         c.getRules().add(new SurveyRule(Operator.ne, "true", "deep-brain-stimulation"));
-        setConstraints(ScriptUtils.booleanish());
-    }};
+        professionalDiagnosis.setConstraints(ScriptUtils.booleanish());
+    };
     
-    SurveyQuestion onsetYear = new SurveyQuestion() {{
-        setIdentifier("onset-year");
-        setPrompt("In what year did your movement symptoms begin?");
-        setUiHint(UiHint.NUMBERFIELD);
-        setConstraints(new IntegerConstraints());
-    }};
+    SurveyQuestion onsetYear = new SurveyQuestion(); 
+    {
+        onsetYear.setIdentifier("onset-year");
+        onsetYear.setPrompt("In what year did your movement symptoms begin?");
+        onsetYear.setUiHint(UiHint.NUMBERFIELD);
+        onsetYear.setConstraints(new IntegerConstraints());
+    };
     
-    SurveyQuestion diagnosisYear = new SurveyQuestion() {{
-        setIdentifier("diagnosis-year");
-        setPrompt("In what year were you diagnosed with Parkinson disease?");
-        setUiHint(UiHint.NUMBERFIELD);
-        setConstraints(new IntegerConstraints());
-    }};
+    SurveyQuestion diagnosisYear = new SurveyQuestion(); 
+    {
+        diagnosisYear.setIdentifier("diagnosis-year");
+        diagnosisYear.setPrompt("In what year were you diagnosed with Parkinson disease?");
+        diagnosisYear.setUiHint(UiHint.NUMBERFIELD);
+        diagnosisYear.setConstraints(new IntegerConstraints());
+    };
       
-    SurveyQuestion medicationStartYear = new SurveyQuestion() {{
-        setIdentifier("medication-start-year");
-        setPrompt("In what year did you begin taking Parkinson disease medication? Leave blank if you have not started taking medication.");
-        setUiHint(UiHint.NUMBERFIELD);
-        setConstraints(new IntegerConstraints());
-    }};
+    SurveyQuestion medicationStartYear = new SurveyQuestion(); 
+    {
+        medicationStartYear.setIdentifier("medication-start-year");
+        medicationStartYear.setPrompt("In what year did you begin taking Parkinson disease medication? Leave blank if you have not started taking medication.");
+        medicationStartYear.setUiHint(UiHint.NUMBERFIELD);
+        medicationStartYear.setConstraints(new IntegerConstraints());
+    };
     
-    SurveyQuestion healthCareProvider = new SurveyQuestion() {{
-       setIdentifier("healthcare-provider");
-       setPrompt("What kind of health care provider currently cares for your Parkinson disease?");
-       setUiHint(UiHint.RADIOBUTTON);
-       MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
-       c.setAllowOther(true);
-       c.setEnumeration(Lists.newArrayList(
+    SurveyQuestion healthCareProvider = new SurveyQuestion(); 
+    {
+        healthCareProvider.setIdentifier("healthcare-provider");
+        healthCareProvider.setPrompt("What kind of health care provider currently cares for your Parkinson disease?");
+        healthCareProvider.setUiHint(UiHint.RADIOBUTTON);
+        MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
+        c.setAllowOther(true);
+        c.setEnumeration(Lists.newArrayList(
            new SurveyQuestionOption("Parkinson Disease/Movement Disorder Specialist"),
            new SurveyQuestionOption("General Neurologist (non-Parkinson Disease specialist)"),
            new SurveyQuestionOption("Primary Care Doctor"),
            new SurveyQuestionOption("Nurse Practitioner or Physician's Assistant"),
            new SurveyQuestionOption("Don't know")
            // or other
-       ));
-       setConstraints(c);
-    }};
+        ));
+        healthCareProvider.setConstraints(c);
+    };
     
-    SurveyQuestion deepBrainStimulation = new SurveyQuestion() {{
-        setIdentifier("deep-brain-stimulation");
-        setPrompt("Have you ever had Deep Brain Stimulation?");
-        setUiHint(UiHint.RADIOBUTTON);
+    SurveyQuestion deepBrainStimulation = new SurveyQuestion(); 
+    {
+        deepBrainStimulation.setIdentifier("deep-brain-stimulation");
+        deepBrainStimulation.setPrompt("Have you ever had Deep Brain Stimulation?");
+        deepBrainStimulation.setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = ScriptUtils.booleanish();
         c.getRules().add(new SurveyRule(Operator.eq, "true", "when-dbs"));
         c.getRules().add(new SurveyRule(Operator.ne, "true", "surgery"));
         c.getRules().add(new SurveyRule(Operator.de, null, "surgery"));
-        setConstraints(c);
-    }};
+        deepBrainStimulation.setConstraints(c);
+    };
     
-    SurveyQuestion whenDBS = new SurveyQuestion() {{
-        setIdentifier("when-dbs");
-        setPrompt("When did you have DBS?");
-        setUiHint(UiHint.DATEPICKER);
-        setConstraints(new DateConstraints());
-    }};
+    SurveyQuestion whenDBS = new SurveyQuestion(); 
+    {
+        whenDBS.setIdentifier("when-dbs");
+        whenDBS.setPrompt("When did you have DBS?");
+        whenDBS.setUiHint(UiHint.DATEPICKER);
+        whenDBS.setConstraints(new DateConstraints());
+    };
     
-    SurveyQuestion surgery = new SurveyQuestion() {{
-        setIdentifier("surgery");
-        setPrompt("Have you ever had any surgery for Parkinson disease, other than DBS?");
-        setUiHint(UiHint.RADIOBUTTON);
-        setConstraints(ScriptUtils.booleanish());
-    }};
+    SurveyQuestion surgery = new SurveyQuestion(); 
+    {
+        surgery.setIdentifier("surgery");
+        surgery.setPrompt("Have you ever had any surgery for Parkinson disease, other than DBS?");
+        surgery.setUiHint(UiHint.RADIOBUTTON);
+        surgery.setConstraints(ScriptUtils.booleanish());
+    };
     
-    SurveyQuestion smoked = new SurveyQuestion() {{
-        setIdentifier("smoked");
-        setPrompt("Have you ever smoked?");
-        setUiHint(UiHint.RADIOBUTTON);
+    SurveyQuestion smoked = new SurveyQuestion(); 
+    {
+        smoked.setIdentifier("smoked");
+        smoked.setPrompt("Have you ever smoked?");
+        smoked.setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = ScriptUtils.booleanish();
         c.getRules().add(new SurveyRule(Operator.eq, "true", "years-smoking"));
         c.getRules().add(new SurveyRule(Operator.ne, "true", "health-history"));
         c.getRules().add(new SurveyRule(Operator.de, null, "health-history"));
-        setConstraints(c);
-    }};
+        smoked.setConstraints(c);
+    };
     
-    SurveyQuestion yearsSmoking = new SurveyQuestion() {{
-        setIdentifier("years-smoking");
-        setPrompt("How many years have you smoked?");
-        setUiHint(UiHint.SELECT);
+    SurveyQuestion yearsSmoking = new SurveyQuestion(); 
+    {
+        yearsSmoking.setIdentifier("years-smoking");
+        yearsSmoking.setPrompt("How many years have you smoked?");
+        yearsSmoking.setUiHint(UiHint.SELECT);
         IntegerConstraints c = new IntegerConstraints();
         c.setEnumeration(new NumberList(0,70));
-        setConstraints(c);
-    }};
+        yearsSmoking.setConstraints(c);
+    };
     
-    SurveyQuestion packsPerDay = new SurveyQuestion() {{
-        setIdentifier("packs-per-day");
-        setPrompt("On average, how many packs did you smoke each day?");
-        setUiHint(UiHint.SELECT);
+    SurveyQuestion packsPerDay = new SurveyQuestion(); 
+    {
+        packsPerDay.setIdentifier("packs-per-day");
+        packsPerDay.setPrompt("On average, how many packs did you smoke each day?");
+        packsPerDay.setUiHint(UiHint.SELECT);
         IntegerConstraints c = new IntegerConstraints();
         c.setEnumeration(new NumberList(1,5));
-        setConstraints(c);
-    }};
+        packsPerDay.setConstraints(c);
+    };
     
-    SurveyQuestion lastSmoked = new SurveyQuestion() {{
-        setIdentifier("last-smoked");
-        setPrompt("When is the last time you smoked (leave blank if you are still smoking)?");
-        setUiHint(UiHint.DATEPICKER);
-        setConstraints(new DateConstraints());
-    }};
+    SurveyQuestion lastSmoked = new SurveyQuestion(); 
+    {
+        lastSmoked.setIdentifier("last-smoked");
+        lastSmoked.setPrompt("When is the last time you smoked (leave blank if you are still smoking)?");
+        lastSmoked.setUiHint(UiHint.DATEPICKER);
+        lastSmoked.setConstraints(new DateConstraints());
+    };
     
-    SurveyQuestion healthHistory = new SurveyQuestion() {{
-        setIdentifier("health-history");
-        setPrompt("Has a doctor ever told you that you have, or have you ever taken medication for any of the following conditions? Please check all that apply.");
-        setUiHint(UiHint.LIST);
+    SurveyQuestion healthHistory = new SurveyQuestion(); 
+    {
+        healthHistory.setIdentifier("health-history");
+        healthHistory.setPrompt("Has a doctor ever told you that you have, or have you ever taken medication for any of the following conditions? Please check all that apply.");
+        healthHistory.setUiHint(UiHint.LIST);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setAllowMultiple(true);
         c.setEnumeration(Lists.newArrayList(
@@ -402,42 +431,42 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
             new SurveyQuestionOption("Anemia"),
             new SurveyQuestionOption("Asthma")
         ));
-        setConstraints(c);
-    }};
+        healthHistory.setConstraints(c);
+    };
     
     public ParkinsonEnrollmentSurvey() {
         setName("Enrollment Survey");
         setIdentifier("parkinson-enrollment");
-        getQuestions().add(age);
-        getQuestions().add(gender);
-        getQuestions().add(race);
-        getQuestions().add(countryOfResidence);
-        getQuestions().add(stateOfResidence);
-        getQuestions().add(education);
-        getQuestions().add(employment);
-        getQuestions().add(maritalStatus);
-        getQuestions().add(areCaretaker);
-        getQuestions().add(pastParticipation);
-        getQuestions().add(smartphone);
-        getQuestions().add(phoneUsage);
-        getQuestions().add(homeUsage);
-        getQuestions().add(medicalUsage);
-        getQuestions().add(medicalUsageYesterday);
-        getQuestions().add(videoUsage);
+        getElements().add(age);
+        getElements().add(gender);
+        getElements().add(race);
+        getElements().add(countryOfResidence);
+        getElements().add(stateOfResidence);
+        getElements().add(education);
+        getElements().add(employment);
+        getElements().add(maritalStatus);
+        getElements().add(areCaretaker);
+        getElements().add(pastParticipation);
+        getElements().add(smartphone);
+        getElements().add(phoneUsage);
+        getElements().add(homeUsage);
+        getElements().add(medicalUsage);
+        getElements().add(medicalUsageYesterday);
+        getElements().add(videoUsage);
         // getQuestions().add(hasPD);
-        getQuestions().add(professionalDiagnosis);
-        getQuestions().add(onsetYear);
-        getQuestions().add(diagnosisYear);
-        getQuestions().add(medicationStartYear);
-        getQuestions().add(healthCareProvider);
-        getQuestions().add(deepBrainStimulation);
-        getQuestions().add(whenDBS);
-        getQuestions().add(surgery);
-        getQuestions().add(smoked);
-        getQuestions().add(yearsSmoking);
-        getQuestions().add(packsPerDay);
-        getQuestions().add(lastSmoked);
-        getQuestions().add(healthHistory);
+        getElements().add(professionalDiagnosis);
+        getElements().add(onsetYear);
+        getElements().add(diagnosisYear);
+        getElements().add(medicationStartYear);
+        getElements().add(healthCareProvider);
+        getElements().add(deepBrainStimulation);
+        getElements().add(whenDBS);
+        getElements().add(surgery);
+        getElements().add(smoked);
+        getElements().add(yearsSmoking);
+        getElements().add(packsPerDay);
+        getElements().add(lastSmoked);
+        getElements().add(healthHistory);
     }
 
 	@Override

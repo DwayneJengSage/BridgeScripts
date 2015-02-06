@@ -111,7 +111,7 @@ public class BreastcancerMonthlySurvey extends BaseSurvey implements ScheduleHol
         c.setMaxValue(180d);
         c.setStep(10d);
         q.setConstraints(c);
-        getQuestions().add(q);
+        getElements().add(q);
         
         addDateTime("q33", "When have you usually gotten up in the morning?");
         
@@ -120,7 +120,7 @@ public class BreastcancerMonthlySurvey extends BaseSurvey implements ScheduleHol
         q.setPrompt("How many hours of actual sleep did you get at night? (This may be different than the number of hours you spend in bed)?");
         q.setUiHint(UiHint.TIMEPICKER);
         q.setConstraints(new TimeConstraints());
-        getQuestions().add(q);
+        getElements().add(q);
         
         addMulti("q35a", "During the PAST MONTH, how often could you not get to sleep within 30 minutes?", false, options3);
         addMulti("q35b", "During the PAST MONTH, how often did you wake up in the middle of the night or early morning?", false, options3);
