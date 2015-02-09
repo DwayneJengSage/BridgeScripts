@@ -8,6 +8,7 @@ import java.util.List;
 import org.sagebionetworks.bridge.sdk.AdminClient;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Config.Props;
 import org.sagebionetworks.bridge.sdk.Session;
 
@@ -78,7 +79,8 @@ public class ResetStudyParticipants {
 
     public static void main(String[] args) {
         Config config = ClientProvider.getConfig();
-        config.set(Props.HOST, "https://asthma-staging.sagebridge.org");
+        config.set(Environment.STAGING);
+        config.set(Props.STUDY_IDENTIFIER, "asthma");
         
         Session session = ClientProvider.signIn(config.getAdminCredentials());
         AdminClient adminClient = session.getAdminClient();

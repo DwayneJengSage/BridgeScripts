@@ -29,7 +29,9 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
         age.setIdentifier("age");
         age.setPrompt("How old are you?");
         age.setUiHint(UiHint.NUMBERFIELD);
-        age.setConstraints(new IntegerConstraints());
+        IntegerConstraints ic = new IntegerConstraints();
+        ic.setMinValue(18d);
+        age.setConstraints(ic);
     };
     
     SurveyQuestion gender = new SurveyQuestion(); 
@@ -330,7 +332,9 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
         whenDBS.setIdentifier("when-dbs");
         whenDBS.setPrompt("When did you have DBS?");
         whenDBS.setUiHint(UiHint.DATEPICKER);
-        whenDBS.setConstraints(new DateConstraints());
+        DateConstraints dc = new DateConstraints();
+        dc.setAllowFuture(false);
+        whenDBS.setConstraints(dc);
     };
     
     SurveyQuestion surgery = new SurveyQuestion(); 
@@ -378,7 +382,9 @@ public class ParkinsonEnrollmentSurvey extends BaseSurvey implements ScheduleHol
         lastSmoked.setIdentifier("last-smoked");
         lastSmoked.setPrompt("When is the last time you smoked (leave blank if you are still smoking)?");
         lastSmoked.setUiHint(UiHint.DATEPICKER);
-        lastSmoked.setConstraints(new DateConstraints());
+        DateConstraints dc = new DateConstraints();
+        dc.setAllowFuture(false);
+        lastSmoked.setConstraints(dc);
     };
     
     SurveyQuestion healthHistory = new SurveyQuestion(); 

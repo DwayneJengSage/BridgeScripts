@@ -3,6 +3,7 @@ package org.sagebionetworks.bridge.scripts.onboarding;
 import org.sagebionetworks.bridge.sdk.AdminClient;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.models.studies.Study;
 
@@ -10,7 +11,7 @@ public class CreateStudy {
 
     public static void main(String[] args) {
         Config config = ClientProvider.getConfig();
-        config.set(Config.Props.HOST, "http://localhost:9000");
+        config.set(Environment.LOCAL);
         Session session = ClientProvider.signIn(config.getAdminCredentials());
         
         AdminClient client = session.getAdminClient();

@@ -14,7 +14,7 @@ public class BreastcancerEnrollmentSurvey extends BaseSurvey implements Schedule
         setName("BCS Enrollment Survey");
         setIdentifier("bcs-enrollment");
         
-        addDate("q1", "What is your birth date?");
+        addPastDate("q1", "What is your birth date?");
         addMulti("q2",
                 "What category below best describes your racial/ethnic background? If you are of mixed racial/ethnic background, choose the category with which you most closely identify.",
                 true,
@@ -67,7 +67,7 @@ public class BreastcancerEnrollmentSurvey extends BaseSurvey implements Schedule
         rules.add(new SurveyRule(Operator.ne, "true", "q17"));
         rules.add(new SurveyRule(Operator.de, null, "q17"));
 
-        addDate("q9", "What was the month and year of your initial breast cancer diagnosis (date of 1st cancer biopsy)?");
+        addPastDate("q9", "What was the month and year of your initial breast cancer diagnosis (date of 1st cancer biopsy)?");
         
         addMulti("q10", "In which breast(s) was your cancer diagnosed?", false, "Right", "Left", "Both");
 
@@ -82,7 +82,7 @@ public class BreastcancerEnrollmentSurvey extends BaseSurvey implements Schedule
         rules.add(new SurveyRule(Operator.ne, "true", "q13"));
         rules.add(new SurveyRule(Operator.de, null, "q13"));
         
-        addDate("q12a", "When did you last have chemotherapy?");
+        addPastDate("q12a", "When did you last have chemotherapy?");
         addMulti("q12b", "What kind of chemotherapy treatment did you have?",
         		true,
                 "TC (Taxotere and Cytoxan)",
@@ -105,7 +105,7 @@ public class BreastcancerEnrollmentSurvey extends BaseSurvey implements Schedule
         rules.add(new SurveyRule(Operator.ne, "true", "q15"));
         rules.add(new SurveyRule(Operator.de, null, "q15"));
         
-        addDate("q14a", "When did you last have radiation?");
+        addPastDate("q14a", "When did you last have radiation?");
         
         addMulti("q15", "Are you receiving endocrine therapy for breast cancer (tamoxifen, ovarian suppression, Femara (letrozole), Anastrozole (arimidex), Aromasin (exemestane) now?",
                 false, "Yes", "No", "Don't know");
@@ -114,7 +114,7 @@ public class BreastcancerEnrollmentSurvey extends BaseSurvey implements Schedule
         rules.add(new SurveyRule(Operator.ne, "true", "q17"));
         rules.add(new SurveyRule(Operator.de, null, "q17"));
         
-        addDate("q16a", "When did you last have hormone replacement therapy?");
+        addPastDate("q16a", "When did you last have hormone replacement therapy?");
         
         addList("q17",
                 "Do you currently have any of the following conditions?",

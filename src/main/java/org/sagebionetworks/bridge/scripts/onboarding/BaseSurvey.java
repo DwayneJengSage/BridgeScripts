@@ -11,6 +11,7 @@ import org.sagebionetworks.bridge.sdk.models.surveys.MultiValueConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestion;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
+import org.sagebionetworks.bridge.sdk.models.surveys.TimeConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.UiHint;
 
 import com.google.common.collect.Lists;
@@ -41,10 +42,24 @@ public class BaseSurvey extends Survey {
         q.setConstraints(new DateConstraints());
         return q;
     }
+    protected SurveyQuestion addPastDate(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt);
+        q.setUiHint(UiHint.DATEPICKER);
+        DateConstraints c = new DateConstraints();
+        c.setAllowFuture(false);
+        q.setConstraints(c);
+        return q;
+    }
     protected SurveyQuestion addDateTime(String identifier, String prompt) {
         SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.DATETIMEPICKER);
         q.setConstraints(new DateTimeConstraints());
+        return q;
+    }
+    protected SurveyQuestion addTime(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt);
+        q.setUiHint(UiHint.TIMEPICKER);
+        q.setConstraints(new TimeConstraints());
         return q;
     }
     protected SurveyQuestion addMulti(String identifier, String prompt, boolean allowOther, SurveyQuestionOption... options) {

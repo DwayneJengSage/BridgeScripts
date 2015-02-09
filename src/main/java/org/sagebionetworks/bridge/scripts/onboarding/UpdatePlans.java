@@ -8,7 +8,7 @@ public class UpdatePlans extends BaseSignIn {
 
     public static void main(String[] args) {
         String host = "https://parkinson-staging.sagebridge.org";
-        Session session = signIn(host);
+        Session session = signIn(host, "parkinson");
         
         ResearcherClient client = session.getResearcherClient();
         
