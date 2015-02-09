@@ -7,7 +7,6 @@ import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
 import org.sagebionetworks.bridge.sdk.models.surveys.IntegerConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestion;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
-import org.sagebionetworks.bridge.sdk.models.surveys.TimeConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.UiHint;
 
 public class BreastcancerMonthlySurvey extends BaseSurvey implements ScheduleHolder {
@@ -90,7 +89,7 @@ public class BreastcancerMonthlySurvey extends BaseSurvey implements ScheduleHol
         addMulti("q29e","Over the last TWO WEEKS how often have you had poor appetite or overeating?",false,options2);
         addMulti("q29f","Over the last TWO WEEKS how often have felt bad about yourself – or felt that you are a failure or have let yourself or your family down?",false,options2);
         addMulti("q29g","Over the last TWO WEEKS how often have you had trouble concentrating on things, such as reading the newspaper or watching television?",false,options2);
-        addMulti("q29h","Over the last TWO WEEKS how often have moved or spoke so slowly that other people could have noticed? Or the opposite – been so fidgety or restless that you have been moving around a lot more than usual?",false,options2);
+        addMulti("q29h","Over the last TWO WEEKS how often have you moved or spoke so slowly that other people could have noticed? Or the opposite – been so fidgety or restless that you have been moving around a lot more than usual?",false,options2);
         
         addMulti("q30a","Over the last TWO WEEKS how often have you felt nervous, anxious, or on edge?",false,options2);
         addMulti("q30b","Over the last TWO WEEKS how often have you not been able to stop or control worrying?",false,options2);
@@ -100,7 +99,7 @@ public class BreastcancerMonthlySurvey extends BaseSurvey implements ScheduleHol
         addMulti("q30f","Over the last TWO WEEKS how often have you become easily annoyed or irritable?",false,options2);
         addMulti("q30g","Over the last TWO WEEKS how often have you felt afraid as if something awful might happen?",false,options2);
         
-        addDateTime("q31", "What time have you usually gone to bed?");
+        addTime("q31", "What time have you usually gone to bed?");
         
         SurveyQuestion q = new SurveyQuestion();
         q.setIdentifier("q32");
@@ -113,13 +112,16 @@ public class BreastcancerMonthlySurvey extends BaseSurvey implements ScheduleHol
         q.setConstraints(c);
         getElements().add(q);
         
-        addDateTime("q33", "When have you usually gotten up in the morning?");
+        addTime("q33", "When have you usually gotten up in the morning?");
         
         q = new SurveyQuestion();
         q.setIdentifier("q34");
         q.setPrompt("How many hours of actual sleep did you get at night? (This may be different than the number of hours you spend in bed)?");
-        q.setUiHint(UiHint.TIMEPICKER);
-        q.setConstraints(new TimeConstraints());
+        q.setUiHint(UiHint.SLIDER);
+        IntegerConstraints ic = new IntegerConstraints();
+        ic.setMinValue(0d);
+        ic.setMaxValue(12d);
+        q.setConstraints(ic);
         getElements().add(q);
         
         addMulti("q35a", "During the PAST MONTH, how often could you not get to sleep within 30 minutes?", false, options3);

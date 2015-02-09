@@ -3,6 +3,7 @@ package org.sagebionetworks.bridge.scripts.misc;
 import org.joda.time.DateTime;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.UserClient;
 import org.sagebionetworks.bridge.sdk.models.ResourceList;
@@ -16,7 +17,7 @@ public class Exploratory {
 
     public static void main(String[] args) {
         Config config = ClientProvider.getConfig();
-        config.set(Config.Props.HOST, "https://api-develop.sagebridge.org");
+        config.set(Environment.DEV);
         Session session = ClientProvider.signIn(config.getAdminCredentials());
         
         UserClient client = session.getUserClient();

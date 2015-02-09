@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.joda.time.LocalDate;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.exceptions.ConsentRequiredException;
 import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
@@ -40,7 +41,7 @@ public class PerfRunner {
         Session session = null;
 
         Config config = ClientProvider.getConfig();
-        config.set(Config.Props.HOST, "https://parkinson-develop.sagebridge.org");
+        config.set(Environment.DEV);
 
         SignInCredentials credentials = config.getAdminCredentials();
         try {

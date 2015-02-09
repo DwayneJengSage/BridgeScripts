@@ -35,7 +35,7 @@ public class ScriptUtils {
         checkNotNull(guid);
         
         Config config = ClientProvider.getConfig();
-        String url = config.getHost() + config.getRecentlyPublishedSurveyUserApi(guid);
+        String url = config.getEnvironment().getUrl() + config.getRecentlyPublishedSurveyUserApi(guid);
         schedule.addActivity(new Activity("Take survey", url));
     }
     

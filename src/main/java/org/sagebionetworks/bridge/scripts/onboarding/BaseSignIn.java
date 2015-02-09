@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.Config.Props;
+import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.exceptions.ConsentRequiredException;
 import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
@@ -11,14 +12,14 @@ import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
 public class BaseSignIn {
 
-    protected static Session signIn(String url) {
-        return signIn(ClientProvider.getConfig().getAdminCredentials(), url);
+    protected static Session signIn(String url, String studyIdentifier) {
+        return signIn(ClientProvider.getConfig().getAdminCredentials(), Environment.DEV, studyIdentifier);
     }
     
-    protected static Session signIn(SignInCredentials credentials, String url) {
+    protected static Session signIn(SignInCredentials credentials, Environment env, String studyIdentifier) {
         Config config = ClientProvider.getConfig();
-        config.set(Props.HOST, url);
-        
+        config.set(env);
+        config.set(Props.STUDY_IDENTIFIER, studyIdentifier);
         Session session = null;
         try {
             session = ClientProvider.signIn(credentials);
