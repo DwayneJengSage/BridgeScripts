@@ -1,5 +1,6 @@
 package org.sagebionetworks.bridge.scripts.onboarding;
 
+import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.ResearcherClient;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -7,8 +8,7 @@ import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
 public class UpdatePlans extends BaseSignIn {
 
     public static void main(String[] args) {
-        String host = "https://parkinson-staging.sagebridge.org";
-        Session session = signIn(host, "parkinson");
+        Session session = signIn(Environment.DEV, "parkinson");
         
         ResearcherClient client = session.getResearcherClient();
         

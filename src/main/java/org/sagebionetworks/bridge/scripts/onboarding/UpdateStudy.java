@@ -1,5 +1,6 @@
 package org.sagebionetworks.bridge.scripts.onboarding;
 
+import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.ResearcherClient;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.models.studies.Study;
@@ -7,7 +8,7 @@ import org.sagebionetworks.bridge.sdk.models.studies.Study;
 public class UpdateStudy extends BaseSignIn {
     public static void main(String[] args) {
         
-        Session session = signIn("https://webservices.sagebridge.org", "api");
+        Session session = signIn(Environment.DEV, "api");
         
         ResearcherClient client = session.getResearcherClient();
         

@@ -12,43 +12,43 @@ public class UpdateSurveys {
     
     public static void main(String[] args) throws Exception {
         Config config = ClientProvider.getConfig();
-        config.set(Environment.PROD);
+        config.set(Environment.PRODUCTION);
         config.set(Props.STUDY_IDENTIFIER, "parkinson");
         Session session = ClientProvider.signIn(config.getAdminCredentials());
         ResearcherClient client = session.getResearcherClient();
         
-        Survey enrollment = new ParkinsonEnrollmentSurvey();
+        Survey enrollment = ParkinsonEnrollmentSurvey.create();
         Survey survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("parkinson-enrollment");
         enrollment.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(enrollment, true);
         
-        Survey monthly = new ParkinsonMonthlySurvey();
+        Survey monthly = ParkinsonMonthlySurvey.create();
         survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("parkinson-monthly");
         monthly.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(monthly, true);
         
-        Survey weekly = new ParkinsonWeeklySurvey();
+        Survey weekly = ParkinsonWeeklySurvey.create();
         survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("parkinson-weekly");
         weekly.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(weekly, true);
         
         session.signOut();
-        config.set(Environment.PROD);
+        config.set(Environment.PRODUCTION);
         config.set(Props.STUDY_IDENTIFIER, "breastcancer");
         session = ClientProvider.signIn(config.getAdminCredentials());
         client = session.getResearcherClient();
         
-        enrollment = new BreastcancerEnrollmentSurvey();
+        enrollment = BreastcancerEnrollmentSurvey.create();
         survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("bcs-enrollment");
         enrollment.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(enrollment, true);
         
-        monthly = new BreastcancerMonthlySurvey();
+        monthly = BreastcancerMonthlySurvey.create();
         survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("bcs-monthly");
         monthly.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(monthly, true);
         
-        weekly = new BreastcancerWeeklySurvey();
+        weekly = BreastcancerWeeklySurvey.create();
         survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("bcs-weekly");
         weekly.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(weekly, true);

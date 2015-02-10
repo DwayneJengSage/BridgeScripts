@@ -12,8 +12,8 @@ import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
 public class BaseSignIn {
 
-    protected static Session signIn(String url, String studyIdentifier) {
-        return signIn(ClientProvider.getConfig().getAdminCredentials(), Environment.DEV, studyIdentifier);
+    protected static Session signIn(Environment env, String studyIdentifier) {
+        return signIn(ClientProvider.getConfig().getAdminCredentials(), env, studyIdentifier);
     }
     
     protected static Session signIn(SignInCredentials credentials, Environment env, String studyIdentifier) {

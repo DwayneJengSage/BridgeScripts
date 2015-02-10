@@ -14,9 +14,9 @@ import org.sagebionetworks.bridge.sdk.models.surveys.UiHint;
 
 import com.google.common.collect.Lists;
 
-public class ParkinsonMonthlySurvey extends Survey implements ScheduleHolder {
+public class ParkinsonMonthlySurvey {
     
-    private void addTableQuestion(String identifier, String prompt) {
+    private static void addTableQuestion(Survey survey, String identifier, String prompt) {
         SurveyQuestion q = new SurveyQuestion();
         q.setIdentifier(identifier);
         q.setPrompt(prompt);
@@ -30,11 +30,11 @@ public class ParkinsonMonthlySurvey extends Survey implements ScheduleHolder {
             new SurveyQuestionOption("Always")
         ));
         q.setConstraints(c);
-        getElements().add(q);
+        survey.getElements().add(q);
     }
     
-    SurveyQuestion medicationsChange = new SurveyQuestion(); 
-    {
+    public static Survey create() {
+        SurveyQuestion medicationsChange = new SurveyQuestion(); 
         medicationsChange.setIdentifier("medications-change");
         medicationsChange.setPrompt("Did your medications for Parkinson disease change in the previous month?");
         medicationsChange.setUiHint(UiHint.RADIOBUTTON);
@@ -43,17 +43,15 @@ public class ParkinsonMonthlySurvey extends Survey implements ScheduleHolder {
         c.getRules().add(new SurveyRule(Operator.ne, "true", "moving"));
         c.getRules().add(new SurveyRule(Operator.de, null, "moving"));
         medicationsChange.setConstraints(c);
-    };
     
-    SurveyQuestion medications = new SurveyQuestion(); 
-    {
+        SurveyQuestion medications = new SurveyQuestion(); 
         medications.setIdentifier("medications");
         medications.setPrompt("What medication(s) are you currently using to manage Parkinson disease?");
         medications.setUiHint(UiHint.LIST);
-        MultiValueConstraints c = new MultiValueConstraints();
-        c.setAllowMultiple(true);
-        c.setAllowOther(true);
-        c.setEnumeration(Lists.newArrayList(
+        MultiValueConstraints mvc = new MultiValueConstraints();
+        mvc.setAllowMultiple(true);
+        mvc.setAllowOther(true);
+        mvc.setEnumeration(Lists.newArrayList(
             new SurveyQuestionOption("Amantadine (Symmetrel)"),
             new SurveyQuestionOption("Apomorphine (Apokyn)"),
             new SurveyQuestionOption("Benztropine (Cogentin)"),
@@ -73,25 +71,24 @@ public class ParkinsonMonthlySurvey extends Survey implements ScheduleHolder {
             new SurveyQuestionOption("None"),
             new SurveyQuestionOption("N/A")
         ));
-        medications.setConstraints(c);
-    };
-    
-    public ParkinsonMonthlySurvey() {
-        setName("Parkinson Monthly Survey");
-        setIdentifier("parkinson-monthly");
-        getElements().add(medicationsChange);
-        getElements().add(medications);
-        addTableQuestion("moving","During the last month have you had difficulty getting around in public?");
-        addTableQuestion("dressing","During the last month have you had difficulty dressing yourself?");
-        addTableQuestion("depressed","During the last month have you felt depressed?");
-        addTableQuestion("personal-relationships","During the last month have you had problems with your close personal relationships?");
-        addTableQuestion("concentration","During the last month have you had problems with your concentration, e.g. when reading or watching TV?");
-        addTableQuestion("communication","During the last month have you felt unable to communicate with people properly?");
-        addTableQuestion("spasms","During the last month have you had painful muscle cramps or spasms?");
-        addTableQuestion("public-embarrassment","During the last month have you felt embarrassed in public due to having Parkinson's disease?");
+        medications.setConstraints(mvc);
+        
+        Survey survey = new Survey();
+        survey.setName("Parkinson Monthly Survey");
+        survey.setIdentifier("parkinson-monthly");
+        survey.getElements().add(medicationsChange);
+        survey.getElements().add(medications);
+        addTableQuestion(survey, "moving","During the last month have you had difficulty getting around in public?");
+        addTableQuestion(survey, "dressing","During the last month have you had difficulty dressing yourself?");
+        addTableQuestion(survey, "depressed","During the last month have you felt depressed?");
+        addTableQuestion(survey, "personal-relationships","During the last month have you had problems with your close personal relationships?");
+        addTableQuestion(survey, "concentration","During the last month have you had problems with your concentration, e.g. when reading or watching TV?");
+        addTableQuestion(survey, "communication","During the last month have you felt unable to communicate with people properly?");
+        addTableQuestion(survey, "spasms","During the last month have you had painful muscle cramps or spasms?");
+        addTableQuestion(survey, "public-embarrassment","During the last month have you felt embarrassed in public due to having Parkinson's disease?");
+        return survey;
     }
-
-	@Override
+    
 	public Schedule getSchedule(GuidCreatedOnVersionHolder survey) {
         Schedule schedule = new Schedule();
         schedule.setLabel("Monthly Survey");

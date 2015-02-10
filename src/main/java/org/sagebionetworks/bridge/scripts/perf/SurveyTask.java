@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.sagebionetworks.bridge.scripts.onboarding.ParkinsonEnrollmentSurvey;
-import org.sagebionetworks.bridge.scripts.onboarding.ScheduleHolder;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.models.ResourceList;
 import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;
@@ -47,14 +46,14 @@ public class SurveyTask extends PerfTask {
     }
     
     private void createASurveySchedulePlan() {
-        Survey survey = new ParkinsonEnrollmentSurvey();
+        Survey survey = ParkinsonEnrollmentSurvey.create();
         GuidCreatedOnVersionHolder keys = researcherClient.createSurvey(survey);
         survey.setGuidCreatedOnVersionHolder(keys);
         researcherClient.publishSurvey(keys);
 
-        ScheduleHolder holder = (ScheduleHolder) survey;
+        Schedule schedule = ParkinsonEnrollmentSurvey.getSchedule(survey);
         SchedulePlan sp = new SchedulePlan();
-        sp.setSchedule(holder.getSchedule(survey));
+        sp.setSchedule(schedule);
         researcherClient.createSchedulePlan(sp);
     }
 
