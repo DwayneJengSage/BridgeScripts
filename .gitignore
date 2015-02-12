@@ -1,5 +1,8 @@
 target
 .classpath
+.DS_Store
+.idea
+*.iml
 .project
 .settings/
 params.csv
