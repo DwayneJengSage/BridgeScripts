@@ -3,19 +3,24 @@ package org.sagebionetworks.bridge.scripts.onboarding;
 import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.ResearcherClient;
 import org.sagebionetworks.bridge.sdk.Session;
-import org.sagebionetworks.bridge.sdk.models.studies.Study;
+import org.sagebionetworks.bridge.sdk.models.ResourceList;
+import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
+import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
+import org.sagebionetworks.bridge.sdk.models.schedules.SimpleScheduleStrategy;
+import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 
 public class UpdateStudy extends BaseSignIn {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         
-        Session session = signIn(Environment.DEV, "api");
+        Session session = signIn(Environment.STAGING, "parkinson");
         
         ResearcherClient client = session.getResearcherClient();
         
-        Study study = client.getStudy();
-        study.setSupportEmail(null);
-        study.setConsentNotificationEmail("bridge-testing+consent@sagebridge.org");
-        client.updateStudy(study);
-        //System.out.println(study);
+        ResourceList<SchedulePlan> plans = client.getSchedulePlans();
+        for (SchedulePlan plan : plans) {
+            Schedule schedule = ((SimpleScheduleStrategy)plan.getStrategy()).getSchedule();
+            SurveyReference ref = schedule.getActivities().get(0).getSurvey();
+            client.getSurveyMostRecentlyPublishedVersion(ref.getGuid());
+        }
     }
 }

@@ -1,67 +1,37 @@
 package org.sagebionetworks.bridge.scripts.onboarding;
 
-import org.sagebionetworks.bridge.sdk.AdminClient;
-import org.sagebionetworks.bridge.sdk.ClientProvider;
-import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.Environment;
+import org.sagebionetworks.bridge.sdk.ResearcherClient;
 import org.sagebionetworks.bridge.sdk.Session;
-import org.sagebionetworks.bridge.sdk.models.studies.Study;
+import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
+import org.sagebionetworks.bridge.sdk.models.schedules.SimpleScheduleStrategy;
 
-public class CreateStudy {
+public class CreateStudy extends BaseSignIn {
 
     public static void main(String[] args) {
-        Config config = ClientProvider.getConfig();
-        config.set(Environment.LOCAL);
-        Session session = ClientProvider.signIn(config.getAdminCredentials());
         
-        AdminClient client = session.getAdminClient();
-        Study study = client.getStudy("api");
-        study.setSupportEmail("alxdark+support@gmail.com");
-        study.setConsentNotificationEmail("alxdark+consent@gmail.com");
-        client.updateStudy(study);
-        
-        /*
-        Study study = new Study();
-        study.setName("Share The Journey");
-        study.setIdentifier("breastcancer");
-        client.createStudy(study);
+        Session session = signIn(Environment.LOCAL, "parkinson");
+        ResearcherClient client = session.getResearcherClient();
 
-        study = new Study();
-        study.setName("Asthma Study");
-        study.setIdentifier("asthma");
-        client.createStudy(study);
-        
-        study = new Study();
-        study.setName("My Heart Counts");
-        study.setIdentifier("cardiovascular");
-        client.createStudy(study);
-        
-        study = new Study();
-        study.setIdentifier("diabetes");
-        study.setName("Diabetes Study");
-        client.createStudy(study);
-        
-        // YOU MUST REPLACE THE VALUES BELOW EACH TIME YOU RUN THIS!
-        
-        config.set(Config.Props.ADMIN_STUDIES_API, "/admin/v2/studies");
-        study = new Study();
-        study.setName("Test Study");
-        study.setIdentifier("api");
-        study.getTrackers().add("pb-tracker");
-        study.getTrackers().add("med-tracker");
-        study.setHostname("api.sagebridge.org");
-        study.setResearcherRole("api_researcher");
-        study.setStormpathHref("https://api.stormpath.com/v1/directories/4Jb1NU1Y02Kj90AmQNvwOk");
-        client.createStudy(study);
-        
-        study = new Study();
-        study.setName("Parkinson's Disease Mobile Study");
-        study.setIdentifier("pd");
-        study.setHostname("pd.sagebridge.org");
-        study.setResearcherRole("pd_researcher");
-        study.setStormpathHref("https://api.stormpath.com/v1/directories/ojPkm9y0sxo8lH8PuZrId");
-        client.createStudy(study);
-        */
+        for (SchedulePlan plan : client.getSchedulePlans()) {
+            if (plan.getStrategy() instanceof SimpleScheduleStrategy) {
+                System.out.println(plan);
+                /*
+                SimpleScheduleStrategy strategy = (SimpleScheduleStrategy)plan.getStrategy();
+                Activity activity = strategy.getSchedule().getActivities().get(0);
+                if (activity.getLabel().equals("Test Survey")) {
+                    client.deleteSchedulePlan(plan.getGuid());
+                }*/
+                
+            }
+        }
+        /*
+        for (Survey survey : client.getAllSurveysMostRecentlyPublishedVersion()) {
+            if (survey.getIdentifier().equals("type-test")) {
+                client.closeSurvey(survey);
+                client.deleteSurvey(survey);
+            }
+        }*/
     }
     
 }

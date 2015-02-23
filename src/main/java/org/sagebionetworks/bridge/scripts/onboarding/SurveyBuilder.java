@@ -18,80 +18,92 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyRule.Operator;
 
 import com.google.common.collect.Lists;
 
-public class SurveyUtils {
-    private static SurveyQuestion add(Survey survey, String identifier, String prompt) {
+public class SurveyBuilder {
+
+    private final Survey survey;
+    
+    public SurveyBuilder(Survey survey) {
+        this.survey = survey;
+    }
+    
+    public Survey build() {
+        return survey;
+    }
+    
+    private SurveyQuestion add(String identifier, String prompt) {
         SurveyQuestion q = new SurveyQuestion();
         q.setIdentifier(identifier);
         q.setPrompt(prompt);
         survey.getElements().add(q);
         return q;
     }
-    protected static SurveyQuestion addSlider(Survey survey, String identifier, String prompt) {
-        return addSlider(survey, identifier, prompt, 10L);
+    protected SurveyBuilder addSlider(String identifier, String prompt) {
+        addSlider(identifier, prompt, 10L);
+        return this;
     }
-    protected static SurveyQuestion addSlider(Survey survey, String identifier, String prompt, double min, double max) {
-        SurveyQuestion q = add(survey, identifier, prompt);
+    protected SurveyBuilder addSlider(String identifier, String prompt, double min, double max) {
+        SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.SLIDER);
         IntegerConstraints c = new IntegerConstraints();
         c.setMinValue(min);
         c.setMaxValue(max);
         q.setConstraints(c);
-        return q;
+        return this;
     }
-    protected static SurveyQuestion addSlider(Survey survey, String identifier, String prompt, double max) {
-        SurveyQuestion q = add(survey, identifier, prompt);
+    protected SurveyBuilder addSlider(String identifier, String prompt, double max) {
+        SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.SLIDER);
         IntegerConstraints c = new IntegerConstraints();
         c.setMinValue(0d);
         c.setMaxValue(max);
         q.setConstraints(c);
-        return q;
+        return this;
     }
-    protected static SurveyQuestion addDate(Survey survey, String identifier, String prompt) {
-        SurveyQuestion q = add(survey, identifier, prompt);
+    protected SurveyBuilder addDate(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.DATEPICKER);
         q.setConstraints(new DateConstraints());
-        return q;
+        return this;
     }
-    protected static SurveyQuestion addPastDate(Survey survey, String identifier, String prompt) {
-        SurveyQuestion q = add(survey, identifier, prompt);
+    protected SurveyBuilder addPastDate(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.DATEPICKER);
         DateConstraints c = new DateConstraints();
         c.setAllowFuture(false);
         q.setConstraints(c);
-        return q;
+        return this;
     }
-    protected static SurveyQuestion addDateTime(Survey survey, String identifier, String prompt) {
-        SurveyQuestion q = add(survey, identifier, prompt);
+    protected SurveyBuilder addDateTime(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.DATETIMEPICKER);
         q.setConstraints(new DateTimeConstraints());
-        return q;
+        return this;
     }
-    protected static SurveyQuestion addTime(Survey survey, String identifier, String prompt) {
-        SurveyQuestion q = add(survey, identifier, prompt);
+    protected SurveyBuilder addTime(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.TIMEPICKER);
         q.setConstraints(new TimeConstraints());
-        return q;
+        return this;
     }
-    protected static SurveyQuestion addMulti(Survey survey, String identifier, String prompt, boolean allowOther, SurveyQuestionOption... options) {
-        SurveyQuestion q = add(survey, identifier, prompt);
+    protected SurveyBuilder addMulti(String identifier, String prompt, boolean allowOther, SurveyQuestionOption... options) {
+        SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setAllowOther(allowOther);
         List<SurveyQuestionOption> list = Arrays.asList(options);
         c.setEnumeration(list);
         q.setConstraints(c);
-        return q;
+        return this;
     }
-    protected static SurveyQuestion addMulti(Survey survey, String identifier, String prompt, boolean allowOther, String... options) {
+    protected SurveyBuilder addMulti(String identifier, String prompt, boolean allowOther, String... options) {
         SurveyQuestionOption[] opts = new SurveyQuestionOption[options.length];
         for (int i=0; i < options.length; i++) {
             opts[i] = new SurveyQuestionOption(options[i]);
         }
-        return addMulti(survey, identifier, prompt, allowOther, opts);
+        return addMulti(identifier, prompt, allowOther, opts);
     }
-    protected static SurveyQuestion addList(Survey survey, String identifier, String prompt, String... options) {
-        SurveyQuestion q = add(survey, identifier, prompt);
+    protected SurveyBuilder addList(String identifier, String prompt, String... options) {
+        SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.LIST);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         List<SurveyQuestionOption> list = Lists.newArrayList();
@@ -103,11 +115,11 @@ public class SurveyUtils {
         c.setEnumeration(list);
         c.setAllowMultiple(true);
         q.setConstraints(c);
-        return q;
+        return this;
     }
-    protected static SurveyQuestion addListOne(Survey survey, String identifier, String prompt, String... options) {
-        SurveyQuestion q = add(survey, identifier, prompt);
-        q.setUiHint(UiHint.LIST);
+    protected SurveyBuilder addOneFromList(String identifier, String prompt, String... options) {
+        SurveyQuestion q = add(identifier, prompt);
+        q.setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         List<SurveyQuestionOption> list = Lists.newArrayList();
         for (int i=0; i < options.length; i++) {
@@ -118,20 +130,22 @@ public class SurveyUtils {
         c.setEnumeration(list);
         c.setAllowMultiple(false);
         q.setConstraints(c);
-        return q;
+        return this;
     }
     
-    protected static SurveyQuestion addYesNo(Survey survey, String identifier, String prompt) {
-        SurveyQuestion q = add(survey, identifier, prompt);
+    protected SurveyBuilder addYesNo(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt);
         q.setUiHint(UiHint.RADIOBUTTON);
         q.setConstraints(ScriptUtils.booleanish());
-        return q;
+        return this;
     }
     
-    protected static SurveyQuestion addBranch(SurveyQuestion question, String value, String noIdentifier) {
+    protected SurveyBuilder onNoSkipTo(String noIdentifier) {
+        SurveyQuestion question = (SurveyQuestion)survey.getElements().get(survey.getElements().size()-1);
         List<SurveyRule> rules = question.getConstraints().getRules();
-        rules.add(new SurveyRule(Operator.ne, value, noIdentifier));
-        rules.add(new SurveyRule(Operator.de, value, noIdentifier));
-        return question;
+        rules.add(new SurveyRule(Operator.ne, "true", noIdentifier));
+        rules.add(new SurveyRule(Operator.de, "true", noIdentifier));
+        return this;
     }
+    
 }

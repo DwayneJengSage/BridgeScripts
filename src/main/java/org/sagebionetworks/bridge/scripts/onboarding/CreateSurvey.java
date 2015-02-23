@@ -9,7 +9,6 @@ import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.ResearcherClient;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;
-import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
 import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
@@ -78,7 +77,7 @@ public class CreateSurvey extends BaseSignIn {
     private static EnumSet<UiHint> dontAllowMultiples = EnumSet.of(UiHint.SLIDER, UiHint.SELECT, UiHint.RADIOBUTTON, UiHint.COMBOBOX);
     
     public static void main(String[] args) throws Exception {
-        Session session = signIn(Environment.STAGING, "parkinson");
+        Session session = signIn(Environment.LOCAL, "parkinson");
         ResearcherClient client = session.getResearcherClient();
 
         Survey survey = new Survey();
@@ -108,13 +107,13 @@ public class CreateSurvey extends BaseSignIn {
         survey.setGuidCreatedOnVersionHolder(keys);
         keys = client.publishSurvey(survey);
 
-        SurveyReference ref = new SurveyReference(keys.getGuid(), null); 
+        //SurveyReference ref = new SurveyReference(keys.getGuid()); 
         Schedule schedule = new Schedule();
         schedule.setLabel("Schedule for Test Survey");
         schedule.setCronTrigger("0 0 7 1/1 * ? *");
         schedule.setExpires(Period.parse("PT12H"));
         schedule.setScheduleType(ScheduleType.recurring);
-        schedule.getActivities().add(new Activity("Test Survey", ref));
+        // schedule.getActivities().add(new Activity("Test Survey", ref));
         
         SchedulePlan plan = new SchedulePlan();
         plan.setSchedule(schedule);
