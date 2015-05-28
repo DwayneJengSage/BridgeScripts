@@ -12,6 +12,7 @@ import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.exceptions.ConsentRequiredException;
 import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
+import org.sagebionetworks.bridge.sdk.models.users.SharingScope;
 import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
 import com.google.common.collect.Lists;
@@ -49,7 +50,7 @@ public class PerfRunner {
         } catch(ConsentRequiredException e) {
             session = e.getSession();
             LocalDate birthdate = LocalDate.parse("1968-05-12");
-            session.getUserClient().consentToResearch(new ConsentSignature("Alx Dark", birthdate, null, null));
+            session.getUserClient().consentToResearch(new ConsentSignature("Alx Dark", birthdate, null, null), SharingScope.NO_SHARING);
         }
         return session;
     }

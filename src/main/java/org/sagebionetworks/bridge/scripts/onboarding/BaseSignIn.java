@@ -8,6 +8,7 @@ import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.exceptions.ConsentRequiredException;
 import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
+import org.sagebionetworks.bridge.sdk.models.users.SharingScope;
 import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
 public class BaseSignIn {
@@ -25,7 +26,9 @@ public class BaseSignIn {
             session = ClientProvider.signIn(credentials);
         } catch(ConsentRequiredException e) {
             session = e.getSession();
-            session.getUserClient().consentToResearch(new ConsentSignature("[Test User]", LocalDate.parse("1970-12-30"), null, null));
+            session.getUserClient().consentToResearch(
+                            new ConsentSignature("[Test User]", LocalDate.parse("1970-12-30"), null, null),
+                            SharingScope.NO_SHARING);
         }
         return session;
     }

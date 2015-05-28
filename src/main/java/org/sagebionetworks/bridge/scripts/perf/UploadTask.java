@@ -16,17 +16,22 @@ public class UploadTask extends PerfTask {
     
     // TODO: This is a tiny file, what about something bigger?
     String filePath = "src/main/resources/test.json";
-    UploadRequest request = new UploadRequest()
-        .setContentLength((int) new File(filePath).length())
-        .setContentMd5(createMd5(filePath))
-        .setContentType("text/plain")
-        .setName(filePath);
 
     public UploadTask(Session session) {
         super(session);
     }
     
     public void command() {
+        UploadRequest request = null;
+        try {
+            request = new UploadRequest.Builder()
+                .withFile(new File(filePath))
+                .withContentMd5(createMd5(filePath))
+                .withContentType("text/plain")
+                .withName(filePath).build();
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        }
         UploadSession session = client.requestUploadSession(request);
         client.upload(session, request, filePath);
     }

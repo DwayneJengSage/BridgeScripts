@@ -12,44 +12,44 @@ public class UpdateSurveys {
     
     public static void main(String[] args) throws Exception {
         Config config = ClientProvider.getConfig();
-        config.set(Environment.PROD);
+        config.set(Environment.PRODUCTION);
         config.set(Props.STUDY_IDENTIFIER, "parkinson");
         Session session = ClientProvider.signIn(config.getAdminCredentials());
         ResearcherClient client = session.getResearcherClient();
         
-        Survey enrollment = new ParkinsonEnrollmentSurvey();
-        Survey survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("parkinson-enrollment");
+        Survey enrollment = ParkinsonEnrollmentSurvey.create();
+        Survey survey = client.getSurveyMostRecentlyPublishedByIdentifier("parkinson-enrollment");
         enrollment.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(enrollment, true);
         
-        Survey monthly = new ParkinsonMonthlySurvey();
-        survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("parkinson-monthly");
+        Survey monthly = ParkinsonMonthlySurvey.create();
+        survey = client.getSurveyMostRecentlyPublishedByIdentifier("parkinson-monthly");
         monthly.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(monthly, true);
         
-        Survey weekly = new ParkinsonWeeklySurvey();
-        survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("parkinson-weekly");
+        Survey weekly = ParkinsonWeeklySurvey.create();
+        survey = client.getSurveyMostRecentlyPublishedByIdentifier("parkinson-weekly");
         weekly.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(weekly, true);
         
         session.signOut();
-        config.set(Environment.PROD);
+        config.set(Environment.PRODUCTION);
         config.set(Props.STUDY_IDENTIFIER, "breastcancer");
         session = ClientProvider.signIn(config.getAdminCredentials());
         client = session.getResearcherClient();
         
-        enrollment = new BreastcancerEnrollmentSurvey();
-        survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("bcs-enrollment");
+        enrollment = BreastcancerEnrollmentSurvey.create();
+        survey = client.getSurveyMostRecentlyPublishedByIdentifier("bcs-enrollment");
         enrollment.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(enrollment, true);
         
-        monthly = new BreastcancerMonthlySurvey();
-        survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("bcs-monthly");
+        monthly = BreastcancerMonthlySurvey.create();
+        survey = client.getSurveyMostRecentlyPublishedByIdentifier("bcs-monthly");
         monthly.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(monthly, true);
         
-        weekly = new BreastcancerWeeklySurvey();
-        survey = client.getSurveyMostRecentlyPublishedVersionByIdentifier("bcs-weekly");
+        weekly = BreastcancerWeeklySurvey.create();
+        survey = client.getSurveyMostRecentlyPublishedByIdentifier("bcs-weekly");
         weekly.setGuidCreatedOnVersionHolder(survey);
         client.versionUpdateAndPublishSurvey(weekly, true);
         session.signOut();
