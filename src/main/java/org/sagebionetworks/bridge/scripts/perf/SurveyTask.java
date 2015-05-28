@@ -3,7 +3,7 @@ package org.sagebionetworks.bridge.scripts.perf;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.sagebionetworks.bridge.scripts.onboarding.ParkinsonEnrollmentSurvey;
+import org.sagebionetworks.bridge.scripts.parkinson.ParkinsonEnrollmentSurvey;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.models.ResourceList;
 import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;

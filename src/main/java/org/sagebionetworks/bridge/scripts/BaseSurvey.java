@@ -1,4 +1,4 @@
-package org.sagebionetworks.bridge.scripts.onboarding;
+package org.sagebionetworks.bridge.scripts;
 
 import java.util.Arrays;
 import java.util.List;
@@ -97,7 +97,7 @@ public class BaseSurvey {
     protected static SurveyQuestion addYesNo(Survey survey, String identifier, String prompt) {
         SurveyQuestion q = add(survey, identifier, prompt);
         q.setUiHint(UiHint.RADIOBUTTON);
-        q.setConstraints(ScriptUtils.booleanish());
+        q.setConstraints(Scripts.booleanish());
         return q;
     }
 }
