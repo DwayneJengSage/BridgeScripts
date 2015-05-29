@@ -3,6 +3,13 @@ package org.sagebionetworks.bridge.scripts.breastcancer.monthly;
 import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.sdk.ClientProvider;
+import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
+import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
+import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
+import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
+import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
@@ -40,5 +47,26 @@ public class PHQ8GAD7Survey {
             .radio("GAD7-7", "Over the last TWO WEEKS how often have you felt afraid as if something awful might happen?", false, notAtAllToEveryDay)
             .build();
     }
+    
+    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+        SchedulePlan plan = new SchedulePlan();
+        plan.setLabel("PHQ8-GAD7 Survey Schedule Plan");
+        
+        Schedule schedule = new Schedule();
+        schedule.setLabel("PHQ8-GAD7 Survey Survey Schedule");
+        schedule.setScheduleType(ScheduleType.RECURRING);
+        schedule.setDelay("P1M");
+        schedule.setInterval("P1M");
+        schedule.setExpires("P21D");
+
+        Config config = ClientProvider.getConfig();
+        String url = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
+        SurveyReference reference = new SurveyReference(url);
+        Activity activity = new Activity("PHQ8-GAD7 Survey", reference);
+        schedule.addActivity(activity);
+        
+        plan.setSchedule(schedule);
+        return plan;
+    }     
 
 }

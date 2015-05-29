@@ -3,6 +3,13 @@ package org.sagebionetworks.bridge.scripts.breastcancer.enrollment;
 import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.sdk.ClientProvider;
+import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
+import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
+import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
+import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
+import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
@@ -46,4 +53,23 @@ public class BCPTSymptomsSurvey {
             .radio("q58t", "Have you had decreased range of motion in the arm on surgery side in the last week?", false, notAtAllToExtremely)
             .build();
     }
+    
+    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+        SchedulePlan plan = new SchedulePlan();
+        plan.setLabel("Symptoms Survey Schedule Plan");
+        
+        Schedule schedule = new Schedule();
+        schedule.setLabel("Symptoms Survey Schedule");
+        schedule.setDelay("P2D");
+        schedule.setScheduleType(ScheduleType.ONCE);
+
+        Config config = ClientProvider.getConfig();
+        String url = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
+        SurveyReference reference = new SurveyReference(url);
+        Activity activity = new Activity("Symptoms Survey", reference);
+        schedule.addActivity(activity);
+        
+        plan.setSchedule(schedule);
+        return plan;
+    }     
 }

@@ -3,6 +3,13 @@ package org.sagebionetworks.bridge.scripts.breastcancer.weekly;
 import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.sdk.ClientProvider;
+import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
+import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
+import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
+import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
+import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
@@ -61,6 +68,28 @@ public class WeeklySurvey {
             .number("GELTQ-1c", "Over the past week, how many times did you do the following kinds of exercise for more than 15 minutes? Minimal effort:")
             .radio("GELTQ-2", "During your leisure time in the past week, how often do you engage in any regular activity long enough to work up a sweat (heart beats rapidly)?", false, oftenToRarely)
             .build();
+    }
+    
+    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+        SchedulePlan plan = new SchedulePlan();
+        plan.setLabel("Weekly Survey Schedule Plan");
+        
+        Schedule schedule = new Schedule();
+        schedule.setLabel("Weekly Survey Schedule");
+        schedule.setScheduleType(ScheduleType.RECURRING);
+        schedule.setDelay("P1W");
+        schedule.setInterval("P1W");
+        schedule.setExpires("P6D");
+        schedule.addTimes("08:00");
+        
+        Config config = ClientProvider.getConfig();
+        String url = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
+        SurveyReference reference = new SurveyReference(url);
+        Activity activity = new Activity("Weekly Survey", reference);
+        schedule.addActivity(activity);
+        
+        plan.setSchedule(schedule);
+        return plan;
     }
     
 }

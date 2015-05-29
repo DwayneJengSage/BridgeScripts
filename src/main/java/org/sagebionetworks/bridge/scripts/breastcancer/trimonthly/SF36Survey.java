@@ -4,6 +4,13 @@ import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.scripts.enumerations.YesNoList;
+import org.sagebionetworks.bridge.sdk.ClientProvider;
+import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
+import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
+import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
+import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
+import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
@@ -111,6 +118,28 @@ public class SF36Survey {
             .radio("SF36-35", "I expect my health to get worse.", false, trueToFalse)
             .radio("SF36-36", "My health is excellent.", false, trueToFalse)
             .build();
+    }
+    
+    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+        SchedulePlan plan = new SchedulePlan();
+        plan.setLabel("SF36 Survey Schedule Plan");
+        
+        Schedule schedule = new Schedule();
+        schedule.setLabel("SF36 Survey Schedule");
+        schedule.setScheduleType(ScheduleType.RECURRING);
+        schedule.setDelay("P3M");
+        schedule.setInterval("P3M");
+        schedule.setExpires("P2M21D");
+        schedule.addTimes("08:00");
+        
+        Config config = ClientProvider.getConfig();
+        String url = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
+        SurveyReference reference = new SurveyReference(url);
+        Activity activity = new Activity("SF36 Survey", reference);
+        schedule.addActivity(activity);
+        
+        plan.setSchedule(schedule);
+        return plan;
     }
 
 }

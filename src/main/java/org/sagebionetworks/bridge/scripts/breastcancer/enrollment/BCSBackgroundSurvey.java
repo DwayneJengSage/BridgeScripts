@@ -3,6 +3,13 @@ package org.sagebionetworks.bridge.scripts.breastcancer.enrollment;
 import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.sdk.ClientProvider;
+import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
+import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
+import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
+import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
+import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
@@ -173,5 +180,22 @@ public class BCSBackgroundSurvey {
             .list("BCPTHealth12", "Do you currently have any of the following conditions?", true, conditions)
             .build();
     }
+    
+    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+        SchedulePlan plan = new SchedulePlan();
+        plan.setLabel("Background Survey Schedule Plan");
+        
+        Schedule schedule = new Schedule();
+        schedule.setLabel("Background Survey Schedule");
+        schedule.setScheduleType(ScheduleType.ONCE);
 
+        Config config = ClientProvider.getConfig();
+        String url = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
+        SurveyReference reference = new SurveyReference(url);
+        Activity activity = new Activity("Background Survey", reference);
+        schedule.addActivity(activity);
+
+        plan.setSchedule(schedule);
+        return plan;
+    }     
 }
