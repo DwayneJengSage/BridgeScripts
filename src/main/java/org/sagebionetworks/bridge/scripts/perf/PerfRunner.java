@@ -27,11 +27,6 @@ public class PerfRunner {
         System.out.println("------ RECORDING ------");
         Session session = signIn();
         List<PerfTask> tasks = Lists.newArrayListWithCapacity(1);
-        //for (int i=0; i < TASK_COUNT; i++) {
-            tasks.add(new SurveyTask(session));
-            //tasks.add(new HealthDataTask(session));
-            //tasks.add(new UploadTask(session));
-        //}
         executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
         executor.invokeAll(tasks);
         System.out.println("------ STOP RECORDING ------");

@@ -38,21 +38,21 @@ public class SurveyBuilder {
         survey.getElements().add(q);
         return q;
     }
-    public SurveyBuilder addMultilineText(String identifier, String prompt, String promptDetail) {
+    public SurveyBuilder multilineText(String identifier, String prompt, String promptDetail) {
         SurveyQuestion q = add(identifier, prompt, promptDetail);
         q.setUiHint(UiHint.MULTILINETEXT);
         q.setConstraints(new StringConstraints());
         return this;
     }
-    public SurveyBuilder addNumber(String identifier, String prompt, String promptDetail) {
-        SurveyQuestion q = add(identifier, prompt, promptDetail);
+    public SurveyBuilder number(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.NUMBERFIELD);
         IntegerConstraints c = new IntegerConstraints();
         q.setConstraints(c);
         return this;
     }
-    public SurveyBuilder addNumber(String identifier, String prompt, String promptDetail, double min, double max) {
-        SurveyQuestion q = add(identifier, prompt, promptDetail);
+    public SurveyBuilder number(String identifier, String prompt, double min, double max) {
+        SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.NUMBERFIELD);
         IntegerConstraints c = new IntegerConstraints();
         c.setMinValue(min);
@@ -60,8 +60,18 @@ public class SurveyBuilder {
         q.setConstraints(c);
         return this;
     }
-    public SurveyBuilder addSlider(String identifier, String prompt, String promptDetail, double min, double max) {
-        SurveyQuestion q = add(identifier, prompt, promptDetail);
+    public SurveyBuilder number(String identifier, String prompt, double min, double max, double step) {
+        SurveyQuestion q = add(identifier, prompt, null);
+        q.setUiHint(UiHint.NUMBERFIELD);
+        IntegerConstraints c = new IntegerConstraints();
+        c.setMinValue(min);
+        c.setMaxValue(max);
+        c.setStep(step);
+        q.setConstraints(c);
+        return this;
+    }
+    public SurveyBuilder slider(String identifier, String prompt, double min, double max) {
+        SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.SLIDER);
         IntegerConstraints c = new IntegerConstraints();
         c.setMinValue(min);
@@ -69,38 +79,47 @@ public class SurveyBuilder {
         q.setConstraints(c);
         return this;
     }
-    public SurveyBuilder addDate(String identifier, String prompt, String promptDetail) {
-        SurveyQuestion q = add(identifier, prompt, promptDetail);
-        q.setPromptDetail(promptDetail);
+    public SurveyBuilder slider(String identifier, String prompt, double min, double max, double step) {
+        SurveyQuestion q = add(identifier, prompt, null);
+        q.setUiHint(UiHint.SLIDER);
+        IntegerConstraints c = new IntegerConstraints();
+        c.setMinValue(min);
+        c.setMaxValue(max);
+        c.setStep(step);
+        q.setConstraints(c);
+        return this;
+    }
+    public SurveyBuilder date(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.DATEPICKER);
         q.setConstraints(new DateConstraints());
         return this;
     }
-    public SurveyBuilder addPastDate(String identifier, String prompt, String promptDetail) {
-        SurveyQuestion q = add(identifier, prompt, promptDetail);
+    public SurveyBuilder pastDate(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.DATEPICKER);
         DateConstraints c = new DateConstraints();
         c.setAllowFuture(false);
         q.setConstraints(c);
         return this;
     }
-    public SurveyBuilder addDateTime(String identifier, String prompt, String promptDetail) {
-        SurveyQuestion q = add(identifier, prompt, promptDetail);
+    public SurveyBuilder dateTime(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.DATETIMEPICKER);
         q.setConstraints(new DateTimeConstraints());
         return this;
     }
-    public SurveyBuilder addTime(String identifier, String prompt, String promptDetail) {
-        SurveyQuestion q = add(identifier, prompt, promptDetail);
+    public SurveyBuilder time(String identifier, String prompt) {
+        SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.TIMEPICKER);
         q.setConstraints(new TimeConstraints());
         return this;
     }
-    public SurveyBuilder addRadio(String identifier, String prompt, String promptDetail, boolean allowOther, List<SurveyQuestionOption> options) {
-        return addRadio(identifier, prompt, promptDetail, allowOther, options, Lists.<SurveyRule>newArrayList());
+    public SurveyBuilder radio(String identifier, String prompt, boolean allowOther, List<SurveyQuestionOption> options) {
+        return radio(identifier, prompt, allowOther, options, Lists.<SurveyRule>newArrayList());
     }
-    public SurveyBuilder addRadio(String identifier, String prompt, String promptDetail, boolean allowOther, List<SurveyQuestionOption> options, List<SurveyRule> rules) {
-        SurveyQuestion q = add(identifier, prompt, promptDetail);
+    public SurveyBuilder radio(String identifier, String prompt, boolean allowOther, List<SurveyQuestionOption> options, List<SurveyRule> rules) {
+        SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.RADIOBUTTON);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setAllowOther(allowOther);
@@ -110,8 +129,8 @@ public class SurveyBuilder {
         q.setConstraints(c);
         return this;
     }
-    public SurveyBuilder addList(String identifier, String prompt, String promptDetail, boolean allowOther, List<SurveyQuestionOption> options) {
-        SurveyQuestion q = add(identifier, prompt, promptDetail);
+    public SurveyBuilder list(String identifier, String prompt, boolean allowOther, List<SurveyQuestionOption> options) {
+        SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.LIST);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setAllowOther(allowOther);

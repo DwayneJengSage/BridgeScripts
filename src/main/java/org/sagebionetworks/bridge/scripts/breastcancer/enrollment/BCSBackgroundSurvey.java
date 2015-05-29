@@ -123,23 +123,23 @@ public class BCSBackgroundSurvey {
         yesNoDontKnow.add(new SurveyQuestionOption("No"));
         yesNoDontKnow.add(new SurveyQuestionOption("Don't Know"));
     }
-    private static List<SurveyQuestionOption> meds = Lists.newArrayList();
+    private static List<SurveyQuestionOption> conditions = Lists.newArrayList();
     {
-        meds.add(new SurveyQuestionOption("Allergies"));
-        meds.add(new SurveyQuestionOption("Arthritis"));
-        meds.add(new SurveyQuestionOption("Asthma"));
-        meds.add(new SurveyQuestionOption("Diabetes"));
-        meds.add(new SurveyQuestionOption("Glaucoma"));
-        meds.add(new SurveyQuestionOption("Frequent headaches/migraines"));
-        meds.add(new SurveyQuestionOption("Heart disease (heart attack, angina, heart failure)"));
-        meds.add(new SurveyQuestionOption("High blood pressure"));
-        meds.add(new SurveyQuestionOption("Osteopenia or osteoporosis requiring medication"));
-        meds.add(new SurveyQuestionOption("Thyroid problems"));
-        meds.add(new SurveyQuestionOption("Moderate to severe psychological difficulties (such as depression, anxiety, recent suicide attempts, or recent mental health hospitalization)"));
-        meds.add(new SurveyQuestionOption("Problems with alcohol"));
-        meds.add(new SurveyQuestionOption("Problems with drug use or dependence (either prescription or street drugs)"));
-        meds.add(new SurveyQuestionOption("Other medical conditions"));
-        meds.add(new SurveyQuestionOption("I do not have any of these conditions"));
+        conditions.add(new SurveyQuestionOption("Allergies"));
+        conditions.add(new SurveyQuestionOption("Arthritis"));
+        conditions.add(new SurveyQuestionOption("Asthma"));
+        conditions.add(new SurveyQuestionOption("Diabetes"));
+        conditions.add(new SurveyQuestionOption("Glaucoma"));
+        conditions.add(new SurveyQuestionOption("Frequent headaches/migraines"));
+        conditions.add(new SurveyQuestionOption("Heart disease (heart attack, angina, heart failure)"));
+        conditions.add(new SurveyQuestionOption("High blood pressure"));
+        conditions.add(new SurveyQuestionOption("Osteopenia or osteoporosis requiring medication"));
+        conditions.add(new SurveyQuestionOption("Thyroid problems"));
+        conditions.add(new SurveyQuestionOption("Moderate to severe psychological difficulties (such as depression, anxiety, recent suicide attempts, or recent mental health hospitalization)"));
+        conditions.add(new SurveyQuestionOption("Problems with alcohol"));
+        conditions.add(new SurveyQuestionOption("Problems with drug use or dependence (either prescription or street drugs)"));
+        conditions.add(new SurveyQuestionOption("Other medical conditions"));
+        conditions.add(new SurveyQuestionOption("I do not have any of these conditions"));
     }
 
     public static Survey create() {
@@ -147,20 +147,30 @@ public class BCSBackgroundSurvey {
         survey.setName("BCS Background Survey");
         survey.setIdentifier("BCSbackgroundSurvey");
         return new SurveyBuilder(survey)
-            .addRadio("BCPT2", null, "What category below best describes your racial/ethnic background? If you are of mixed racial/ethnic background, choose the category with which you most closely identify", false, races)
-            .addRadio("BCPT3", null, "Are you Hispanic or Latina?", false, yesNo)
-            .addRadio("BCPT4", null, "What is your current marital/relationship status?", false, marriedStatus)
-            .addRadio("BCPT5", null, "What category below best describes the highest level of formal education you have completed?", false, education)
-            .addRadio("BCPT6", null, "What is your current employment status?", false, education)
-            .addRadio("BCPT7", null, "Check one income range that best describes your family's total income before taxes for the previous year, including salaries, wages, tips, social security, welfare and any other income.", false, income)
-            .addRadio("BCPTHealth0", null, "Have you been treated for breast cancer?", false, yesNo).onNoSkipTo("BCPTHealth12")
-            .addDate("BCPTHealth1", null, "What was the month and year of your initial breast cancer diagnosis (date of 1st cancer biopsy)?")
-            .addRadio("BCPTHealth2", null, "In which breast(s) was your cancer diagnosed?", false, leftToRight)
-            .addList("BCPTHealth3", null, "What type(s) of surgery have you had for your breast cancer?", false, surgeries)
-            .addRadio("BCPTHealth4", null, "Did you receive chemotherapy after your breast cancer diagnosis or surgery?", false, yesNo).onNoSkipTo("BCPTHealth5")
-            .addDate("BCPTHealth4a", null, "When did you last have chemotherapy?")
-            .addRadio("BCPTHealth4b", null, "What kind of chemotherapy treatment did you have?", false, chemos)
-            .addRadio("BCPTHealth5", null, "Did you receive or are you currently receiving Herceptin (trastuzumab) or some other form of therapy that targets HER2 overexpression in your tumor?", false, herceptin)
+            .slider("BCPT1", "What is your age?", 18, 80)
+            .radio("BCPT2", "What category below best describes your racial/ethnic background? If you are of mixed racial/ethnic background, choose the category with which you most closely identify", false, races)
+            .radio("BCPT3", "Are you Hispanic or Latina?", false, yesNo)
+            .radio("BCPT4", "What is your current marital/relationship status?", false, marriedStatus)
+            .radio("BCPT5", "What category below best describes the highest level of formal education you have completed?", false, education)
+            .radio("BCPT6", "What is your current employment status?", false, education)
+            .radio("BCPT7", "Check one income range that best describes your family's total income before taxes for the previous year, including salaries, wages, tips, social security, welfare and any other income.", false, income)
+            .radio("BCPTHealth0", "Have you been treated for breast cancer?", false, yesNo).onNoSkipTo("BCPTHealth12")
+            .date("BCPTHealth1", "What was the month and year of your initial breast cancer diagnosis (date of 1st cancer biopsy)?")
+            .radio("BCPTHealth2", "In which breast(s) was your cancer diagnosed?", false, leftToRight)
+            .list("BCPTHealth3", "What type(s) of surgery have you had for your breast cancer?", false, surgeries)
+            .radio("BCPTHealth4", "Did you receive chemotherapy after your breast cancer diagnosis or surgery?", false, yesNo).onNoSkipTo("BCPTHealth5")
+            .date("BCPTHealth4a", "When did you last have chemotherapy?")
+            .radio("BCPTHealth4b", "What kind of chemotherapy treatment did you have?", false, chemos)
+            .radio("BCPTHealth5", "Did you receive or are you currently receiving Herceptin (trastuzumab) or some other form of therapy that targets HER2 overexpression in your tumor?", false, herceptin)
+            .radio("BCPTHealth6", "Did you receive radiation as part of your breast cancer treatment?", false, yesNo).onNoSkipTo("BCPTHealth7")
+            .date("BCPTHealth6a", "When did you last have radiation?")
+            .radio("BCPTHealth7", "Did you receive an endocrine therapy in the past for chemoprevention?", false, yesNo).onNoSkipTo("BCPTHealth8")
+            .radio("BCPTHealth7a", "What drug did you use for chemoprevention?", false, chemoprevention)
+            .date("BCPTHealth7b", "When did you last take a drug for chemoprevention?")
+            .radio("BCPTHealth8", "Are you receiving endocrine therapy for breast cancer now (tamoxifen, ovarian suppression, Femara (letrozole), Anastrozole (arimidex), Aromasin (exemestane)?", false, yesNoDontKnow)
+            .radio("BCPTHealth9", "Have you ever taken hormone replacement therapy (estrogen in any form, other than birth control pills)?", false, yesNo).onNoSkipTo("BCPTHealth12")
+            .date("BCPTHealth9a", "When did you last have hormone replacement therapy?")
+            .list("BCPTHealth12", "Do you currently have any of the following conditions?", true, conditions)
             .build();
     }
 
