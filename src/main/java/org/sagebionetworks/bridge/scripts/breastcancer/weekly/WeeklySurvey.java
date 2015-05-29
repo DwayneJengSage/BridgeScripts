@@ -2,6 +2,7 @@ package org.sagebionetworks.bridge.scripts.breastcancer.weekly;
 
 import java.util.List;
 
+import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
@@ -17,21 +18,17 @@ import com.google.common.collect.Lists;
 
 public class WeeklySurvey {
     
-    private static List<SurveyQuestionOption> slightToExtremely = Lists.newArrayList();
-    static {
-        slightToExtremely.add(new SurveyQuestionOption("Very slightly or not at all", "1"));
-        slightToExtremely.add(new SurveyQuestionOption("A little", "2"));
-        slightToExtremely.add(new SurveyQuestionOption("Moderately", "3"));
-        slightToExtremely.add(new SurveyQuestionOption("Quite a bit", "4"));
-        slightToExtremely.add(new SurveyQuestionOption("Extremely", "5"));
-    }
+    private static List<SurveyQuestionOption> slightToExtremely = Lists.newArrayList(
+        new SurveyQuestionOption("Very slightly or not at all", "1"),
+        new SurveyQuestionOption("A little", "2"),
+        new SurveyQuestionOption("Moderately", "3"),
+        new SurveyQuestionOption("Quite a bit", "4"),
+        new SurveyQuestionOption("Extremely", "5")
+    );
 
-    private static List<SurveyQuestionOption> oftenToRarely = Lists.newArrayList();
-    static {
-        oftenToRarely.add(new SurveyQuestionOption("Often", "Often"));
-        oftenToRarely.add(new SurveyQuestionOption("Sometimes", "Sometimes"));
-        oftenToRarely.add(new SurveyQuestionOption("Never/Rarely", "Never/Rarely"));
-    }
+    private static List<SurveyQuestionOption> oftenToRarely = Scripts.options(
+        "Often", "Sometimes", "Never/Rarely"
+    );
     
     public static Survey create() {
         Survey survey = new Survey();

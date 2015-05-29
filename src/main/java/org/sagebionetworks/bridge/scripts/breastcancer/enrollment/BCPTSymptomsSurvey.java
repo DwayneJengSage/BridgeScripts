@@ -2,6 +2,7 @@ package org.sagebionetworks.bridge.scripts.breastcancer.enrollment;
 
 import java.util.List;
 
+import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
@@ -13,18 +14,15 @@ import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
-import com.google.common.collect.Lists;
-
 public class BCPTSymptomsSurvey {
     
-    private static final List<SurveyQuestionOption> notAtAllToExtremely = Lists.newArrayList();
-    {
-        notAtAllToExtremely.add(new SurveyQuestionOption("Not at all"));
-        notAtAllToExtremely.add(new SurveyQuestionOption("Slightly"));
-        notAtAllToExtremely.add(new SurveyQuestionOption("Moderately"));
-        notAtAllToExtremely.add(new SurveyQuestionOption("Quite a bit"));
-        notAtAllToExtremely.add(new SurveyQuestionOption("Extremely"));
-    }
+    private static final List<SurveyQuestionOption> notAtAllToExtremely = Scripts.options(
+        "Not at all",
+        "Slightly",
+        "Moderately",
+        "Quite a bit",
+        "Extremely"
+    );
     
     public static Survey create() {
         Survey survey = new Survey();

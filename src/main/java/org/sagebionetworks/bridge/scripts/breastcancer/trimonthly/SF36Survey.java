@@ -2,6 +2,7 @@ package org.sagebionetworks.bridge.scripts.breastcancer.trimonthly;
 
 import java.util.List;
 
+import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.scripts.enumerations.YesNoList;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
@@ -14,66 +15,57 @@ import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
-import com.google.common.collect.Lists;
-
 public class SF36Survey {
     
     private static List<SurveyQuestionOption> yesNo = new YesNoList();
  
-    private static List<SurveyQuestionOption> excellentToPoor = Lists.newArrayList();
-    static {
-        excellentToPoor.add(new SurveyQuestionOption("Excellent"));
-        excellentToPoor.add(new SurveyQuestionOption("Very Good"));
-        excellentToPoor.add(new SurveyQuestionOption("Good"));
-        excellentToPoor.add(new SurveyQuestionOption("Fair"));
-        excellentToPoor.add(new SurveyQuestionOption("Poor"));
-    }
-    private static List<SurveyQuestionOption> noneToSevere = Lists.newArrayList();
-    static {
-        noneToSevere.add(new SurveyQuestionOption("None"));
-        noneToSevere.add(new SurveyQuestionOption("Very mild"));
-        noneToSevere.add(new SurveyQuestionOption("Mild"));
-        noneToSevere.add(new SurveyQuestionOption("Moderate"));
-        noneToSevere.add(new SurveyQuestionOption("Severe"));
-    }
-    private static List<SurveyQuestionOption> muchBetterToMuchWorse = Lists.newArrayList();
-    static {
-        muchBetterToMuchWorse.add(new SurveyQuestionOption("Much better now than one year ago"));
-        muchBetterToMuchWorse.add(new SurveyQuestionOption("Somewhat better now than one year ago"));
-        muchBetterToMuchWorse.add(new SurveyQuestionOption("About the same"));
-        muchBetterToMuchWorse.add(new SurveyQuestionOption("Somewhat worse than one year ago"));
-        muchBetterToMuchWorse.add(new SurveyQuestionOption("Much worse than one year ago"));
-    }
-    private static List<SurveyQuestionOption> limitedToNotLimited = Lists.newArrayList();
-    static {
-        limitedToNotLimited.add(new SurveyQuestionOption("Yes, limited a lot"));
-        limitedToNotLimited.add(new SurveyQuestionOption("Yes, limited a little"));
-        limitedToNotLimited.add(new SurveyQuestionOption("No, not limited at all"));
-    }
-    private static List<SurveyQuestionOption> notAtAllToExtremely = Lists.newArrayList();
-    static {
-        notAtAllToExtremely.add(new SurveyQuestionOption("Not at all"));
-        notAtAllToExtremely.add(new SurveyQuestionOption("Slightly"));
-        notAtAllToExtremely.add(new SurveyQuestionOption("Moderately"));
-        notAtAllToExtremely.add(new SurveyQuestionOption("Quite a bit"));
-        notAtAllToExtremely.add(new SurveyQuestionOption("Extremely"));
-    }
-    private static List<SurveyQuestionOption> allToNoneOfTheTime = Lists.newArrayList();
-    static {
-        allToNoneOfTheTime.add(new SurveyQuestionOption("All of the time"));
-        allToNoneOfTheTime.add(new SurveyQuestionOption("Most of the time"));
-        allToNoneOfTheTime.add(new SurveyQuestionOption("A good bit of the time"));
-        allToNoneOfTheTime.add(new SurveyQuestionOption("Some of the time"));
-        allToNoneOfTheTime.add(new SurveyQuestionOption("A little of the time"));
-        allToNoneOfTheTime.add(new SurveyQuestionOption("None of the time"));
-    }
-    private static List<SurveyQuestionOption> trueToFalse = Lists.newArrayList();
-    static {
-        trueToFalse.add(new SurveyQuestionOption("Definitely True"));
-        trueToFalse.add(new SurveyQuestionOption("Mostly True"));
-        trueToFalse.add(new SurveyQuestionOption("Mostly False"));
-        trueToFalse.add(new SurveyQuestionOption("Definitely False"));
-    }
+    private static List<SurveyQuestionOption> excellentToPoor = Scripts.options(
+        "Excellent",
+        "Very Good",
+        "Good",
+        "Fair",
+        "Poor"
+    );
+    private static List<SurveyQuestionOption> noneToSevere = Scripts.options(
+        "None",
+        "Very mild",
+        "Mild",
+        "Moderate",
+        "Severe"
+    );
+    private static List<SurveyQuestionOption> muchBetterToMuchWorse = Scripts.options(
+        "Much better now than one year ago",
+        "Somewhat better now than one year ago",
+        "About the same",
+        "Somewhat worse than one year ago",
+        "Much worse than one year ago"
+    );
+    private static List<SurveyQuestionOption> limitedToNotLimited = Scripts.options(
+        "Yes, limited a lot",
+        "Yes, limited a little",
+        "No, not limited at all"
+    );
+    private static List<SurveyQuestionOption> notAtAllToExtremely = Scripts.options(
+        "Not at all",
+        "Slightly",
+        "Moderately",
+        "Quite a bit",
+        "Extremely"
+    );
+    private static List<SurveyQuestionOption> allToNoneOfTheTime = Scripts.options(
+        "All of the time",
+        "Most of the time",
+        "A good bit of the time",
+        "Some of the time",
+        "A little of the time",
+        "None of the time"
+    );
+    private static List<SurveyQuestionOption> trueToFalse = Scripts.options(
+        "Definitely True",
+        "Mostly True",
+        "Mostly False",
+        "Definitely False"
+    );
     
     public static Survey create() {
         Survey survey = new Survey();

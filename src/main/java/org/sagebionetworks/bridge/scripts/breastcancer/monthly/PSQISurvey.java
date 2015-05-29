@@ -17,13 +17,12 @@ import com.google.common.collect.Lists;
 
 public class PSQISurvey {
 
-    private static List<SurveyQuestionOption> timesPerMonth = Lists.newArrayList();
-    {
-        timesPerMonth.add(new SurveyQuestionOption("Not during the past month", "0"));
-        timesPerMonth.add(new SurveyQuestionOption("Less than once a week", "1"));
-        timesPerMonth.add(new SurveyQuestionOption("Once or twice a week", "2"));
-        timesPerMonth.add(new SurveyQuestionOption("Three or more times a week", "3"));
-    }
+    private static List<SurveyQuestionOption> timesPerMonth = Lists.newArrayList(
+        new SurveyQuestionOption("Not during the past month", "0"),
+        new SurveyQuestionOption("Less than once a week", "1"),
+        new SurveyQuestionOption("Once or twice a week", "2"),
+        new SurveyQuestionOption("Three or more times a week", "3")
+    );
     
     public static Survey create() {
         Survey survey = new Survey();

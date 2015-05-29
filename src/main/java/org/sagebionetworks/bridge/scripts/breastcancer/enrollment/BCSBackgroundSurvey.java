@@ -2,6 +2,7 @@ package org.sagebionetworks.bridge.scripts.breastcancer.enrollment;
 
 import java.util.List;
 
+import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
@@ -17,137 +18,119 @@ import com.google.common.collect.Lists;
 
 public class BCSBackgroundSurvey {
     
-    private static List<SurveyQuestionOption> races = Lists.newArrayList();
-    {
-        races.add(new SurveyQuestionOption("White"));
-        races.add(new SurveyQuestionOption("African American/Black"));
-        races.add(new SurveyQuestionOption("Asian (Chinese, Japanese, Korean, South East Asian, Filipino)"));
-        races.add(new SurveyQuestionOption("Native Hawaiian or Other Pacific Islander"));
-        races.add(new SurveyQuestionOption("Native American/Alaska Native (American Indian, Aleutian, Eskimo)"));
-        races.add(new SurveyQuestionOption("Indian Subcontinent"));
-        races.add(new SurveyQuestionOption("Other"));
-        races.add(new SurveyQuestionOption("Don't know"));
-    }
-    private static List<SurveyQuestionOption> yesNo = Lists.newArrayList();
-    {
-        yesNo.add(new SurveyQuestionOption("Yes", "true"));
-        yesNo.add(new SurveyQuestionOption("No", "false"));
-    }
-    private static List<SurveyQuestionOption> marriedStatus = Lists.newArrayList();
-    {
-        marriedStatus.add(new SurveyQuestionOption("Married"));
-        marriedStatus.add(new SurveyQuestionOption("Divorced"));
-        marriedStatus.add(new SurveyQuestionOption("Divorced"));
-        marriedStatus.add(new SurveyQuestionOption("Widowed"));
-        marriedStatus.add(new SurveyQuestionOption("Legally separated"));
-        marriedStatus.add(new SurveyQuestionOption("Married but not living with spouse"));
-        marriedStatus.add(new SurveyQuestionOption("Committed relationship (partner opposite sex)"));
-        marriedStatus.add(new SurveyQuestionOption("Committed relationship (partner same sex)"));
-        marriedStatus.add(new SurveyQuestionOption("Single (never married)"));
-    }
-    private static List<SurveyQuestionOption> education = Lists.newArrayList();
-    {
-        education.add(new SurveyQuestionOption("Grade school (1-8 years)"));
-        education.add(new SurveyQuestionOption("Some high school (9-11 years)"));
-        education.add(new SurveyQuestionOption("High school graduate or GED (12 years)"));
-        education.add(new SurveyQuestionOption("Vocational or training school after high school graduation"));
-        education.add(new SurveyQuestionOption("Some college"));
-        education.add(new SurveyQuestionOption("Associate Degree (A.D. or A.A.)"));
-        education.add(new SurveyQuestionOption("College graduate (B.A. or B.S.)"));
-        education.add(new SurveyQuestionOption("Some college or professional school after college graduation"));
-        education.add(new SurveyQuestionOption("Completed Master#s Degree (M.A., M.S., M.P.H., M.S.W., M.Div., etc.)"));
-        education.add(new SurveyQuestionOption("Completed Doctoral Degree (Ph.D., M.D., D.D.S., J.D., etc.)"));
-    }
-    private static List<SurveyQuestionOption> employment = Lists.newArrayList();
-    {
-        employment.add(new SurveyQuestionOption("Employed full-time (including self-employed)"));
-        employment.add(new SurveyQuestionOption("Employed part-time (including self-employed)"));
-        employment.add(new SurveyQuestionOption("Full-time homemaker"));
-        employment.add(new SurveyQuestionOption("Full-time or part-time volunteer"));
-        employment.add(new SurveyQuestionOption("Full-time or part-time student"));
-        employment.add(new SurveyQuestionOption("On temporary medical leave"));
-        employment.add(new SurveyQuestionOption("Retired"));
-        employment.add(new SurveyQuestionOption("Unemployed"));
-        employment.add(new SurveyQuestionOption("Permanently disabled"));
-    }
-    private static List<SurveyQuestionOption> income = Lists.newArrayList();
-    {
-        income.add(new SurveyQuestionOption("Under $15,000"));
-        income.add(new SurveyQuestionOption("$15,001 - $30,000"));
-        income.add(new SurveyQuestionOption("$30,001 - $60,000"));
-        income.add(new SurveyQuestionOption("$60,001 - $100,000"));
-        income.add(new SurveyQuestionOption("Over $100,000"));
-    }
-    private static List<SurveyQuestionOption> leftToRight = Lists.newArrayList();
-    {
-        leftToRight.add(new SurveyQuestionOption("Right"));
-        leftToRight.add(new SurveyQuestionOption("Left"));
-        leftToRight.add(new SurveyQuestionOption("Both"));
-    }
-    private static List<SurveyQuestionOption> surgeries = Lists.newArrayList();
-    {
-        surgeries.add(new SurveyQuestionOption("Lumpectomy (left)"));
-        surgeries.add(new SurveyQuestionOption("Lumpectomy (right)"));
-        surgeries.add(new SurveyQuestionOption("Sentinel node biopsy (left)"));
-        surgeries.add(new SurveyQuestionOption("Sentinel node biopsy (right)"));
-        surgeries.add(new SurveyQuestionOption("Axillary node dissection (left)"));
-        surgeries.add(new SurveyQuestionOption("Axillary node dissection (right)"));
-        surgeries.add(new SurveyQuestionOption("Mastectomy (left)"));
-        surgeries.add(new SurveyQuestionOption("Mastectomy (right)"));
-        surgeries.add(new SurveyQuestionOption("Mastectomy with immediate reconstruction (left)"));
-        surgeries.add(new SurveyQuestionOption("Mastectomy with immediate reconstruction (right)"));
-        surgeries.add(new SurveyQuestionOption("Expander with later breast reconstruction planned (left)"));
-        surgeries.add(new SurveyQuestionOption("Expander with later breast reconstruction planned (right)"));
-    }
-    private static List<SurveyQuestionOption> chemos = Lists.newArrayList();
-    {
-        chemos.add(new SurveyQuestionOption("TC (Taxotere and Cytoxan)"));
-        chemos.add(new SurveyQuestionOption("TAC (Taxotere, Adriamycin, and Cytoxan)"));
-        chemos.add(new SurveyQuestionOption("CMF (Cytoxan, Methotrexate and 5FU)"));
-        chemos.add(new SurveyQuestionOption("CMF+A (Cytoxan, Methotrexate, 5FU and Adriamycin)"));
-        chemos.add(new SurveyQuestionOption("AC (Adriamycin and Cytoxan)"));
-        chemos.add(new SurveyQuestionOption("FAC or CAF (Cytoxan, Adriamycin and 5FU)"));
-        chemos.add(new SurveyQuestionOption("AC+Taxol (Adriamycin, Cytoxan and Taxol)"));
-        chemos.add(new SurveyQuestionOption("CEF or FEC (5FU, Epirubicin and Cytoxan)"));
-        chemos.add(new SurveyQuestionOption("TC (Taxotere and Carboplatin)"));
-        chemos.add(new SurveyQuestionOption("Some other chemotherapy not listed above"));
-    }
-    private static List<SurveyQuestionOption> herceptin = Lists.newArrayList();
-    {
-        herceptin.add(new SurveyQuestionOption("Yes, Herceptin"));
-        herceptin.add(new SurveyQuestionOption("Yes, some other therapy"));
-        herceptin.add(new SurveyQuestionOption("No"));
-    }
-    private static List<SurveyQuestionOption> chemoprevention = Lists.newArrayList();
-    {
-        chemoprevention.add(new SurveyQuestionOption("Tamoxifen"));
-        chemoprevention.add(new SurveyQuestionOption("Raloxifene (Evista)"));
-        chemoprevention.add(new SurveyQuestionOption("Aromatase inhibitor"));
-    }
-    private static List<SurveyQuestionOption> yesNoDontKnow = Lists.newArrayList();
-    {
-        yesNoDontKnow.add(new SurveyQuestionOption("Yes"));
-        yesNoDontKnow.add(new SurveyQuestionOption("No"));
-        yesNoDontKnow.add(new SurveyQuestionOption("Don't Know"));
-    }
-    private static List<SurveyQuestionOption> conditions = Lists.newArrayList();
-    {
-        conditions.add(new SurveyQuestionOption("Allergies"));
-        conditions.add(new SurveyQuestionOption("Arthritis"));
-        conditions.add(new SurveyQuestionOption("Asthma"));
-        conditions.add(new SurveyQuestionOption("Diabetes"));
-        conditions.add(new SurveyQuestionOption("Glaucoma"));
-        conditions.add(new SurveyQuestionOption("Frequent headaches/migraines"));
-        conditions.add(new SurveyQuestionOption("Heart disease (heart attack, angina, heart failure)"));
-        conditions.add(new SurveyQuestionOption("High blood pressure"));
-        conditions.add(new SurveyQuestionOption("Osteopenia or osteoporosis requiring medication"));
-        conditions.add(new SurveyQuestionOption("Thyroid problems"));
-        conditions.add(new SurveyQuestionOption("Moderate to severe psychological difficulties (such as depression, anxiety, recent suicide attempts, or recent mental health hospitalization)"));
-        conditions.add(new SurveyQuestionOption("Problems with alcohol"));
-        conditions.add(new SurveyQuestionOption("Problems with drug use or dependence (either prescription or street drugs)"));
-        conditions.add(new SurveyQuestionOption("Other medical conditions"));
-        conditions.add(new SurveyQuestionOption("I do not have any of these conditions"));
-    }
+    private static List<SurveyQuestionOption> races = Scripts.options(
+        "White",
+        "African American/Black",
+        "Asian (Chinese, Japanese, Korean, South East Asian, Filipino)",
+        "Native Hawaiian or Other Pacific Islander",
+        "Native American/Alaska Native (American Indian, Aleutian, Eskimo)",
+        "Indian Subcontinent",
+        "Other",
+        "Don't know"
+    );
+    private static List<SurveyQuestionOption> yesNo = Lists.newArrayList(
+        new SurveyQuestionOption("Yes", "true"),
+        new SurveyQuestionOption("No", "false")
+    );
+    private static List<SurveyQuestionOption> marriedStatus = Scripts.options(
+        "Married",
+        "Divorced",
+        "Divorced",
+        "Widowed",
+        "Legally separated",
+        "Married but not living with spouse",
+        "Committed relationship (partner opposite sex)",
+        "Committed relationship (partner same sex)",
+        "Single (never married)"
+    );
+    private static List<SurveyQuestionOption> education = Scripts.options(
+        "Grade school (1-8 years)",
+        "Some high school (9-11 years)",
+        "High school graduate or GED (12 years)",
+        "Vocational or training school after high school graduation",
+        "Some college",
+        "Associate Degree (A.D. or A.A.)",
+        "College graduate (B.A. or B.S.)",
+        "Some college or professional school after college graduation",
+        "Completed Master#s Degree (M.A., M.S., M.P.H., M.S.W., M.Div., etc.)",
+        "Completed Doctoral Degree (Ph.D., M.D., D.D.S., J.D., etc.)"
+    );
+    private static List<SurveyQuestionOption> employment = Scripts.options(
+        "Employed full-time (including self-employed)",
+        "Employed part-time (including self-employed)",
+        "Full-time homemaker",
+        "Full-time or part-time volunteer",
+        "Full-time or part-time student",
+        "On temporary medical leave",
+        "Retired",
+        "Unemployed",
+        "Permanently disabled"
+    );
+    private static List<SurveyQuestionOption> income = Scripts.options(
+        "Under $15,000", "$15,001 - $30,000", "$30,001 - $60,000",
+        "$60,001 - $100,000", "Over $100,000"
+    );
+    private static List<SurveyQuestionOption> leftToRight = Scripts.options(
+        "Right", "Left", "Both"
+    );
+    private static List<SurveyQuestionOption> surgeries = Scripts.options(
+        "Lumpectomy (left)",
+        "Lumpectomy (right)",
+        "Sentinel node biopsy (left)",
+        "Sentinel node biopsy (right)",
+        "Axillary node dissection (left)",
+        "Axillary node dissection (right)",
+        "Mastectomy (left)",
+        "Mastectomy (right)",
+        "Mastectomy with immediate reconstruction (left)",
+        "Mastectomy with immediate reconstruction (right)",
+        "Expander with later breast reconstruction planned (left)",
+        "Expander with later breast reconstruction planned (right)"
+    );
+    private static List<SurveyQuestionOption> chemos = Scripts.options(
+        "TC (Taxotere and Cytoxan)",
+        "TAC (Taxotere, Adriamycin, and Cytoxan)",
+        "CMF (Cytoxan, Methotrexate and 5FU)",
+        "CMF+A (Cytoxan, Methotrexate, 5FU and Adriamycin)",
+        "AC (Adriamycin and Cytoxan)",
+        "FAC or CAF (Cytoxan, Adriamycin and 5FU)",
+        "AC+Taxol (Adriamycin, Cytoxan and Taxol)",
+        "CEF or FEC (5FU, Epirubicin and Cytoxan)",
+        "TC (Taxotere and Carboplatin)",
+        "Some other chemotherapy not listed above"
+    );
+    private static List<SurveyQuestionOption> herceptin = Scripts.options(
+        "Yes, Herceptin",
+        "Yes, some other therapy",
+        "No"
+    );
+    private static List<SurveyQuestionOption> chemoprevention = Scripts.options(
+        "Tamoxifen",
+        "Raloxifene (Evista)",
+        "Aromatase inhibitor"
+    );
+    private static List<SurveyQuestionOption> yesNoDontKnow = Scripts.options(
+        "Yes",
+        "No",
+        "Don't Know"
+    );
+    private static List<SurveyQuestionOption> conditions = Scripts.options(
+        "Allergies",
+        "Arthritis",
+        "Asthma",
+        "Diabetes",
+        "Glaucoma",
+        "Frequent headaches/migraines",
+        "Heart disease (heart attack, angina, heart failure)",
+        "High blood pressure",
+        "Osteopenia or osteoporosis requiring medication",
+        "Thyroid problems",
+        "Moderate to severe psychological difficulties (such as depression, anxiety, recent suicide attempts, or recent mental health hospitalization)",
+        "Problems with alcohol",
+        "Problems with drug use or dependence (either prescription or street drugs)",
+        "Other medical conditions",
+        "I do not have any of these conditions"
+    );
 
     public static Survey create() {
         Survey survey = new Survey();

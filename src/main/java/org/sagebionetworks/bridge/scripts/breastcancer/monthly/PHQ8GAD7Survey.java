@@ -17,13 +17,12 @@ import com.google.common.collect.Lists;
 
 public class PHQ8GAD7Survey {
     
-    private static List<SurveyQuestionOption> notAtAllToEveryDay = Lists.newArrayList();
-    {
-        notAtAllToEveryDay.add(new SurveyQuestionOption("Not at all", "0"));
-        notAtAllToEveryDay.add(new SurveyQuestionOption("Several days", "1"));
-        notAtAllToEveryDay.add(new SurveyQuestionOption("More than half the days", "2"));
-        notAtAllToEveryDay.add(new SurveyQuestionOption("Nearly every day", "3"));
-    }
+    private static List<SurveyQuestionOption> notAtAllToEveryDay = Lists.newArrayList(
+        new SurveyQuestionOption("Not at all", "0"),
+        new SurveyQuestionOption("Several days", "1"),
+        new SurveyQuestionOption("More than half the days", "2"),
+        new SurveyQuestionOption("Nearly every day", "3")
+    );
     
     public static Survey create() {
         Survey survey = new Survey();

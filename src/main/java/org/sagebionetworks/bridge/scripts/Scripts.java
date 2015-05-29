@@ -2,6 +2,8 @@ package org.sagebionetworks.bridge.scripts;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.List;
+
 import org.joda.time.LocalDate;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
@@ -80,5 +82,11 @@ public class Scripts {
     public static SurveyReference getSurveyActivityKeys(Schedule schedule) {
         return schedule.getActivities().get(0).getSurvey();
     }
-
+    public static List<SurveyQuestionOption> options(String... values) {
+        List<SurveyQuestionOption> list = Lists.newArrayList();
+        for (String value : values) {
+            list.add(new SurveyQuestionOption(value));
+        }
+        return list;
+    }
 }

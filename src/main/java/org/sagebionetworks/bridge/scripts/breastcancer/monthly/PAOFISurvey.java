@@ -17,15 +17,14 @@ import com.google.common.collect.Lists;
 
 public class PAOFISurvey {
     
-    private static List<SurveyQuestionOption> almostAlwaysToAlmostNever = Lists.newArrayList();
-    {
-        almostAlwaysToAlmostNever.add(new SurveyQuestionOption("Almost always", "1"));
-        almostAlwaysToAlmostNever.add(new SurveyQuestionOption("Very often", "2"));
-        almostAlwaysToAlmostNever.add(new SurveyQuestionOption("Fairly often", "3"));
-        almostAlwaysToAlmostNever.add(new SurveyQuestionOption("Once in a while", "4"));
-        almostAlwaysToAlmostNever.add(new SurveyQuestionOption("Very infrequently", "5"));
-        almostAlwaysToAlmostNever.add(new SurveyQuestionOption("Almost never", "6"));
-    }
+    private static List<SurveyQuestionOption> almostAlwaysToAlmostNever = Lists.newArrayList(
+        new SurveyQuestionOption("Almost always", "1"),
+        new SurveyQuestionOption("Very often", "2"),
+        new SurveyQuestionOption("Fairly often", "3"),
+        new SurveyQuestionOption("Once in a while", "4"),
+        new SurveyQuestionOption("Very infrequently", "5"),
+        new SurveyQuestionOption("Almost never", "6")
+    );
     
     public static Survey create() {
         Survey survey = new Survey();
