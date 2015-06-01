@@ -6,4 +6,5 @@ target
 .project
 .settings/
 params.csv
+keys.properties
 

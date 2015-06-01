@@ -2,7 +2,11 @@ package org.sagebionetworks.bridge.scripts;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 import org.joda.time.LocalDate;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
@@ -22,9 +26,43 @@ import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
 import org.sagebionetworks.bridge.sdk.models.users.SharingScope;
 import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.google.common.collect.Lists;
+import com.stormpath.sdk.api.ApiKey;
+import com.stormpath.sdk.api.ApiKeys;
+import com.stormpath.sdk.client.Client;
+import com.stormpath.sdk.client.ClientBuilder;
+import com.stormpath.sdk.client.Clients;
+import com.stormpath.sdk.impl.client.DefaultClientBuilder;
 
 public class Scripts {
+
+    public static Properties loadProperties() {
+        final Properties properties = new Properties();
+        try (InputStream ins = new FileInputStream(System.getProperty("user.dir") + "/keys.properties")) {
+            properties.load(ins);    
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return properties;
+    }
+    
+    public static Client getStormpathClient(Properties properties) {
+        ApiKey apiKey = ApiKeys.builder()
+            .setId(properties.getProperty("stormpath.key"))
+            .setSecret(properties.getProperty("stormpath.secret.key")).build();
+        ClientBuilder clientBuilder = Clients.builder().setApiKey(apiKey);
+        ((DefaultClientBuilder)clientBuilder).setBaseUrl("https://enterprise.stormpath.io/v1");
+        return clientBuilder.build();
+    }
+    
+    public static AmazonDynamoDBClient getDynamoDbClient(Properties properties) {
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(
+                properties.getProperty("aws.key"), 
+                properties.getProperty("aws.secret.key"));
+        return new AmazonDynamoDBClient(awsCredentials);
+    }
 
     public static Session signIn(String url, String studyIdentifier) {
         return signIn(ClientProvider.getConfig().getAdminCredentials(), Environment.DEV, studyIdentifier);

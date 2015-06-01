@@ -41,7 +41,7 @@ public class FeedbackSurvey {
         Config config = ClientProvider.getConfig();
         String url = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
         SurveyReference reference = new SurveyReference(url);
-        Activity activity = new Activity("Study Feedback: (Anytime) 1 Question", reference);
+        Activity activity = new Activity("Study Feedback", reference);
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

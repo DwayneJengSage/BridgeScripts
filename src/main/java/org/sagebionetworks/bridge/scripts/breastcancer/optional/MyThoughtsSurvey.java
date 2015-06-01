@@ -49,7 +49,7 @@ public class MyThoughtsSurvey {
         Config config = ClientProvider.getConfig();
         String url = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
         SurveyReference reference = new SurveyReference(url);
-        Activity activity = new Activity("My Thoughts: (Anytime) 2 Questions", reference);
+        Activity activity = new Activity("My Thoughts", reference);
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);
