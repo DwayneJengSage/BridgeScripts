@@ -2,9 +2,8 @@ package org.sagebionetworks.bridge.scripts.breastcancer.monthly;
 
 import java.util.List;
 
+import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
-import org.sagebionetworks.bridge.sdk.ClientProvider;
-import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -74,10 +73,9 @@ public class PAOFISurvey {
         schedule.setDelay("P1M");
         schedule.setInterval("P1M");
         schedule.setExpires("P21D");
+        schedule.addTimes("10:00");
 
-        Config config = ClientProvider.getConfig();
-        String url = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
-        SurveyReference reference = new SurveyReference(url);
+        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
         Activity activity = new Activity("Assessment of Functioning", reference);
         schedule.addActivity(activity);
         

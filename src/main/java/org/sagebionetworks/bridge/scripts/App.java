@@ -1,5 +1,7 @@
 package org.sagebionetworks.bridge.scripts;
 
+import java.util.Properties;
+
 import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.BCPTSymptomsSurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.BCSBackgroundSurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.monthly.PAOFISurvey;
@@ -15,13 +17,19 @@ import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
+import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
 public class App {
 
     public static void main(String[] args) throws Exception {
         Config config = ClientProvider.getConfig();
-        config.set(Environment.LOCAL);
-        Session session = ClientProvider.signIn(config.getAccountCredentials());
+        config.set(Environment.STAGING);
+        
+        Properties props = Scripts.loadProperties();
+        SignInCredentials signIn = new SignInCredentials(props.getProperty("signin.study"),
+                        props.getProperty("signin.username"), props.getProperty("signin.password"));
+        
+        Session session = ClientProvider.signIn(signIn);
         
         ResearcherClient client = session.getResearcherClient();
         

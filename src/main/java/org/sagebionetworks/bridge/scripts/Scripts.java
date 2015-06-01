@@ -9,10 +9,11 @@ import java.util.Properties;
 import org.joda.time.LocalDate;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
+import org.sagebionetworks.bridge.sdk.Config.Props;
 import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
-import org.sagebionetworks.bridge.sdk.Config.Props;
 import org.sagebionetworks.bridge.sdk.exceptions.ConsentRequiredException;
+import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
 import org.sagebionetworks.bridge.sdk.models.users.SharingScope;
@@ -82,5 +83,12 @@ public class Scripts {
             list.add(new SurveyQuestionOption(value));
         }
         return list;
+    }
+    
+    public static SurveyReference getPublishedSurveyReference(String surveyGuid) {
+        Config config = ClientProvider.getConfig();
+        String baseUrl = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
+        String url = config.getEnvironment().getUrl() + baseUrl; 
+        return new SurveyReference(url);
     }
 }

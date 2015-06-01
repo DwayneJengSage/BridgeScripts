@@ -5,8 +5,6 @@ import java.util.List;
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.scripts.enumerations.YesNoList;
-import org.sagebionetworks.bridge.sdk.ClientProvider;
-import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -122,11 +120,9 @@ public class SF36Survey {
         schedule.setDelay("P3M");
         schedule.setInterval("P3M");
         schedule.setExpires("P2M21D");
-        schedule.addTimes("08:00");
+        schedule.addTimes("10:00");
         
-        Config config = ClientProvider.getConfig();
-        String url = config.getRecentlyPublishedSurveyUserApi(surveyGuid);
-        SurveyReference reference = new SurveyReference(url);
+        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
         Activity activity = new Activity("SF36 Survey", reference);
         schedule.addActivity(activity);
         
