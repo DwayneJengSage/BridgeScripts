@@ -142,7 +142,7 @@ public class BCSBackgroundSurvey {
             .radio("BCPT3", "Are you Hispanic or Latina?", false, yesNo)
             .radio("BCPT4", "What is your current marital/relationship status?", false, marriedStatus)
             .radio("BCPT5", "What category below best describes the highest level of formal education you have completed?", false, education)
-            .radio("BCPT6", "What is your current employment status?", false, education)
+            .radio("BCPT6", "What is your current employment status?", false, employment)
             .radio("BCPT7", "Check one income range that best describes your family's total income before taxes for the previous year, including salaries, wages, tips, social security, welfare and any other income.", false, income)
             .radio("BCPTHealth0", "Have you been treated for breast cancer?", false, yesNo).onNoSkipTo("BCPTHealth12")
             .date("BCPTHealth1", "What was the month and year of your initial breast cancer diagnosis (date of 1st cancer biopsy)?")

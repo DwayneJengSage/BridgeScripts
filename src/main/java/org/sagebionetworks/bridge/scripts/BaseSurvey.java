@@ -97,7 +97,12 @@ public class BaseSurvey {
     protected static SurveyQuestion addYesNo(Survey survey, String identifier, String prompt) {
         SurveyQuestion q = add(survey, identifier, prompt);
         q.setUiHint(UiHint.RADIOBUTTON);
-        q.setConstraints(Scripts.booleanish());
+        MultiValueConstraints mvc = new MultiValueConstraints(DataType.BOOLEAN);
+        mvc.setEnumeration(Lists.newArrayList(
+            new SurveyQuestionOption("Yes", "true"),
+            new SurveyQuestionOption("No", "false")
+        ));
+        q.setConstraints(mvc);
         return q;
     }
 }
