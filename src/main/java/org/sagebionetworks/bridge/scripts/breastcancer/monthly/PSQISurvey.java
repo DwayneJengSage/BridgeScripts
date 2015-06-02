@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -14,16 +15,17 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class PSQISurvey {
+public class PSQISurvey implements SurveyProvider {
 
-    private static List<SurveyQuestionOption> timesPerMonth = Lists.newArrayList(
+    private List<SurveyQuestionOption> timesPerMonth = Lists.newArrayList(
         new SurveyQuestionOption("Not during the past month", "0"),
         new SurveyQuestionOption("Less than once a week", "1"),
         new SurveyQuestionOption("Once or twice a week", "2"),
         new SurveyQuestionOption("Three or more times a week", "3")
     );
     
-    public static Survey create() {
+    @Override
+    public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName("Sleep Quality Survey");
         survey.setIdentifier("PSQI");
@@ -49,7 +51,8 @@ public class PSQISurvey {
             .build();
     }
     
-    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+    @Override
+    public SchedulePlan createSchedulePlan(String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Sleep Quality Survey Schedule Plan");
         

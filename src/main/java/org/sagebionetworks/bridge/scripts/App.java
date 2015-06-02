@@ -1,14 +1,18 @@
 package org.sagebionetworks.bridge.scripts;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.BCPTSymptomsSurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.BCSBackgroundSurvey;
+import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.ParQPlusSurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.monthly.PAOFISurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.monthly.PHQ8GAD7Survey;
 import org.sagebionetworks.bridge.scripts.breastcancer.monthly.PSQISurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.optional.FeedbackSurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.optional.MyThoughtsSurvey;
+import org.sagebionetworks.bridge.scripts.breastcancer.trimonthly.SF36Survey;
+import org.sagebionetworks.bridge.scripts.breastcancer.weekly.WeeklySurvey;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.Environment;
@@ -19,8 +23,11 @@ import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
+import com.google.common.collect.Lists;
+
 public class App {
 
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) throws Exception {
         Config config = ClientProvider.getConfig();
         config.set(Environment.STAGING);
@@ -33,48 +40,27 @@ public class App {
         
         ResearcherClient client = session.getResearcherClient();
         
-        // Share The Journey
-        Survey survey = BCPTSymptomsSurvey.create();
-        GuidCreatedOnVersionHolder keys = client.createSurvey(survey);
-        keys = client.publishSurvey(survey);
-        SchedulePlan plan = BCPTSymptomsSurvey.createSchedulePlan(keys.getGuid());
-        client.createSchedulePlan(plan);
+        List<Class<? extends SurveyProvider>> providers = Lists.newArrayList(
+            BCPTSymptomsSurvey.class, 
+            BCSBackgroundSurvey.class,
+            ParQPlusSurvey.class,
+            PAOFISurvey.class,
+            PHQ8GAD7Survey.class, 
+            PSQISurvey.class,
+            SF36Survey.class,
+            WeeklySurvey.class,
+            FeedbackSurvey.class, 
+            MyThoughtsSurvey.class
+        );
         
-        survey = BCSBackgroundSurvey.create();        
-        keys = client.createSurvey(survey);
-        keys = client.publishSurvey(survey);
-        plan = BCSBackgroundSurvey.createSchedulePlan(keys.getGuid());
-        client.createSchedulePlan(plan);
-        
-        survey = PAOFISurvey.create();        
-        keys = client.createSurvey(survey);
-        keys = client.publishSurvey(survey);
-        plan = PAOFISurvey.createSchedulePlan(keys.getGuid());
-        client.createSchedulePlan(plan);
-        
-        survey = PHQ8GAD7Survey.create();        
-        keys = client.createSurvey(survey);
-        keys = client.publishSurvey(survey);
-        plan = PHQ8GAD7Survey.createSchedulePlan(keys.getGuid());
-        client.createSchedulePlan(plan);
-        
-        survey = PSQISurvey.create();        
-        keys = client.createSurvey(survey);
-        keys = client.publishSurvey(survey);
-        plan = PSQISurvey.createSchedulePlan(keys.getGuid());
-        client.createSchedulePlan(plan);
-        
-        survey = FeedbackSurvey.create();        
-        keys = client.createSurvey(survey);
-        keys = client.publishSurvey(survey);
-        plan = FeedbackSurvey.createSchedulePlan(keys.getGuid());
-        client.createSchedulePlan(plan);
-        
-        survey = MyThoughtsSurvey.create();        
-        keys = client.createSurvey(survey);
-        keys = client.publishSurvey(survey);
-        plan = MyThoughtsSurvey.createSchedulePlan(keys.getGuid());
-        client.createSchedulePlan(plan);
+        for (Class<? extends SurveyProvider> providerClass : providers) {
+            SurveyProvider provider = providerClass.newInstance();
+            Survey survey = provider.createSurvey();
+            GuidCreatedOnVersionHolder keys = client.createSurvey(survey);
+            keys = client.publishSurvey(survey);
+            SchedulePlan plan = provider.createSchedulePlan(keys.getGuid());
+            client.createSchedulePlan(plan);
+        }
     }
 
 }

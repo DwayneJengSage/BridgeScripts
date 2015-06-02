@@ -1,4 +1,4 @@
-package org.sagebionetworks.bridge.scripts.parkinson;
+package org.sagebionetworks.bridge.scripts.parkinson.optional;
 
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
@@ -9,26 +9,27 @@ import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
 import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 
-public class FeedbackSurvey {
+public class MyThoughtsSurvey {
     public static Survey create() {
         Survey survey = new Survey();
-        survey.setName("Study Feedback");
-        survey.setIdentifier("study_feedback");
+        survey.setName("My Thoughts");
+        survey.setIdentifier("mythoughts");
         return new SurveyBuilder(survey)
-            .multilineText("feedback", "In what ways would you improve or change the mPower study?", "We depend on you as our partners in this research study.  Please provide us anonymous feedback on ways we can enhance the study and reflect the interests of the Parkinson Disease community in improvements to come in June, 2015.")
+            .multilineText("feeling_better", "What, if anything, has made you feel better in the last day?", "Please provide your thoughts on what has made you feel better the last day.  Your answers will help researchers explore the connections between your activities and your symptoms.")
+            .multilineText("feeling_worse", "What, if anything, has made you feel worse in the last day?", "Please provide your thoughts on what has made you feel worse the last day.  Your answers will help researchers explore the connections between your activities and your symptoms.")
             .build();
     }
     public static SchedulePlan createSchedulePlan(String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("Study Feedback Schedule Plan");
+        plan.setLabel("My Thoughts Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("Study Feedback Schedule");
+        schedule.setLabel("My Thoughts Schedule");
         schedule.setScheduleType(ScheduleType.ONCE);
         schedule.setEventId("survey:"+surveyGuid+":finished,enrollment");
 
         SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Study Feedback", reference);
+        Activity activity = new Activity("My Thoughts", reference);
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

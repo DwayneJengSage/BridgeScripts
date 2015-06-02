@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -14,9 +15,9 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class BCSBackgroundSurvey {
+public class BCSBackgroundSurvey implements SurveyProvider {
     
-    private static List<SurveyQuestionOption> races = Scripts.options(
+    private List<SurveyQuestionOption> races = Scripts.options(
         "White",
         "African American/Black",
         "Asian (Chinese, Japanese, Korean, South East Asian, Filipino)",
@@ -26,11 +27,11 @@ public class BCSBackgroundSurvey {
         "Other",
         "Don't know"
     );
-    private static List<SurveyQuestionOption> yesNo = Lists.newArrayList(
+    private List<SurveyQuestionOption> yesNo = Lists.newArrayList(
         new SurveyQuestionOption("Yes", "true"),
         new SurveyQuestionOption("No", "false")
     );
-    private static List<SurveyQuestionOption> marriedStatus = Scripts.options(
+    private List<SurveyQuestionOption> marriedStatus = Scripts.options(
         "Married",
         "Divorced",
         "Divorced",
@@ -41,7 +42,7 @@ public class BCSBackgroundSurvey {
         "Committed relationship (partner same sex)",
         "Single (never married)"
     );
-    private static List<SurveyQuestionOption> education = Scripts.options(
+    private List<SurveyQuestionOption> education = Scripts.options(
         "Grade school (1-8 years)",
         "Some high school (9-11 years)",
         "High school graduate or GED (12 years)",
@@ -53,7 +54,7 @@ public class BCSBackgroundSurvey {
         "Completed Master#s Degree (M.A., M.S., M.P.H., M.S.W., M.Div., etc.)",
         "Completed Doctoral Degree (Ph.D., M.D., D.D.S., J.D., etc.)"
     );
-    private static List<SurveyQuestionOption> employment = Scripts.options(
+    private List<SurveyQuestionOption> employment = Scripts.options(
         "Employed full-time (including self-employed)",
         "Employed part-time (including self-employed)",
         "Full-time homemaker",
@@ -64,14 +65,14 @@ public class BCSBackgroundSurvey {
         "Unemployed",
         "Permanently disabled"
     );
-    private static List<SurveyQuestionOption> income = Scripts.options(
+    private List<SurveyQuestionOption> income = Scripts.options(
         "Under $15,000", "$15,001 - $30,000", "$30,001 - $60,000",
         "$60,001 - $100,000", "Over $100,000"
     );
-    private static List<SurveyQuestionOption> leftToRight = Scripts.options(
+    private List<SurveyQuestionOption> leftToRight = Scripts.options(
         "Right", "Left", "Both"
     );
-    private static List<SurveyQuestionOption> surgeries = Scripts.options(
+    private List<SurveyQuestionOption> surgeries = Scripts.options(
         "Lumpectomy (left)",
         "Lumpectomy (right)",
         "Sentinel node biopsy (left)",
@@ -85,7 +86,7 @@ public class BCSBackgroundSurvey {
         "Expander with later breast reconstruction planned (left)",
         "Expander with later breast reconstruction planned (right)"
     );
-    private static List<SurveyQuestionOption> chemos = Scripts.options(
+    private List<SurveyQuestionOption> chemos = Scripts.options(
         "TC (Taxotere and Cytoxan)",
         "TAC (Taxotere, Adriamycin, and Cytoxan)",
         "CMF (Cytoxan, Methotrexate and 5FU)",
@@ -97,22 +98,22 @@ public class BCSBackgroundSurvey {
         "TC (Taxotere and Carboplatin)",
         "Some other chemotherapy not listed above"
     );
-    private static List<SurveyQuestionOption> herceptin = Scripts.options(
+    private List<SurveyQuestionOption> herceptin = Scripts.options(
         "Yes, Herceptin",
         "Yes, some other therapy",
         "No"
     );
-    private static List<SurveyQuestionOption> chemoprevention = Scripts.options(
+    private List<SurveyQuestionOption> chemoprevention = Scripts.options(
         "Tamoxifen",
         "Raloxifene (Evista)",
         "Aromatase inhibitor"
     );
-    private static List<SurveyQuestionOption> yesNoDontKnow = Scripts.options(
+    private List<SurveyQuestionOption> yesNoDontKnow = Scripts.options(
         "Yes",
         "No",
         "Don't Know"
     );
-    private static List<SurveyQuestionOption> conditions = Scripts.options(
+    private List<SurveyQuestionOption> conditions = Scripts.options(
         "Allergies",
         "Arthritis",
         "Asthma",
@@ -130,7 +131,8 @@ public class BCSBackgroundSurvey {
         "I do not have any of these conditions"
     );
 
-    public static Survey create() {
+    @Override
+    public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName("BCS Background Survey");
         survey.setIdentifier("BCSbackgroundSurvey");
@@ -162,7 +164,8 @@ public class BCSBackgroundSurvey {
             .build();
     }
     
-    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+    @Override
+    public SchedulePlan createSchedulePlan(String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Background Survey Schedule Plan");
         

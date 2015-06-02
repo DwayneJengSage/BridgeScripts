@@ -1,4 +1,4 @@
-package org.sagebionetworks.bridge.scripts.parkinson;
+package org.sagebionetworks.bridge.scripts.parkinson.enrollment;
 
 import java.util.List;
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -12,9 +13,9 @@ import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
-public class BCPTSymptomsSurvey {
+public class BCPTSymptomsSurvey implements SurveyProvider {
     
-    private static final List<SurveyQuestionOption> notAtAllToExtremely = Scripts.options(
+    private final List<SurveyQuestionOption> notAtAllToExtremely = Scripts.options(
         "Not at all",
         "Slightly",
         "Moderately",
@@ -22,7 +23,8 @@ public class BCPTSymptomsSurvey {
         "Extremely"
     );
     
-    public static Survey create() {
+    @Override
+    public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName("BCS Symptoms Survey");
         survey.setIdentifier("BCSSymptomsSurvey");
@@ -50,13 +52,14 @@ public class BCPTSymptomsSurvey {
             .build();
     }
     
-    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+    @Override
+    public SchedulePlan createSchedulePlan(String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Symptoms Survey Schedule Plan");
         
         Schedule schedule = new Schedule();
         schedule.setLabel("Symptoms Survey Schedule");
-        schedule.setDelay("P2D");
+        schedule.setDelay("P4D");
         schedule.setScheduleType(ScheduleType.ONCE);
 
         SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);

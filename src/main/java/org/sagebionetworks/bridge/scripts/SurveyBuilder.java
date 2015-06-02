@@ -9,6 +9,7 @@ import org.sagebionetworks.bridge.sdk.models.surveys.IntegerConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.MultiValueConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.StringConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
+import org.sagebionetworks.bridge.sdk.models.surveys.SurveyInfoScreen;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestion;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyRule;
@@ -37,6 +38,14 @@ public class SurveyBuilder {
         q.setPromptDetail(promptDetail);
         survey.getElements().add(q);
         return q;
+    }
+    public SurveyBuilder info(String identifier, String prompt, String promptDetail) {
+        SurveyInfoScreen screen = new SurveyInfoScreen();
+        screen.setIdentifier(identifier);
+        screen.setPrompt(promptDetail);
+        screen.setPromptDetail(promptDetail);
+        survey.getElements().add(screen);
+        return this;
     }
     public SurveyBuilder multilineText(String identifier, String prompt, String promptDetail) {
         SurveyQuestion q = add(identifier, prompt, promptDetail);

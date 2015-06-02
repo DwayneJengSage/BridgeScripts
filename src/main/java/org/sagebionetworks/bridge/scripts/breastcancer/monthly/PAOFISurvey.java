@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -14,9 +15,9 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class PAOFISurvey {
+public class PAOFISurvey implements SurveyProvider {
     
-    private static List<SurveyQuestionOption> almostAlwaysToAlmostNever = Lists.newArrayList(
+    private List<SurveyQuestionOption> almostAlwaysToAlmostNever = Lists.newArrayList(
         new SurveyQuestionOption("Almost always", "1"),
         new SurveyQuestionOption("Very often", "2"),
         new SurveyQuestionOption("Fairly often", "3"),
@@ -25,7 +26,8 @@ public class PAOFISurvey {
         new SurveyQuestionOption("Almost never", "6")
     );
     
-    public static Survey create() {
+    @Override
+    public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName("Assessment of Functioning");
         survey.setIdentifier("PAOFI");
@@ -63,7 +65,8 @@ public class PAOFISurvey {
             .build();
     }
     
-    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+    @Override
+    public SchedulePlan createSchedulePlan(String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Assessment of Functioning Schedule Plan");
         

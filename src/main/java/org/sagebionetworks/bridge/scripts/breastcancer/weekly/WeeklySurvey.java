@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -14,9 +15,9 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class WeeklySurvey {
+public class WeeklySurvey implements SurveyProvider {
     
-    private static List<SurveyQuestionOption> slightToExtremely = Lists.newArrayList(
+    private List<SurveyQuestionOption> slightToExtremely = Lists.newArrayList(
         new SurveyQuestionOption("Very slightly or not at all", "1"),
         new SurveyQuestionOption("A little", "2"),
         new SurveyQuestionOption("Moderately", "3"),
@@ -24,11 +25,12 @@ public class WeeklySurvey {
         new SurveyQuestionOption("Extremely", "5")
     );
 
-    private static List<SurveyQuestionOption> oftenToRarely = Scripts.options(
+    private List<SurveyQuestionOption> oftenToRarely = Scripts.options(
         "Often", "Sometimes", "Never/Rarely"
     );
     
-    public static Survey create() {
+    @Override
+    public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setIdentifier("BCSweeklySurvey");
         survey.setName("Weekly Survey");
@@ -65,7 +67,8 @@ public class WeeklySurvey {
             .build();
     }
     
-    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+    @Override
+    public SchedulePlan createSchedulePlan(String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Weekly Survey Schedule Plan");
         

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.scripts.enumerations.YesNoList;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
@@ -13,44 +14,44 @@ import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
-public class SF36Survey {
+public class SF36Survey implements SurveyProvider {
     
-    private static List<SurveyQuestionOption> yesNo = new YesNoList();
+    private List<SurveyQuestionOption> yesNo = new YesNoList();
  
-    private static List<SurveyQuestionOption> excellentToPoor = Scripts.options(
+    private List<SurveyQuestionOption> excellentToPoor = Scripts.options(
         "Excellent",
         "Very Good",
         "Good",
         "Fair",
         "Poor"
     );
-    private static List<SurveyQuestionOption> noneToSevere = Scripts.options(
+    private List<SurveyQuestionOption> noneToSevere = Scripts.options(
         "None",
         "Very mild",
         "Mild",
         "Moderate",
         "Severe"
     );
-    private static List<SurveyQuestionOption> muchBetterToMuchWorse = Scripts.options(
+    private List<SurveyQuestionOption> muchBetterToMuchWorse = Scripts.options(
         "Much better now than one year ago",
         "Somewhat better now than one year ago",
         "About the same",
         "Somewhat worse than one year ago",
         "Much worse than one year ago"
     );
-    private static List<SurveyQuestionOption> limitedToNotLimited = Scripts.options(
+    private List<SurveyQuestionOption> limitedToNotLimited = Scripts.options(
         "Yes, limited a lot",
         "Yes, limited a little",
         "No, not limited at all"
     );
-    private static List<SurveyQuestionOption> notAtAllToExtremely = Scripts.options(
+    private List<SurveyQuestionOption> notAtAllToExtremely = Scripts.options(
         "Not at all",
         "Slightly",
         "Moderately",
         "Quite a bit",
         "Extremely"
     );
-    private static List<SurveyQuestionOption> allToNoneOfTheTime = Scripts.options(
+    private List<SurveyQuestionOption> allToNoneOfTheTime = Scripts.options(
         "All of the time",
         "Most of the time",
         "A good bit of the time",
@@ -58,14 +59,15 @@ public class SF36Survey {
         "A little of the time",
         "None of the time"
     );
-    private static List<SurveyQuestionOption> trueToFalse = Scripts.options(
+    private List<SurveyQuestionOption> trueToFalse = Scripts.options(
         "Definitely True",
         "Mostly True",
         "Mostly False",
         "Definitely False"
     );
     
-    public static Survey create() {
+    @Override
+    public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName("SF36 Survey");
         survey.setIdentifier("SF36");
@@ -110,7 +112,8 @@ public class SF36Survey {
             .build();
     }
     
-    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+    @Override
+    public SchedulePlan createSchedulePlan(String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("SF36 Survey Schedule Plan");
         

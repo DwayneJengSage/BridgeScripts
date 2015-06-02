@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
@@ -14,16 +15,17 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class PHQ8GAD7Survey {
+public class PHQ8GAD7Survey implements SurveyProvider {
     
-    private static List<SurveyQuestionOption> notAtAllToEveryDay = Lists.newArrayList(
+    private List<SurveyQuestionOption> notAtAllToEveryDay = Lists.newArrayList(
         new SurveyQuestionOption("Not at all", "0"),
         new SurveyQuestionOption("Several days", "1"),
         new SurveyQuestionOption("More than half the days", "2"),
         new SurveyQuestionOption("Nearly every day", "3")
     );
     
-    public static Survey create() {
+    @Override
+    public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName("PHQ8-GAD7 Survey");
         survey.setIdentifier("PHQ8-GAD7");
@@ -46,7 +48,8 @@ public class PHQ8GAD7Survey {
             .build();
     }
     
-    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+    @Override
+    public SchedulePlan createSchedulePlan(String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("PHQ8-GAD7 Survey Schedule Plan");
         
