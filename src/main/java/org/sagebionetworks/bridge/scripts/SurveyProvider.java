@@ -7,6 +7,6 @@ public interface SurveyProvider {
 
     public Survey createSurvey();
     
-    public SchedulePlan createSchedulePlan(String surveyGuid);
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid);
     
 }

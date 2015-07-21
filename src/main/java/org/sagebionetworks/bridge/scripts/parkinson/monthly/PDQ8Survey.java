@@ -38,7 +38,7 @@ public class PDQ8Survey implements SurveyProvider {
     }
 
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("PDQ8 Survey Schedule Plan");
         
@@ -50,8 +50,7 @@ public class PDQ8Survey implements SurveyProvider {
         schedule.setExpires("P21D");
         schedule.addTimes("10:00");
 
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Monthly Survey", reference);
+        Activity activity = new Activity("PD Questionnaire", "8 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

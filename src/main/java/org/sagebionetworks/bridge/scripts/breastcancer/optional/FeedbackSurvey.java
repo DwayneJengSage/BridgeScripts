@@ -1,6 +1,5 @@
 package org.sagebionetworks.bridge.scripts.breastcancer.optional;
 
-import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
@@ -32,7 +31,7 @@ public class FeedbackSurvey implements SurveyProvider {
     }
     
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Study Feedback Schedule Plan");
         
@@ -41,8 +40,7 @@ public class FeedbackSurvey implements SurveyProvider {
         schedule.setScheduleType(ScheduleType.ONCE);
         schedule.setEventId("survey:"+surveyGuid+":finished,enrollment");
 
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Study Feedback", reference);
+        Activity activity = new Activity("Study Feedback", "1 Question", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

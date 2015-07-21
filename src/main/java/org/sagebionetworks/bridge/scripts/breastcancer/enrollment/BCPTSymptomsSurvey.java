@@ -53,7 +53,7 @@ public class BCPTSymptomsSurvey implements SurveyProvider {
     }
     
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Symptoms Survey Schedule Plan");
         
@@ -61,9 +61,8 @@ public class BCPTSymptomsSurvey implements SurveyProvider {
         schedule.setLabel("Symptoms Survey Schedule");
         schedule.setDelay("P4D");
         schedule.setScheduleType(ScheduleType.ONCE);
-
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Symptoms Survey", reference);
+        
+        Activity activity = new Activity("Symptoms Survey", "20 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

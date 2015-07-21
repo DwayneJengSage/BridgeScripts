@@ -163,20 +163,19 @@ public class MDSUPDRSSurvey implements SurveyProvider {
     }
 
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("MDS-UPDRS Survey Schedule Plan");
         
         Schedule schedule = new Schedule();
         schedule.setLabel("MDS-UPDRS Survey Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P1W");
-        schedule.setInterval("P1W");
+        schedule.setDelay("P2D");
+        schedule.setInterval("P1M");
         schedule.setExpires("P6D");
         schedule.addTimes("10:00");
         
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Weekly Survey", reference);
+        Activity activity = new Activity("PD Rating Scale", "21 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

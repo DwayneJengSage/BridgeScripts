@@ -113,20 +113,19 @@ public class SF36Survey implements SurveyProvider {
     }
     
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("SF36 Survey Schedule Plan");
         
         Schedule schedule = new Schedule();
         schedule.setLabel("SF36 Survey Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P3M");
+        schedule.setDelay("P5D");
         schedule.setInterval("P3M");
         schedule.setExpires("P2M21D");
         schedule.addTimes("10:00");
         
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("SF36 Survey", reference);
+        Activity activity = new Activity("General Health Survey", "36 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

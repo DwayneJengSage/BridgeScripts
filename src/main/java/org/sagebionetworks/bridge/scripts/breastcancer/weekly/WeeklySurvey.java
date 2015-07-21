@@ -68,20 +68,19 @@ public class WeeklySurvey implements SurveyProvider {
     }
     
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Weekly Survey Schedule Plan");
         
         Schedule schedule = new Schedule();
         schedule.setLabel("Weekly Survey Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P1W");
-        schedule.setInterval("P1W");
+        schedule.setDelay("P6D");
+        schedule.setInterval("P7D");
         schedule.setExpires("P6D");
         schedule.addTimes("10:00");
         
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Weekly Survey", reference);
+        Activity activity = new Activity("Weekly Survey", "28 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

@@ -1,6 +1,5 @@
 package org.sagebionetworks.bridge.scripts.breastcancer.enrollment;
 
-import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.scripts.enumerations.YesNoList;
@@ -33,7 +32,7 @@ public class ParQPlusSurvey implements SurveyProvider {
     }
     
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("ParQ+ Schedule Plan");
         
@@ -42,8 +41,7 @@ public class ParQPlusSurvey implements SurveyProvider {
         schedule.setDelay("P2D");
         schedule.setScheduleType(ScheduleType.ONCE);
 
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Physical Activity Readiness Questionnaire", reference);
+        Activity activity = new Activity("Exercise Readiness Survey", "10 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

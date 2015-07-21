@@ -2,7 +2,6 @@ package org.sagebionetworks.bridge.scripts.breastcancer.monthly;
 
 import java.util.List;
 
-import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
@@ -49,7 +48,7 @@ public class PHQ8GAD7Survey implements SurveyProvider {
     }
     
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("PHQ8-GAD7 Survey Schedule Plan");
         
@@ -61,8 +60,7 @@ public class PHQ8GAD7Survey implements SurveyProvider {
         schedule.setExpires("P21D");
         schedule.addTimes("10:00");
 
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("PHQ8-GAD7 Survey", reference);
+        Activity activity = new Activity("Personal Health Survey", "15 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

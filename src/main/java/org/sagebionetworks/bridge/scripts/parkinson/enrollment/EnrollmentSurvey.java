@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
+import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.scripts.enumerations.NumberList;
 import org.sagebionetworks.bridge.scripts.enumerations.UnitedStatesList;
 import org.sagebionetworks.bridge.scripts.enumerations.YesNoList;
@@ -17,12 +18,12 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class EnrollmentSurvey {
+public class EnrollmentSurvey implements SurveyProvider {
     
-    private static final List<SurveyQuestionOption> gender = Scripts.options(
+    private final List<SurveyQuestionOption> gender = Scripts.options(
         "Male", "Female", "Prefer not to answer"
     );
-    private static final List<SurveyQuestionOption> race = Scripts.options(
+    private final List<SurveyQuestionOption> race = Scripts.options(
         "Black or African",
         "Latino/Hispanic",
         "Native American",
@@ -34,7 +35,7 @@ public class EnrollmentSurvey {
         "White or Caucasian",
         "Mixed"
     );
-    private static final List<SurveyQuestionOption> education = Scripts.options(
+    private final List<SurveyQuestionOption> education = Scripts.options(
         "Some high school",
         "High School Diploma/GED",
         "Some college",
@@ -44,7 +45,7 @@ public class EnrollmentSurvey {
         "Master's Degree",
         "Doctoral Degree"
     );
-    private static final List<SurveyQuestionOption> employment = Scripts.options(
+    private final List<SurveyQuestionOption> employment = Scripts.options(
         "Employment for wages",
         "Self-employed",
         "Out of work and looking for work",
@@ -55,40 +56,40 @@ public class EnrollmentSurvey {
         "Retired",
         "Unable to work"
     );
-    private static final List<SurveyQuestionOption> maritalStatus = Scripts.options(
+    private final List<SurveyQuestionOption> maritalStatus = Scripts.options(
         "Single, never married",
         "Married or domestic partnership",
         "Widowed",
         "Divorced",
         "Separated"
     );
-    private static final List<SurveyQuestionOption> veryEasyToVeryDifficult = Scripts.options(
+    private final List<SurveyQuestionOption> veryEasyToVeryDifficult = Scripts.options(
         "Very easy",
         "Easy",
         "Neither easy nor difficult",
         "Difficult",
         "Very Difficult"
     );
-    private static final List<SurveyQuestionOption> yesNoNotSure = Scripts.options(
+    private final List<SurveyQuestionOption> yesNoNotSure = Scripts.options(
         "Yes", "No", "Not sure"
     );
-    private static final List<SurveyQuestionOption> yesNoVerbose = Lists.newArrayList(
+    private final List<SurveyQuestionOption> yesNoVerbose = Lists.newArrayList(
         new SurveyQuestionOption("Yes, I have done this", "true"),
         new SurveyQuestionOption("No, I have never done this", "false")
     );
-    private static final List<SurveyQuestionOption> didThis = Lists.newArrayList(
+    private final List<SurveyQuestionOption> didThis = Lists.newArrayList(
         new SurveyQuestionOption("Did this yesterday", "yes"),
         new SurveyQuestionOption("Did not do this yesterday", "no"),
         new SurveyQuestionOption("Don't know", "dont-know")
     );
-    private static final List<SurveyQuestionOption> provider = Scripts.options(
+    private final List<SurveyQuestionOption> provider = Scripts.options(
         "Parkinson Disease/Movement Disorder Specialist",
         "General Neurologist (non-Parkinson Disease specialist)",
         "Primary Care Doctor",
         "Nurse Practitioner or Physician's Assistant",
         "Don't know"
     );
-    private static final List<SurveyQuestionOption> diseases = Scripts.options(
+    private final List<SurveyQuestionOption> diseases = Scripts.options(
         "AIDS or HIV",
         "Acute Myocardial Infarction/Heart Attack",
         "Alcoholism",
@@ -129,12 +130,14 @@ public class EnrollmentSurvey {
         "Schizophrenia or Bipolar Disorder",
         "Stroke/Transient Ischemic Attack (TIA)",
         "Ulcer Disease",
-        "Urinary Tract infections"
+        "Urinary Tract infections",
+        "None of the above"
     );
     
-    public static Survey create() {
+    @Override
+    public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("Enrollment Survey");
+        survey.setName("Background Survey");
         survey.setIdentifier("EnrollmentSurvey");
         return new SurveyBuilder(survey)
             .number("age", "How old are you?", 18d, 100d)
@@ -168,7 +171,8 @@ public class EnrollmentSurvey {
             .build();
     }
     
-    public static SchedulePlan createSchedulePlan(String surveyGuid) {
+    @Override
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Enrollment Survey Schedule Plan");
         
@@ -176,11 +180,10 @@ public class EnrollmentSurvey {
         schedule.setLabel("Enrollment Survey Schedule");
         schedule.setScheduleType(ScheduleType.ONCE);
 
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Enrollment Survey", reference);
+        Activity activity = new Activity("Background Survey", "(One Time) 28 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
 
         plan.setSchedule(schedule);
         return plan;
-    }    
+    }
 }

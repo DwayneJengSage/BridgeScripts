@@ -165,7 +165,7 @@ public class BCSBackgroundSurvey implements SurveyProvider {
     }
     
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Background Survey Schedule Plan");
         
@@ -173,8 +173,7 @@ public class BCSBackgroundSurvey implements SurveyProvider {
         schedule.setLabel("Background Survey Schedule");
         schedule.setScheduleType(ScheduleType.ONCE);
 
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Background Survey", reference);
+        Activity activity = new Activity("Background Survey", "(One Time) 23 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
 
         plan.setSchedule(schedule);

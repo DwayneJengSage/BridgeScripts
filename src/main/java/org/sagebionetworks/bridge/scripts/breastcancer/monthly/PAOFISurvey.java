@@ -2,7 +2,6 @@ package org.sagebionetworks.bridge.scripts.breastcancer.monthly;
 
 import java.util.List;
 
-import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
@@ -66,20 +65,19 @@ public class PAOFISurvey implements SurveyProvider {
     }
     
     @Override
-    public SchedulePlan createSchedulePlan(String surveyGuid) {
+    public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
         plan.setLabel("Assessment of Functioning Schedule Plan");
         
         Schedule schedule = new Schedule();
         schedule.setLabel("Assessment of Functioning Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P1M");
+        schedule.setDelay("P3D");
         schedule.setInterval("P1M");
         schedule.setExpires("P21D");
         schedule.addTimes("10:00");
 
-        SurveyReference reference = Scripts.getPublishedSurveyReference(surveyGuid);
-        Activity activity = new Activity("Assessment of Functioning", reference);
+        Activity activity = new Activity("Assessment of Functioning", "29 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

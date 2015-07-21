@@ -42,7 +42,8 @@ public class SurveyBuilder {
     public SurveyBuilder info(String identifier, String prompt, String promptDetail) {
         SurveyInfoScreen screen = new SurveyInfoScreen();
         screen.setIdentifier(identifier);
-        screen.setPrompt(promptDetail);
+        screen.setTitle(prompt);
+        screen.setPrompt(prompt);
         screen.setPromptDetail(promptDetail);
         survey.getElements().add(screen);
         return this;
