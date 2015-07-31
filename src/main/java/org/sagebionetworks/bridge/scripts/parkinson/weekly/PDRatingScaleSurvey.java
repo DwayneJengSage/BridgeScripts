@@ -15,7 +15,9 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class MDSUPDRSSurvey implements SurveyProvider {
+public class PDRatingScaleSurvey implements SurveyProvider {
+    
+    private static final String NAME = "PD Rating Scale";
 
     List<SurveyQuestionOption> oftenToRarely = Scripts.options("Often", "Sometimes", "Never/Rarely");
     
@@ -135,7 +137,7 @@ public class MDSUPDRSSurvey implements SurveyProvider {
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("MDS-UPDRS Survey");
+        survey.setName(NAME);
         survey.setIdentifier("MDSUPDRS");
         return new SurveyBuilder(survey)
             .slider("EQ-5D1", "How good or bad is your health TODAY (0 means the worst health you can imagine, 100 means the best health you can imagine)?", 0, 100)
@@ -165,17 +167,17 @@ public class MDSUPDRSSurvey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("MDS-UPDRS Survey Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("MDS-UPDRS Survey Schedule");
+        schedule.setLabel(NAME + " Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P2D");
+        //schedule.setDelay("P2D");
         schedule.setInterval("P1M");
         schedule.setExpires("P6D");
         schedule.addTimes("10:00");
         
-        Activity activity = new Activity("PD Rating Scale", "21 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "21 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

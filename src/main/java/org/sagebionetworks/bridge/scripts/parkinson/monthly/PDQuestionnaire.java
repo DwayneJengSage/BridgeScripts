@@ -13,7 +13,9 @@ import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
-public class PDQ8Survey implements SurveyProvider {
+public class PDQuestionnaire implements SurveyProvider {
+    
+    private static final String NAME = "PD Questionnaire";
 
     private List<SurveyQuestionOption> neverToAlways = Scripts.options(
         "Never", "Occasionally", "Sometimes", "Often", "Always"              
@@ -23,7 +25,7 @@ public class PDQ8Survey implements SurveyProvider {
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("PDQ8 Survey");
+        survey.setName(NAME);
         survey.setIdentifier("PDQ8");
         return new SurveyBuilder(survey)
             .radio("PDQ8-1", "Due to Parkinson’s disease, how often during the last month have you had difficulty getting around in public?", false, neverToAlways)
@@ -40,17 +42,17 @@ public class PDQ8Survey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("PDQ8 Survey Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("PDQ8 Survey Schedule");
+        schedule.setLabel(NAME + " Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P1M");
+        //schedule.setDelay("P1M");
         schedule.setInterval("P1M");
         schedule.setExpires("P21D");
         schedule.addTimes("10:00");
 
-        Activity activity = new Activity("PD Questionnaire", "8 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "8 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

@@ -14,7 +14,9 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class PSQISurvey implements SurveyProvider {
+public class SleepQualitySurvey implements SurveyProvider {
+    
+    private static final String NAME = "Sleep Quality Survey";
 
     private List<SurveyQuestionOption> timesPerMonth = Lists.newArrayList(
         new SurveyQuestionOption("Not during the past month", "0"),
@@ -26,7 +28,7 @@ public class PSQISurvey implements SurveyProvider {
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("Sleep Quality Survey");
+        survey.setName(NAME);
         survey.setIdentifier("PSQI");
         
         return new SurveyBuilder(survey)
@@ -53,17 +55,17 @@ public class PSQISurvey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("Sleep Quality Survey Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("Sleep Quality Survey Schedule");
+        schedule.setLabel(NAME + " Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P4D");
+        //schedule.setDelay("P4D");
         schedule.setInterval("P1M");
         schedule.setExpires("P21D");
         schedule.addTimes("10:00");
 
-        Activity activity = new Activity("Sleep Quality Survey", "18 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "18 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

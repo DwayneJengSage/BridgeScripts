@@ -15,7 +15,9 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class BCSBackgroundSurvey implements SurveyProvider {
+public class BackgroundSurvey implements SurveyProvider {
+    
+    private static final String NAME = "Background Survey";
     
     private List<SurveyQuestionOption> races = Scripts.options(
         "White",
@@ -134,7 +136,7 @@ public class BCSBackgroundSurvey implements SurveyProvider {
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("BCS Background Survey");
+        survey.setName(NAME);
         survey.setIdentifier("BCSbackgroundSurvey");
         return new SurveyBuilder(survey)
             .slider("BCPT1", "What is your age?", 18, 80)
@@ -167,13 +169,13 @@ public class BCSBackgroundSurvey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("Background Survey Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("Background Survey Schedule");
+        schedule.setLabel(NAME + " Schedule");
         schedule.setScheduleType(ScheduleType.ONCE);
 
-        Activity activity = new Activity("Background Survey", "(One Time) 23 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "(One Time) 23 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
 
         plan.setSchedule(schedule);

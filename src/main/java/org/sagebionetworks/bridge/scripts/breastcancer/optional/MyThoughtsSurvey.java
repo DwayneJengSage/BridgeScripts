@@ -13,10 +13,12 @@ import org.sagebionetworks.bridge.sdk.models.surveys.UiHint;
 
 public class MyThoughtsSurvey implements SurveyProvider {
     
+    private static final String NAME = "My Thoughts";
+    
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("My Thoughts");
+        survey.setName(NAME);
         survey.setIdentifier("mythoughts");
         
         SurveyQuestion q = new SurveyQuestion();
@@ -41,14 +43,14 @@ public class MyThoughtsSurvey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("My Thoughts Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("My Thoughts Schedule");
+        schedule.setLabel(NAME + " Schedule");
         schedule.setScheduleType(ScheduleType.ONCE);
         schedule.setEventId("survey:"+surveyGuid+":finished,enrollment");
 
-        Activity activity = new Activity("My Thoughts", "2 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "2 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

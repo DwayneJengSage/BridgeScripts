@@ -13,7 +13,9 @@ import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
-public class BCPTSymptomsSurvey implements SurveyProvider {
+public class SymptomsSurvey implements SurveyProvider {
+    
+    private static final String NAME = "Symptoms Survey";
     
     private final List<SurveyQuestionOption> notAtAllToExtremely = Scripts.options(
         "Not at all",
@@ -26,7 +28,7 @@ public class BCPTSymptomsSurvey implements SurveyProvider {
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("BCS Symptoms Survey");
+        survey.setName(NAME);
         survey.setIdentifier("BCSSymptomsSurvey");
         return new SurveyBuilder(survey)
             .radio("q58a", "Have hot flashes bothered you in the last week?", false, notAtAllToExtremely)
@@ -55,14 +57,14 @@ public class BCPTSymptomsSurvey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("Symptoms Survey Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("Symptoms Survey Schedule");
-        schedule.setDelay("P4D");
+        schedule.setLabel(NAME + " Schedule");
+        //schedule.setDelay("P4D");
         schedule.setScheduleType(ScheduleType.ONCE);
         
-        Activity activity = new Activity("Symptoms Survey", "20 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "20 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

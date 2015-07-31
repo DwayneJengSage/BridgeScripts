@@ -14,7 +14,9 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class PHQ8GAD7Survey implements SurveyProvider {
+public class PersonalHealthSurvey implements SurveyProvider {
+    
+    private static final String NAME = "Personal Health Survey";
     
     private List<SurveyQuestionOption> notAtAllToEveryDay = Lists.newArrayList(
         new SurveyQuestionOption("Not at all", "0"),
@@ -26,7 +28,7 @@ public class PHQ8GAD7Survey implements SurveyProvider {
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("PHQ8-GAD7 Survey");
+        survey.setName(NAME);
         survey.setIdentifier("PHQ8-GAD7");
         return new SurveyBuilder(survey)
             .radio("PHQ8-1", "Over the last TWO WEEKS how often have you experienced little interest or pleasure in doing things?", false, notAtAllToEveryDay)
@@ -50,17 +52,17 @@ public class PHQ8GAD7Survey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("PHQ8-GAD7 Survey Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("PHQ8-GAD7 Survey Survey Schedule");
+        schedule.setLabel(NAME + " Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P1M");
+        //schedule.setDelay("P1M");
         schedule.setInterval("P1M");
         schedule.setExpires("P21D");
         schedule.addTimes("10:00");
 
-        Activity activity = new Activity("Personal Health Survey", "15 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "15 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

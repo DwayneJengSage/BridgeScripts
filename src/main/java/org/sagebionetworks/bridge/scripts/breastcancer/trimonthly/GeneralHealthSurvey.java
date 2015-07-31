@@ -14,8 +14,10 @@ import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
-public class SF36Survey implements SurveyProvider {
+public class GeneralHealthSurvey implements SurveyProvider {
     
+    private static final String NAME = "General Health Survey";
+;    
     private List<SurveyQuestionOption> yesNo = new YesNoList();
  
     private List<SurveyQuestionOption> excellentToPoor = Scripts.options(
@@ -69,7 +71,7 @@ public class SF36Survey implements SurveyProvider {
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("SF36 Survey");
+        survey.setName(NAME);
         survey.setIdentifier("SF36");
         
         return new SurveyBuilder(survey)
@@ -115,17 +117,17 @@ public class SF36Survey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("SF36 Survey Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("SF36 Survey Schedule");
+        schedule.setLabel(NAME + " Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P5D");
+        //schedule.setDelay("P5D");
         schedule.setInterval("P3M");
         schedule.setExpires("P2M21D");
         schedule.addTimes("10:00");
         
-        Activity activity = new Activity("General Health Survey", "36 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "36 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

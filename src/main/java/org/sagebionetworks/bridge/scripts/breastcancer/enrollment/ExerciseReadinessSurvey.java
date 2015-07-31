@@ -10,12 +10,14 @@ import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
 import org.sagebionetworks.bridge.sdk.models.schedules.SurveyReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 
-public class ParQPlusSurvey implements SurveyProvider {
+public class ExerciseReadinessSurvey implements SurveyProvider {
+    
+    private static final String NAME = "Exercise Readiness Survey";
     
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("Physical Activity Readiness Questionnaire");
+        survey.setName(NAME);
         survey.setIdentifier("PAR-Q");
         return new SurveyBuilder(survey)
             .info("info1", "Physical Activity Readiness Questionnaire: PAR-Q", "Regular physical activity is fun and healthy, and increasingly more people are starting to become more active every day. Being more active is very safe for most people. However, some people should check with their doctor before they start becoming much more physically active. Source: Canadian Society for Exercise Physiology, © 2012. Used with permission.")
@@ -34,14 +36,14 @@ public class ParQPlusSurvey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("ParQ+ Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("ParQ+ Schedule");
-        schedule.setDelay("P2D");
+        schedule.setLabel(NAME + " Schedule");
+        //schedule.setDelay("P2D");
         schedule.setScheduleType(ScheduleType.ONCE);
 
-        Activity activity = new Activity("Exercise Readiness Survey", "10 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "10 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

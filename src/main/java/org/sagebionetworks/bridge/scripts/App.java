@@ -3,19 +3,18 @@ package org.sagebionetworks.bridge.scripts;
 import java.util.List;
 import java.util.Properties;
 
-import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.BCPTSymptomsSurvey;
-import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.BCSBackgroundSurvey;
-import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.ParQPlusSurvey;
-import org.sagebionetworks.bridge.scripts.breastcancer.monthly.PAOFISurvey;
-import org.sagebionetworks.bridge.scripts.breastcancer.monthly.PHQ8GAD7Survey;
-import org.sagebionetworks.bridge.scripts.breastcancer.monthly.PSQISurvey;
+import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.SymptomsSurvey;
+import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.BackgroundSurvey;
+import org.sagebionetworks.bridge.scripts.breastcancer.enrollment.ExerciseReadinessSurvey;
+import org.sagebionetworks.bridge.scripts.breastcancer.monthly.AssessmentOfFunctioningSurvey;
+import org.sagebionetworks.bridge.scripts.breastcancer.monthly.PersonalHealthSurvey;
+import org.sagebionetworks.bridge.scripts.breastcancer.monthly.SleepQualitySurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.optional.FeedbackSurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.optional.MyThoughtsSurvey;
-import org.sagebionetworks.bridge.scripts.breastcancer.trimonthly.SF36Survey;
+import org.sagebionetworks.bridge.scripts.breastcancer.trimonthly.GeneralHealthSurvey;
 import org.sagebionetworks.bridge.scripts.breastcancer.weekly.WeeklySurvey;
-import org.sagebionetworks.bridge.scripts.parkinson.enrollment.EnrollmentSurvey;
-import org.sagebionetworks.bridge.scripts.parkinson.monthly.PDQ8Survey;
-import org.sagebionetworks.bridge.scripts.parkinson.weekly.MDSUPDRSSurvey;
+import org.sagebionetworks.bridge.scripts.parkinson.monthly.PDQuestionnaire;
+import org.sagebionetworks.bridge.scripts.parkinson.weekly.PDRatingScaleSurvey;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.DeveloperClient;
@@ -26,7 +25,6 @@ import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
 import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
-import org.sagebionetworks.bridge.sdk.models.schedules.SimpleScheduleStrategy;
 import org.sagebionetworks.bridge.sdk.models.schedules.TaskReference;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
@@ -40,48 +38,18 @@ public class App {
         new App().createMPowerSurveys(Environment.STAGING);
     }
     
-    public void listSchedules(String studyId) {
-        DeveloperClient client = signIn(Environment.STAGING, studyId);
-        
-        for (SchedulePlan plan : client.getSchedulePlans()) {
-            System.out.println(plan.getLabel() + " " + ((SimpleScheduleStrategy)plan.getStrategy()).getSchedule().getCronTrigger());
-        }
-    }
-    
     @SuppressWarnings("unchecked")
     public void createShareTheJourneySurveys(Environment env) throws Exception {
-        DeveloperClient client = signIn(env, "breastcancer2");
-        
-        /* Some missing stuff, I think:
-          {
-          "scheduleType"    : "once",
-          "tasks"           : [{
-              "taskTitle": "Exercise Motivator",
-              "taskID": "4-APHExerciseSurvey-7259AC18-D711-47A6-ADBD-6CFCECDED1DF",
-              "taskClassName": "APHExerciseSurveyTaskViewController",
-              "taskCompletionTimeString" : "2 Minutes"
-          }]
-          },
-          {
-          "scheduleType"    : "recurring",
-          "scheduleString"  : "0 5 * * *",
-          "tasks"           : [{
-              "taskTitle": "Daily Check-in",
-              "taskID": "3-APHMoodSurvey-7259AC18-D711-47A6-ADBD-6CFCECDED1DF",
-              "taskClassName": "APHMoodSurveyTaskViewController",
-              "taskCompletionTimeString" : "2 Minutes"
-          }]
-          }, 
-         */
+        DeveloperClient client = signIn(env, "breastcancer");
         
         List<Class<? extends SurveyProvider>> providers = Lists.newArrayList(
-            BCPTSymptomsSurvey.class, 
-            BCSBackgroundSurvey.class,
-            ParQPlusSurvey.class,
-            PAOFISurvey.class,
-            PHQ8GAD7Survey.class, 
-            PSQISurvey.class,
-            SF36Survey.class,
+            SymptomsSurvey.class, 
+            BackgroundSurvey.class,
+            ExerciseReadinessSurvey.class,
+            AssessmentOfFunctioningSurvey.class,
+            PersonalHealthSurvey.class, 
+            SleepQualitySurvey.class,
+            GeneralHealthSurvey.class,
             WeeklySurvey.class,
             FeedbackSurvey.class, 
             MyThoughtsSurvey.class
@@ -94,12 +62,12 @@ public class App {
     }
     @SuppressWarnings("unchecked")
     public void createMPowerSurveys(Environment env) throws Exception {
-        DeveloperClient client = signIn(env, "parkinson2");
+        DeveloperClient client = signIn(env, "parkinson");
         
         List<Class<? extends SurveyProvider>> providers = Lists.newArrayList(
-            EnrollmentSurvey.class,
-            PDQ8Survey.class,
-            MDSUPDRSSurvey.class,
+            org.sagebionetworks.bridge.scripts.parkinson.enrollment.BackgroundSurvey.class,
+            PDQuestionnaire.class,
+            PDRatingScaleSurvey.class,
             org.sagebionetworks.bridge.scripts.parkinson.optional.FeedbackSurvey.class,
             org.sagebionetworks.bridge.scripts.parkinson.optional.MyThoughtsSurvey.class
         );
@@ -163,8 +131,9 @@ public class App {
         Schedule schedule = new Schedule();
         schedule.setLabel(label + " Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay(delay);
-        schedule.setDelay(interval);
+        //schedule.setDelay(delay);
+        schedule.setInterval(interval);
+        schedule.addTimes("06:00");
 
         Activity activity = new Activity(label, labelDetail, new TaskReference(taskId));
         schedule.addActivity(activity);

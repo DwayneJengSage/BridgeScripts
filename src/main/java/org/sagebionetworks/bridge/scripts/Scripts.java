@@ -13,6 +13,10 @@ import org.sagebionetworks.bridge.sdk.Config.Props;
 import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.exceptions.ConsentRequiredException;
+import org.sagebionetworks.bridge.sdk.models.ResourceList;
+import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
+import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
+import org.sagebionetworks.bridge.sdk.models.schedules.SimpleScheduleStrategy;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
 import org.sagebionetworks.bridge.sdk.models.users.SharingScope;
@@ -82,6 +86,15 @@ public class Scripts {
             list.add(new SurveyQuestionOption(value));
         }
         return list;
+    }
+    
+    public static List<Activity> getActivities(ResourceList<SchedulePlan> plans) {
+        List<Activity> activities = Lists.newArrayList();
+        for (SchedulePlan plan : plans) {
+            Activity activity = ((SimpleScheduleStrategy)plan.getStrategy()).getSchedule().getActivities().get(0);
+            activities.add(activity);
+        }
+        return activities;
     }
     
 }

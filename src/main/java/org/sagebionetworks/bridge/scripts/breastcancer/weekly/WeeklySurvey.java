@@ -17,6 +17,8 @@ import com.google.common.collect.Lists;
 
 public class WeeklySurvey implements SurveyProvider {
     
+    private static final String NAME = "Weekly Survey";
+    
     private List<SurveyQuestionOption> slightToExtremely = Lists.newArrayList(
         new SurveyQuestionOption("Very slightly or not at all", "1"),
         new SurveyQuestionOption("A little", "2"),
@@ -32,8 +34,8 @@ public class WeeklySurvey implements SurveyProvider {
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
+        survey.setName(NAME);
         survey.setIdentifier("BCSweeklySurvey");
-        survey.setName("Weekly Survey");
         
         return new SurveyBuilder(survey)
             .slider("FSI-1", "Rate your level of fatigue on the day you felt MOST fatigued during the past week (10 is the most fatigued you can be):", 0, 10)
@@ -70,17 +72,17 @@ public class WeeklySurvey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("Weekly Survey Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("Weekly Survey Schedule");
+        schedule.setLabel(NAME + " Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P6D");
+        //schedule.setDelay("P6D");
         schedule.setInterval("P7D");
         schedule.setExpires("P6D");
         schedule.addTimes("10:00");
         
-        Activity activity = new Activity("Weekly Survey", "28 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "28 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);

@@ -14,7 +14,9 @@ import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 
 import com.google.common.collect.Lists;
 
-public class PAOFISurvey implements SurveyProvider {
+public class AssessmentOfFunctioningSurvey implements SurveyProvider {
+    
+    private static final String NAME = "Assessment of Functioning";
     
     private List<SurveyQuestionOption> almostAlwaysToAlmostNever = Lists.newArrayList(
         new SurveyQuestionOption("Almost always", "1"),
@@ -28,7 +30,7 @@ public class PAOFISurvey implements SurveyProvider {
     @Override
     public Survey createSurvey() {
         Survey survey = new Survey();
-        survey.setName("Assessment of Functioning");
+        survey.setName(NAME);
         survey.setIdentifier("PAOFI");
         
         return new SurveyBuilder(survey)
@@ -67,17 +69,17 @@ public class PAOFISurvey implements SurveyProvider {
     @Override
     public SchedulePlan createSchedulePlan(String surveyIdentifier, String surveyGuid) {
         SchedulePlan plan = new SchedulePlan();
-        plan.setLabel("Assessment of Functioning Schedule Plan");
+        plan.setLabel(NAME + " Schedule Plan");
         
         Schedule schedule = new Schedule();
-        schedule.setLabel("Assessment of Functioning Schedule");
+        schedule.setLabel(NAME + " Schedule");
         schedule.setScheduleType(ScheduleType.RECURRING);
-        schedule.setDelay("P3D");
+        //schedule.setDelay("P3D");
         schedule.setInterval("P1M");
         schedule.setExpires("P21D");
         schedule.addTimes("10:00");
 
-        Activity activity = new Activity("Assessment of Functioning", "29 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
+        Activity activity = new Activity(NAME, "29 Questions", new SurveyReference(surveyIdentifier, surveyGuid));
         schedule.addActivity(activity);
         
         plan.setSchedule(schedule);
