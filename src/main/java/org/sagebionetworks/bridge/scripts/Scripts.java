@@ -1,6 +1,8 @@
 package org.sagebionetworks.bridge.scripts;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.FileInputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -10,6 +12,7 @@ import org.joda.time.LocalDate;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.Config.Props;
+import org.sagebionetworks.bridge.sdk.DeveloperClient;
 import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.exceptions.ConsentRequiredException;
@@ -17,6 +20,7 @@ import org.sagebionetworks.bridge.sdk.models.ResourceList;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
 import org.sagebionetworks.bridge.sdk.models.schedules.SimpleScheduleStrategy;
+import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.surveys.SurveyQuestionOption;
 import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
 import org.sagebionetworks.bridge.sdk.models.users.SharingScope;
@@ -95,6 +99,19 @@ public class Scripts {
             activities.add(activity);
         }
         return activities;
+    }
+    
+    public static Survey getMostRecentSurveyByIdentifier(DeveloperClient client, String identifier) {
+        checkNotNull(client);
+        checkNotNull(identifier);
+        ResourceList<Survey> surveys = client.getAllSurveysMostRecent();
+        for (Survey survey : surveys) {
+            if (identifier.equals(survey.getIdentifier())) {
+                // But return it with the elements
+                return client.getSurvey(survey);
+            }
+        }
+        return null;
     }
     
 }

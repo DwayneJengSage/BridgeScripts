@@ -29,7 +29,7 @@ public class PersonalHealthSurvey implements SurveyProvider {
     public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName(NAME);
-        survey.setIdentifier("PHQ8-GAD7");
+        survey.setIdentifier("BCSPHQ8survey");
         return new SurveyBuilder(survey)
             .radio("PHQ8-1", "Over the last TWO WEEKS how often have you experienced little interest or pleasure in doing things?", false, notAtAllToEveryDay)
             .radio("PHQ8-2", "Over the last TWO WEEKS how often have you been feeling down, depressed, or hopeless?", false, notAtAllToEveryDay)

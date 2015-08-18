@@ -18,10 +18,15 @@ public class CreateStudy {
         Session session = ClientProvider.signIn(config.getAdminCredentials());
         AdminClient client = session.getAdminClient();
         
-        Study study = client.getStudy("api");
-        study.getUserProfileAttributes().add("phone");
-        study.getUserProfileAttributes().add("can_be_recontacted");
-        client.updateStudy(study);
+        // Password!1
+        Study study = new Study();
+        study.setIdentifier("ohsu-molemapper");
+        study.setName("Mole Mapper");
+        study.setSponsorName("OHSU & Sage Bionetworks");
+        study.setSupportEmail("molemapper@gmail.com");
+        study.setConsentNotificationEmail("WarOnMelanoma@ohsu.edu");
+        study.setTechnicalEmail("DanWebster13@gmail.com");
+        client.createStudy(study);
         session.signOut();
     }
 }

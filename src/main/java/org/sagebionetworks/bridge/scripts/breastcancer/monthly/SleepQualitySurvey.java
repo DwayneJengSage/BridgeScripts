@@ -29,7 +29,7 @@ public class SleepQualitySurvey implements SurveyProvider {
     public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName(NAME);
-        survey.setIdentifier("PSQI");
+        survey.setIdentifier("BCSPSQIsurvey");
         
         return new SurveyBuilder(survey)
             .time("PSQI-1", "What time have you usually gone to bed?")

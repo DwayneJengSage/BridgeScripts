@@ -72,7 +72,7 @@ public class GeneralHealthSurvey implements SurveyProvider {
     public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName(NAME);
-        survey.setIdentifier("SF36");
+        survey.setIdentifier("BCSSF36survey");
         
         return new SurveyBuilder(survey)
             .radio("SF36-1", "In general, would you say your health is: ", false, excellentToPoor)

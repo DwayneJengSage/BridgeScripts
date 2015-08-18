@@ -6,7 +6,6 @@ import org.sagebionetworks.bridge.scripts.Scripts;
 import org.sagebionetworks.bridge.scripts.SurveyBuilder;
 import org.sagebionetworks.bridge.scripts.SurveyProvider;
 import org.sagebionetworks.bridge.scripts.enumerations.NumberList;
-import org.sagebionetworks.bridge.scripts.enumerations.UnitedStatesList;
 import org.sagebionetworks.bridge.scripts.enumerations.YesNoList;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
@@ -144,12 +143,13 @@ public class BackgroundSurvey implements SurveyProvider {
         return new SurveyBuilder(survey)
             .number("age", "How old are you?", 18d, 100d)
             .radio("gender", "What is your sex?", false, gender)
-            .list("race", "Which race do you identify with?", true, race)
-            .list("Enter_State", "In which state do you reside?", true, new UnitedStatesList())
+            .list("race", "Which race do you identify with?", false, race)
+            .text("Enter_State", "In which state do you reside?", 2, 99)
             .radio("education", "What is the highest level of education that you have completed?", false, education)
             .radio("employment", "What is your current employment status?", false, employment)
             .radio("maritalStatus", "What is your current marital status?", false, maritalStatus)
-            .radio("care-taker", "Are you a spouse, partner or care-partner of someone who has Parkinson disease?", false, new YesNoList())
+            // This was mispelled in the original survey, so we must preserve the mispelling here
+            .radio("are-taker", "Are you a spouse, partner or care-partner of someone who has Parkinson disease?", false, new YesNoList())
             .radio("past-participation", "Have you ever participated in a research study or clinical trial on Parkinson disease before?", false, new YesNoList())
             .radio("smartphone", "How easy is it for you to use your smartphone?", false, veryEasyToVeryDifficult)
             .radio("phone-usage", "Do you ever use your smartphone to look for health or medical information online?", false, yesNoNotSure)
@@ -167,8 +167,8 @@ public class BackgroundSurvey implements SurveyProvider {
             .radio("surgery", "Have you ever had any surgery for Parkinson disease, other than DBS?", false, new YesNoList())
             .radio("smoked", "Have you ever smoked?", false, new YesNoList()).onNoSkipTo("health-history")
             .number("years-smoking", "How many years have you smoked?")
-            .list("packs-per-day", "On average, how many packs did you smoke each day?", false, new NumberList(1,5))
-            .date("last-smoked", "When is the last time you smoked (put todays date if you are still smoking)?")
+            .list("packs-per-day", "On average, how many packs did you smoke each day?", false, false, new NumberList(1,5))
+            .dateTime("last-smoked", "When is the last time you smoked (put todays date if you are still smoking)?")
             .list("health-history", "Has a doctor ever told you that you have, or have you ever taken medication for any of the following conditions? Please check all that apply.", true, diseases)
             .build();
     }

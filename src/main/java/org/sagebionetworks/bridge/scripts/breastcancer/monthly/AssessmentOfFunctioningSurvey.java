@@ -31,7 +31,7 @@ public class AssessmentOfFunctioningSurvey implements SurveyProvider {
     public Survey createSurvey() {
         Survey survey = new Survey();
         survey.setName(NAME);
-        survey.setIdentifier("PAOFI");
+        survey.setIdentifier("BCSPAOFI");
         
         return new SurveyBuilder(survey)
             .radio("PAOFI-1", "How often do you forget something that has been told to you within the last day or two?", false, almostAlwaysToAlmostNever)

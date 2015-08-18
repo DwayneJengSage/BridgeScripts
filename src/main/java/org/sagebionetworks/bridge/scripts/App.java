@@ -15,17 +15,20 @@ import org.sagebionetworks.bridge.scripts.breastcancer.trimonthly.GeneralHealthS
 import org.sagebionetworks.bridge.scripts.breastcancer.weekly.WeeklySurvey;
 import org.sagebionetworks.bridge.scripts.parkinson.monthly.PDQuestionnaire;
 import org.sagebionetworks.bridge.scripts.parkinson.weekly.PDRatingScaleSurvey;
+import org.sagebionetworks.bridge.sdk.AdminClient;
 import org.sagebionetworks.bridge.sdk.ClientProvider;
 import org.sagebionetworks.bridge.sdk.Config;
 import org.sagebionetworks.bridge.sdk.DeveloperClient;
 import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
+import org.sagebionetworks.bridge.sdk.exceptions.BridgeServerException;
 import org.sagebionetworks.bridge.sdk.models.holders.GuidCreatedOnVersionHolder;
 import org.sagebionetworks.bridge.sdk.models.schedules.Activity;
 import org.sagebionetworks.bridge.sdk.models.schedules.Schedule;
 import org.sagebionetworks.bridge.sdk.models.schedules.SchedulePlan;
 import org.sagebionetworks.bridge.sdk.models.schedules.ScheduleType;
 import org.sagebionetworks.bridge.sdk.models.schedules.TaskReference;
+import org.sagebionetworks.bridge.sdk.models.studies.Study;
 import org.sagebionetworks.bridge.sdk.models.surveys.Survey;
 import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
@@ -34,13 +37,65 @@ import com.google.common.collect.Lists;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        new App().createShareTheJourneySurveys(Environment.STAGING);
-        new App().createMPowerSurveys(Environment.STAGING);
+        new App().run();
+        new App().createShareTheJourneySurveys(Environment.LOCAL);
+        new App().createMPowerSurveys(Environment.LOCAL);
+    }
+
+    private void run() {
+        Config config = ClientProvider.getConfig();
+        config.set(Environment.LOCAL);
+        Session session = ClientProvider.signIn(config.getAdminCredentials());
+        AdminClient client = session.getAdminClient();
+
+        Study study = new Study();
+        study.setIdentifier("breastcancer");
+        study.setName("Share The Journey");
+        study.setSponsorName("Share The Journey Team");
+        study.setSupportEmail("bridge-testing+support@sagebase.org");
+        study.setTechnicalEmail("bridge-testing+technical@sagebase.org");
+        study.setConsentNotificationEmail("bridge-testing+consent@sagebase.org");
+        client.createStudy(study);
+        
+        study = new Study();
+        study.setIdentifier("parkinson");
+        study.setName("mPower");
+        study.setSponsorName("mPower");
+        study.setSupportEmail("bridge-testing+support@sagebase.org");
+        study.setTechnicalEmail("bridge-testing+technical@sagebase.org");
+        study.setConsentNotificationEmail("bridge-testing+consent@sagebase.org");
+        client.createStudy(study);
+        /*
+        DeveloperClient client = signIn(Environment.STAGING, "breastcancer");
+        Survey survey = Scripts.getMostRecentSurveyByIdentifier(client, "BCSbackgroundSurvey");
+        
+        Survey updated = new BackgroundSurvey().createSurvey();
+        updated.setGuidCreatedOnVersionHolder(client.versionSurvey(survey));
+        
+        GuidCreatedOnVersionHolder keys = client.updateSurvey(updated);
+        client.publishSurvey(keys);
+        */
+    }
+
+    private void cleanUp(DeveloperClient client) {
+        for (SchedulePlan plan : client.getSchedulePlans()) {
+            client.deleteSchedulePlan(plan.getGuid());
+        }
+        for (Survey survey : client.getAllSurveysMostRecentlyPublished()) {
+            for (Survey version : client.getSurveyAllRevisions(survey.getGuid())) {
+                try {
+                    client.deleteSurvey(version);    
+                } catch(BridgeServerException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
     }
     
     @SuppressWarnings("unchecked")
     public void createShareTheJourneySurveys(Environment env) throws Exception {
         DeveloperClient client = signIn(env, "breastcancer");
+        cleanUp(client);
         
         List<Class<? extends SurveyProvider>> providers = Lists.newArrayList(
             SymptomsSurvey.class, 
@@ -63,6 +118,7 @@ public class App {
     @SuppressWarnings("unchecked")
     public void createMPowerSurveys(Environment env) throws Exception {
         DeveloperClient client = signIn(env, "parkinson");
+        cleanUp(client);
         
         List<Class<? extends SurveyProvider>> providers = Lists.newArrayList(
             org.sagebionetworks.bridge.scripts.parkinson.enrollment.BackgroundSurvey.class,

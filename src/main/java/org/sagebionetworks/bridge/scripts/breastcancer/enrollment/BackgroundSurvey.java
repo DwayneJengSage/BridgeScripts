@@ -139,7 +139,7 @@ public class BackgroundSurvey implements SurveyProvider {
         survey.setName(NAME);
         survey.setIdentifier("BCSbackgroundSurvey");
         return new SurveyBuilder(survey)
-            .slider("BCPT1", "What is your age?", 18, 80)
+            //.slider("BCPT1", "What is your age?", 18, 80)
             .radio("BCPT2", "What category below best describes your racial/ethnic background? If you are of mixed racial/ethnic background, choose the category with which you most closely identify", false, races)
             .radio("BCPT3", "Are you Hispanic or Latina?", false, yesNo)
             .radio("BCPT4", "What is your current marital/relationship status?", false, marriedStatus)
@@ -151,17 +151,17 @@ public class BackgroundSurvey implements SurveyProvider {
             .radio("BCPTHealth2", "In which breast(s) was your cancer diagnosed?", false, leftToRight)
             .list("BCPTHealth3", "What type(s) of surgery have you had for your breast cancer?", false, surgeries)
             .radio("BCPTHealth4", "Did you receive chemotherapy after your breast cancer diagnosis or surgery?", false, yesNo).onNoSkipTo("BCPTHealth5")
-            .date("BCPTHealth4a", "When did you last have chemotherapy?")
+            .dateTime("BCPTHealth4a", "When did you last have chemotherapy?")
             .radio("BCPTHealth4b", "What kind of chemotherapy treatment did you have?", false, chemos)
             .radio("BCPTHealth5", "Did you receive or are you currently receiving Herceptin (trastuzumab) or some other form of therapy that targets HER2 overexpression in your tumor?", false, herceptin)
             .radio("BCPTHealth6", "Did you receive radiation as part of your breast cancer treatment?", false, yesNo).onNoSkipTo("BCPTHealth7")
-            .date("BCPTHealth6a", "When did you last have radiation?")
+            .dateTime("BCPTHealth6a", "When did you last have radiation?")
             .radio("BCPTHealth7", "Did you receive an endocrine therapy in the past for chemoprevention?", false, yesNo).onNoSkipTo("BCPTHealth8")
             .radio("BCPTHealth7a", "What drug did you use for chemoprevention?", false, chemoprevention)
-            .date("BCPTHealth7b", "When did you last take a drug for chemoprevention?")
+            .dateTime("BCPTHealth7b", "When did you last take a drug for chemoprevention?")
             .radio("BCPTHealth8", "Are you receiving endocrine therapy for breast cancer now (tamoxifen, ovarian suppression, Femara (letrozole), Anastrozole (arimidex), Aromasin (exemestane)?", false, yesNoDontKnow)
             .radio("BCPTHealth9", "Have you ever taken hormone replacement therapy (estrogen in any form, other than birth control pills)?", false, yesNo).onNoSkipTo("BCPTHealth12")
-            .date("BCPTHealth9a", "When did you last have hormone replacement therapy?")
+            .dateTime("BCPTHealth9a", "When did you last have hormone replacement therapy?")
             .list("BCPTHealth12", "Do you currently have any of the following conditions?", true, conditions)
             .build();
     }

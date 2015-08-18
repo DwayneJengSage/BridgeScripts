@@ -2,6 +2,7 @@ package org.sagebionetworks.bridge.scripts;
 
 import java.util.List;
 
+import org.sagebionetworks.bridge.sdk.models.surveys.BooleanConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.DataType;
 import org.sagebionetworks.bridge.sdk.models.surveys.DateConstraints;
 import org.sagebionetworks.bridge.sdk.models.surveys.DateTimeConstraints;
@@ -46,6 +47,12 @@ public class SurveyBuilder {
         screen.setPrompt(prompt);
         screen.setPromptDetail(promptDetail);
         survey.getElements().add(screen);
+        return this;
+    }
+    public SurveyBuilder bool(String identifier, String prompt, String promptDetail) {
+        SurveyQuestion q = add(identifier, prompt, promptDetail);
+        q.setUiHint(UiHint.RADIOBUTTON);
+        q.setConstraints(new BooleanConstraints());
         return this;
     }
     public SurveyBuilder multilineText(String identifier, String prompt, String promptDetail) {
@@ -129,9 +136,12 @@ public class SurveyBuilder {
         return radio(identifier, prompt, allowOther, options, Lists.<SurveyRule>newArrayList());
     }
     public SurveyBuilder radio(String identifier, String prompt, boolean allowOther, List<SurveyQuestionOption> options, List<SurveyRule> rules) {
+        return radio(identifier, prompt, allowOther, DataType.STRING, options, rules);
+    }
+    public SurveyBuilder radio(String identifier, String prompt, boolean allowOther, DataType dataType, List<SurveyQuestionOption> options, List<SurveyRule> rules) {
         SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.RADIOBUTTON);
-        MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
+        MultiValueConstraints c = new MultiValueConstraints(dataType);
         c.setAllowOther(allowOther);
         c.setAllowMultiple(false);
         c.setEnumeration(options);
@@ -140,12 +150,24 @@ public class SurveyBuilder {
         return this;
     }
     public SurveyBuilder list(String identifier, String prompt, boolean allowOther, List<SurveyQuestionOption> options) {
+        return list(identifier, prompt, allowOther, true, options);
+    }
+    public SurveyBuilder list(String identifier, String prompt, boolean allowOther, boolean allowMultiple, List<SurveyQuestionOption> options) {
         SurveyQuestion q = add(identifier, prompt, null);
         q.setUiHint(UiHint.LIST);
         MultiValueConstraints c = new MultiValueConstraints(DataType.STRING);
         c.setAllowOther(allowOther);
         c.setEnumeration(options);
-        c.setAllowMultiple(true);
+        c.setAllowMultiple(allowMultiple);
+        q.setConstraints(c);
+        return this;
+    }
+    public SurveyBuilder text(String identifier, String prompt, int minLength, int maxLength) {
+        SurveyQuestion q = add(identifier, prompt, null);
+        q.setUiHint(UiHint.TEXTFIELD);
+        StringConstraints c = new StringConstraints();
+        c.setMinLength(minLength);
+        c.setMaxLength(maxLength);
         q.setConstraints(c);
         return this;
     }
