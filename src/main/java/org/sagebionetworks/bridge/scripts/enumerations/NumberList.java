@@ -1,4 +1,4 @@
-package org.sagebionetworks.bridge.scripts.onboarding;
+package org.sagebionetworks.bridge.scripts.enumerations;
 
 import java.util.LinkedList;
 

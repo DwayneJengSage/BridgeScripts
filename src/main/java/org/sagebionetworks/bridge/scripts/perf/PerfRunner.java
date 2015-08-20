@@ -12,6 +12,7 @@ import org.sagebionetworks.bridge.sdk.Environment;
 import org.sagebionetworks.bridge.sdk.Session;
 import org.sagebionetworks.bridge.sdk.exceptions.ConsentRequiredException;
 import org.sagebionetworks.bridge.sdk.models.users.ConsentSignature;
+import org.sagebionetworks.bridge.sdk.models.users.SharingScope;
 import org.sagebionetworks.bridge.sdk.models.users.SignInCredentials;
 
 import com.google.common.collect.Lists;
@@ -26,11 +27,6 @@ public class PerfRunner {
         System.out.println("------ RECORDING ------");
         Session session = signIn();
         List<PerfTask> tasks = Lists.newArrayListWithCapacity(1);
-        //for (int i=0; i < TASK_COUNT; i++) {
-            tasks.add(new SurveyTask(session));
-            //tasks.add(new HealthDataTask(session));
-            //tasks.add(new UploadTask(session));
-        //}
         executor.awaitTermination(5000, TimeUnit.MILLISECONDS);
         executor.invokeAll(tasks);
         System.out.println("------ STOP RECORDING ------");
@@ -49,7 +45,7 @@ public class PerfRunner {
         } catch(ConsentRequiredException e) {
             session = e.getSession();
             LocalDate birthdate = LocalDate.parse("1968-05-12");
-            session.getUserClient().consentToResearch(new ConsentSignature("Alx Dark", birthdate, null, null));
+            session.getUserClient().consentToResearch(new ConsentSignature("Alx Dark", birthdate, null, null), SharingScope.NO_SHARING);
         }
         return session;
     }
