@@ -40,7 +40,7 @@ public class Scripts {
 
     public static Properties loadProperties() {
         final Properties properties = new Properties();
-        try (InputStream ins = new FileInputStream(System.getProperty("user.dir") + "/keys.properties")) {
+        try (InputStream ins = new FileInputStream(System.getProperty("user.home") + "/keys.properties")) {
             properties.load(ins);    
         } catch(IOException e) {
             e.printStackTrace();
